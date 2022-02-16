@@ -31,8 +31,6 @@ The package contains the following datasets:
 3. Aquatic Foods Composition Database nutrient key: `?afcd_nutrients`
 4. Aquatic Foods Composition Database reference key: `?afcd_refs`
 
-The data were accessed from this [Harvard Dataverse repository](https://dataverse.harvard.edu/dataverse/afcd) with additional information accessed via this [GitHub repository](https://github.com/zachkoehn/aquatic_foods_nutrient_database). The data were formatted by [Chris Free](https://marine.rutgers.edu/~cfree/). Please contact Chris Free (cfree14@gmail.com) with questions about this repository and the original authors with questions about the data or paper.
-
 ## How were the data cleaned?
 
 The data were cleaned by doing the following:
