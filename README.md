@@ -1,4 +1,4 @@
-# Aquatic Foods Composition Database (cleaned)
+# Aquatic Foods Composition Database
 
 ## Overview
 
