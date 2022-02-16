@@ -20,7 +20,7 @@ library(AFCD)
 ```
 ## Functions
 
-1. Match nutritional content to nearest taxa: ?species_nutrients
+1. Match nutritional content to nearest taxa: `?species_nutrients`
 
 ## Datasets
 
