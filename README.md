@@ -20,7 +20,7 @@ library(AFCD)
 ```
 ## Functions
 
-1. Match nutritional content to nearest taxa: ?species_nutrients
+1. Match nutritional content to nearest taxa: `?species_nutrients`
 
 ## Datasets
 
@@ -30,21 +30,6 @@ The package contains the following datasets:
 2. Aquatic Foods Composition Database (foods ID'ed by general food names only): `?afcd2`
 3. Aquatic Foods Composition Database nutrient key: `?afcd_nutrients`
 4. Aquatic Foods Composition Database reference key: `?afcd_refs`
-
-The data were accessed from this [Harvard Dataverse repository](https://dataverse.harvard.edu/dataverse/afcd) with additional information accessed via this [GitHub repository](https://github.com/zachkoehn/aquatic_foods_nutrient_database). The data were formatted by [Chris Free](https://marine.rutgers.edu/~cfree/). Please contact Chris Free (cfree14@gmail.com) with questions about this repository and the original authors with questions about the data or paper.
-
-## How were the data cleaned?
-
-The data were cleaned by doing the following:
-
-1. Converting from wide to long format to (1) clarify nutrient identity and units and (2) ease plotting and analysis
-2. Filling in missing nutrient information (e.g., missing units)
-3. Harmonizing nutrient names and descriptions
-4. Validating and harmonizing taxonomic information
-5. Adding a harmonized common name corresponding to the scientific name
-6. Building a species taxonomic reference key to reduce columns and enforce consistency
-7. Building a single reference key merging meta-data on FCT and peer-reviewed sources
-8. Carefully harmonizing columns across the data and keys
 
 ## Citation
 
