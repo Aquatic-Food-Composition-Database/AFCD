@@ -9,7 +9,7 @@
 #' @return A dataframe containing species, nutrient, nutrient units, nutritional value (value), closest taxa match (taxa_match), number of observations which nutritional value was extracted (count), standard error (se), startard deviation (ssd) and confidence intervals  
 #' @examples
 #' # Get nutritional info
-#' # species_nutrients(sci_name = c("Homarus americanus", "Pangasius pangasius"), prep = "raw", part = "muscle tissue", nut = c("Iron, total", "Zinc"))
+#' # species_nutrients(sci_name = c("Salmo salar", "Oreochromis niloticus"), prep = "raw", part = "muscle tissue", nut = c("Iron, total", "Zinc"))
 #' @export
 species_nutrients = function(sci_name, prep, part, nut){
   
