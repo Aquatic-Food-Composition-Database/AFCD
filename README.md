@@ -18,7 +18,7 @@ install.packages("devtools")
 devtools::install_github("Aquatic-Food-Composition-Database/AFCD", force=T)
 library(AFCD)
 ```
-##Functions
+## Functions
 
 1. Match nutritional content to nearest taxa: ?species_nutrients
 
