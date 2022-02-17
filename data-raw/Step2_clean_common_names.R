@@ -119,13 +119,13 @@ com_names = data_orig %>%
     str_detect(value, paste(c("fillet", "whole", "roe", "flesh", "gutted", "cleaned fish", "incl", "entire", "intestines", "viscera", "meat", "arms", "tentacles", "body", "claw", "mantle", "gonads", "tail part", "caviar", "muscle", "muslce", "esophagus", "eggs", "head included", "eyes included", "boneless", "skinless", "skinned", "eyes excluded", "eyes partly excluded", "without bones", "without skin", "less skin", "skinon", "with bones", "peeled", "scales removed"), collapse = '|')) ~ "part",
     value %in% c("dressed with head", "with ovary", "without head", "with shell", "with skin", "skin", "ventral with skin", "solids with bone", "skin & bones", "foot", "milt", "liver", "tail", "dorsal with skin") ~ "part", 
     ## Scientific Names
-    value %in% c("c. demersum", "b. violocea", "p. aemingiana", "l. xanthophilus", "s.cavalla", "d. auricularia", "t. anomala", "s.niphonius", "tridacna maxima") ~ "sci",
+    value %in% c("c. demersum", "b. violocea", "p. aemingiana", "l. xanthophilus", "s.cavalla", "d. auricularia", "t. anomala", "s.niphonius", "tridacna maxima", "tripneustes gratilla") ~ "sci",
     ## Regions
     value %in% c("chile", "european", "africa", "europe", "greenland", "asean/bangladesh", "euroamerican", "ireland", "china", "denmark", "northeast pacific", "ne atlantic", "north america", "bangladesh", "vietnam", "norway", "uk", "usa", "iceland", "germany", "new zealand", "northeast atlantic", "asean", "mediterranean sea", "northwest atlantic", "norwegian") ~ "region",
     ## Seasons
     str_detect(value, paste(c("summer", "winter", "autumn", "spring"), collapse = '|')) ~ "season",
     ## Other ingredients
-    value %in% c("in tomato sauce", "onion", "with cream", "with sugar", "marinated", "marinated in vinegar", "with potatoes", "with egg", "with seasoning", "with seaweed", "with mayonnaise", "with mustard sauce", "seasoned with mirin", "split seasoned with mirin", "green chili", "spices", "sour cream", "tomato", "rolled in breadcrumbs", "milk added", "in oil", "in flour", "in jelly", "rolled in flour", "floured", "bread", "cheese", "soy souce", "soy sauce", "sugar", "seasoned", "garlic", "salt", "salt added to water", "filled") ~ "other_ingredients",
+    value %in% c("in tomato sauce", "onion", "with cream", "with sugar", "marinated", "marinated in vinegar", "with potatoes", "with egg", "with seasoning", "with seaweed", "with mayonnaise", "with mustard sauce", "seasoned with mirin", "split seasoned with mirin", "green chili", "spices", "sour cream", "tomato", "rolled in breadcrumbs", "milk added", "in oil", "in flour", "in jelly", "rolled in flour", "floured", "bread", "cheese", "soy souce", "soy sauce", "sugar", "seasoned", "garlic", "salt", "salt added to water", "filled", "fish paté") ~ "other_ingredients",
     ## Sex
     value %in% c("male", "female") ~ "sex",
     ## Genus
@@ -169,10 +169,20 @@ common_wide = com_names %>%
   rename(common_name_1 = "1",
          common_name_2 = "2",
          common_name_3 = "3") %>% 
-  mutate(common_name_3 = if_else(common_name_2=="atlantic", paste(common_name_2, common_name_1), 
+  mutate(common_name_3 = if_else(freeR::nwords(common_name_1)==1 & freeR::nwords(common_name_2) == 1, paste(common_name_2, common_name_1), common_name_3),
+         common_name_3 = if_else(common_name_2=="atlantic", paste(common_name_2, common_name_1), 
                                  if_else(common_name_1=="salmon", paste(common_name_2, common_name_1), 
                                          if_else(common_name_1 == "tuna", paste(common_name_2, common_name_1), common_name_3)))) %>% 
-  mutate(common_name_3 = gsub("tuna tuna", "tuna", common_name_3))
+  mutate(common_name_3 = gsub("tuna tuna", "tuna", common_name_3),
+         common_name = if_else(!is.na(common_name_3), common_name_3, 
+                               if_else(freeR::nwords(common_name_2)>1, common_name_2, common_name_1)),
+         common_name_detailed = paste(common_name_1, common_name_2, common_name_3, sep = ", "),
+         common_name_detailed = gsub(", NA, NA", "", common_name_detailed),
+         common_name_detailed = gsub(", NA", "", common_name_detailed)) %>% 
+  select(-common_name_1, -common_name_2, -common_name_3, -ID)
+
+common_name_key = common_wide %>% 
+  select(food_name_orig, common_name)
 
 ##Check Preparation types
 ##Long list
@@ -288,7 +298,10 @@ catg_wide = com_names %>%
   distinct(food_name_orig, .keep_all = TRUE)
 
 catg_clean = catg_wide %>% 
-  rename(catg = `1`)
+  rename(catg = `1`) %>% 
+  mutate(catg = if_else(catg %in% c("cultured", "cultured in freshwater", "cultured in the sea", "farmed", "aquacultured", "farmed flesh"), "farmed", 
+                        if_else(catg %in% c("wild", "wild edible flesh", "wild caught", "ise wild arame"), "wild capture", catg))) %>% 
+  select(-ID)
 
 #####################Check scientific names
 ##Long list
@@ -318,21 +331,8 @@ sci_clean = sci_wide %>%
                           "c. demersum" = "Ceratophyllum demersum",
                           "l. xanthophilus" = "Leiostomus xanthurus",
                           "b. violocea" = "Batissa violacea",
-                          "p. aemingiana" = "Polinices aemingiana"))
-
-##Assign scientific names
-sci_names <- readRDS(file=file.path(outdir, "AFCD_data_sci.Rds")) %>% 
-  select(food_name, sciname) %>% 
-  distinct(food_name, .keep_all = TRUE) %>% 
-  drop_na(food_name)
-
-##First, seperate those that already have a scientific name
-common_sci = common_wide %>% 
-  left_join(sci_names, by=c("food_name_orig" = "food_name")) %>% 
-  mutate(common_name = if_else(is.na(common_name_3), common_name_2, common_name_3))
-
-common_1 = common_sci %>% 
-  select()
+                          "p. aemingiana" = "Polinices aemingiana",
+                          "tripneustes gratilla" = "Tripneustes gratilla"))
 
 #####################Check regions
 ##Long list
@@ -388,6 +388,12 @@ other_ingredients_wide = com_names %>%
   ungroup() %>% 
   distinct(food_name_orig, .keep_all = TRUE)
 
+other_ingredients_clean = other_ingredients_wide %>% 
+  mutate(other_ingredients = paste(`1`, `2`, `3`, sep = ", "),
+         other_ingredients = gsub(", NA, NA", "", other_ingredients),
+         other_ingredients = gsub(", NA", "", other_ingredients)) %>% 
+  select(food_name_orig, other_ingredients)
+
 #####################Check sex
 ##Long list
 sex_long = com_names %>%
@@ -423,4 +429,69 @@ genus_wide = com_names %>%
   spread(key=col, value=genus) %>%
   ungroup() %>% 
   distinct(food_name_orig, .keep_all = TRUE)
+
+######Include info in data
+
+#Include common name
+data2 = data_orig %>%
+  left_join(common_wide, by=c("food_name" = "food_name_orig"))
+
+#Include preparation types
+data2 = data2 %>% 
+  left_join(prep_clean, by=c("food_name" = "food_name_orig")) %>% 
+  mutate(food_prep = na_if(food_prep, "frozen"),
+         food_prep = na_if(food_prep, "unknown preparation"),
+         food_prep = na_if(food_prep, "small sample")) %>% 
+  rename(food_prep_org = food_prep) %>% 
+  mutate(food_prep = if_else(is.na(food_prep_org), preparation_simple, food_prep_org)) %>%
+  rename(food_prep_detailed = preparation_detailed) %>% 
+  select(-food_prep_org, -preparation_simple)
+
+#Include fish parts
+data2 = data2 %>% 
+  left_join(parts_clean, by=c("food_name" = "food_name_orig")) %>% 
+  mutate(food_part = na_if(food_part, "unknown part"),
+         food_part = na_if(food_part, "edible"),
+         food_part = na_if(food_part, "raw"),
+         food_part = na_if(food_part, "small sample"),
+         food_part = recode(food_part, "gutted" = "whole gutted")) %>% 
+  rename(food_part_org = food_part) %>% 
+  mutate(food_part = if_else(is.na(food_part_org), part_simple, food_part_org)) %>%
+  rename(food_part_detailed = part_detailed) %>% 
+  select(-food_part_org, -part_simple)
+
+#Include wild vs farmed
+data2 = data2 %>% 
+  left_join(catg_clean, by=c("food_name" = "food_name_orig")) %>% 
+  mutate(prod_catg = na_if(prod_catg, "unknown")) %>% 
+  rename(prod_catg_org = prod_catg) %>% 
+  mutate(prod_catg = if_else(is.na(prod_catg_org), catg, prod_catg_org)) %>%
+  select(-prod_catg_org, -catg)
+
+#Include other ingredients
+data2 = data2 %>% 
+  left_join(other_ingredients_clean, by=c("food_name" = "food_name_orig"))
+
+#Organize columns
+data2 = data2 %>% 
+  select("food_name", "food_name_orig", "fct_code_orig", "food_id", 
+         "taxa_name", "taxa_name_source", "kingdom", "phylum", "class",
+         "order", "family", "genus", "taxa_id", "taxa_db", "common_name", "common_name_detailed",
+         "food_prep", "food_prep_detailed", "food_part", "food_part_detailed", "prod_catg",
+         "other_ingredients", "study_type", "study_id", "iso3", "country", "fao3", 
+         "edible_prop", "notes", "nutrient_type", "nutrient", "nutrient_orig",
+         "nutrient_desc", "nutrient_code_fao", "nutrient_units", "value")         
+
+# Export data
+saveRDS(data2, file=file.path(outdir, "AFCD_data_pass2.Rds"))  
+
+##Assign scientific names
+sci_names <- readRDS(file=file.path(outdir, "AFCD_data_sci.Rds")) %>%
+  left_join(common_name_key, by = c("food_name" = "food_name_orig")) %>% 
+  select(common_name, sciname) %>% 
+  distinct(common_name, .keep_all = TRUE) %>% 
+  drop_na(common_name)
+
+data2 = data2 %>% 
+  left_join(sci_names)
 

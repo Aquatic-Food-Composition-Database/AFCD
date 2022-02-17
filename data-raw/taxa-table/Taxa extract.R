@@ -1,14 +1,13 @@
 library(rfishbase)
 library(tidyverse)
 ##Load fishbase data to store taxa information for all species
-fish_taxa <- read_csv("~/Fisheries Nutrition Modeling/data/fish_taxa.csv")
-
-family_info = fish_taxa %>% 
+family_info <- rfishbase::load_taxa(server="https://fishbase.ropensci.org") %>%
+  as.data.frame() %>% 
   dplyr::select(Genus, Family, Order, Class) %>% 
   distinct(Genus, .keep_all = TRUE)
 
 ##Seaflife
-seaflife_table = sealifebase %>% 
+seaflife_table = rfishbase::sealifebase %>% 
   dplyr::select(Genus, Family, Order, Class) %>% 
   distinct(Genus, .keep_all = TRUE)
 
@@ -26,4 +25,3 @@ taxa_table = rbind(family_info, seaflife_table) %>%
                         "elasmobranchii" = "chondrichthyes"))
 
 saveRDS(taxa_table, "data-raw/taxa-table/taxa_table.Rds")
-
