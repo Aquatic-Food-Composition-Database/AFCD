@@ -4,7 +4,11 @@ library(tidyverse)
 family_info <- rfishbase::load_taxa(server="https://fishbase.ropensci.org") %>%
   as.data.frame() %>% 
   dplyr::select(Genus, Family, Order, Class) %>% 
-  distinct(Genus, .keep_all = TRUE)
+  distinct(Genus, .keep_all = TRUE) %>% 
+  mutate(class = recode(class,
+                        "Elasmobranchii" = "Chondrichthyes"))
+
+##clean taxa
 
 ##Seaflife
 seaflife_table = rfishbase::sealifebase %>% 
@@ -20,8 +24,6 @@ taxa_table = rbind(family_info, seaflife_table) %>%
   mutate(family = tolower(family),
          genus = tolower(genus),
          order = tolower(order),
-         class = tolower(class),
-         class = recode(class, 
-                        "elasmobranchii" = "chondrichthyes"))
+         class = tolower(class))
 
 saveRDS(taxa_table, "data-raw/taxa-table/taxa_table.Rds")

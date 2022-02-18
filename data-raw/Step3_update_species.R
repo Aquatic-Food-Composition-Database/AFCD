@@ -13,30 +13,10 @@ indir <- "data-raw/raw"
 outdir <- "data-raw/processed"
 
 # Read data
-data_orig <- readRDS(file.path(outdir, "AFCD_data_pass1.Rds"))
+data_orig <- readRDS(file.path(outdir, "AFCD_data_pass2.Rds"))
 
 # Read ref key
 ref_key <- readRDS(file.path(outdir, "AFCD_reference_key.Rds"))
-
-# Prepare data: no scientific data
-################################################################################
-
-# Build data
-data_comm <- data_orig %>%
-  # Reduce to taxa without taxonomic information
-  filter(taxa_name_source %in% c("Food name (English)", "Food name (original)")) %>%
-  # Simplify
-  select(-c(kingdom:taxa_db, fao3, nutrient_code_fao)) %>%
-  select(taxa_name_source, taxa_name, everything()) %>%
-  # Arrange
-  arrange(taxa_name_source, taxa_name)
-
-# Inspect
-freeR::complete(data_comm)
-
-# Export
-saveRDS(data_comm, file=file.path(outdir, "AFCD_data_comm.Rds"))
-
 
 # Prepare data: with taxonomy worked out
 ################################################################################
@@ -52,7 +32,6 @@ data_sci1 <- data_orig %>%
 orders <- sort(unique(data_sci1$order))
 families <- sort(unique(data_sci1$family))
 genera <- sort(unique(data_sci1$genus))
-
 
 # Build species key
 ################################################################################
@@ -369,33 +348,39 @@ data_sci2 <- data_sci1 %>%
   # Simplify
   select(sciname, sciname_orig, taxa_type, taxa_level, everything()) %>%
   # Remove columns
-  select(-c(kingdom:taxa_db, fao3, nutrient_code_fao, sciname_source))
+  select(-sciname_source)
 
 # Inspect
 freeR::complete(data_sci2)
 
-# Export
-saveRDS(data_sci2, file=file.path(outdir, "AFCD_data_sci.Rds"))
-
-
 # Confirm that the datasets are the right size
 nrow(data_comm) + nrow(data_sci2) == nrow(data_orig)
 
-##Data with all taxa information
-##Taxa_table
+# Input scientific name based on common name
+################################################################################
+
+##Assign scientific names
+sci_common_names <- data_sci2 %>%
+  select(common_name, sciname, sciname_orig, taxa_type, taxa_level) %>% 
+  distinct(common_name, .keep_all = TRUE) %>% 
+  drop_na(common_name)
+
+# Seperate those without scientific name
+data_comm <- data_orig %>%
+  # Reduce to taxa without taxonomic information
+  filter(taxa_name_source %in% c("Food name (English)", "Food name (original)")) %>% 
+  left_join(sci_common_names) %>% 
+  select(-taxa_name, -taxa_name_source)
+
+data_comm_sci = data_comm %>% 
+  filter(!is.na(sciname))
+
+data_sci3 = rbind(data_sci2, data_comm_sci)
+
+##Fill in taxonomic informtion
+##Load Taxa_table
 taxa_table = readRDS("data-raw/taxa-table/taxa_table.Rds")
   
-  
-data_sci3 <- data_sci1 %>%
-  # Rename
-  rename(sciname_orig=sciname) %>%
-  # Add updated scientific name
-  left_join(spp_key2 %>% select(taxa_type:sciname_orig), by=c("sciname_orig")) %>%
-  # Simplify
-  select(sciname, sciname_orig, taxa_type, taxa_level, everything()) %>%
-  # Remove columns
-  select(-c(fao3, nutrient_code_fao, sciname_source))
-
 dta_species = data_sci3 %>% 
   filter(taxa_level=="species") %>% 
   select(-genus) %>%
@@ -404,7 +389,7 @@ dta_species = data_sci3 %>%
 
 spp_missing = dta_species %>% 
   filter(is.na(family)) %>% 
-  select(-family, -order) %>% 
+  select(-family, -order, -class) %>% 
   left_join(taxa_table)
 
 dta_species2 = dta_species %>% 
@@ -416,10 +401,10 @@ dta_family = data_sci3 %>%
 
 family_missing = dta_family %>% 
   filter(is.na(family)) %>% 
-  select(-order, -family) %>%
+  select(-order, -family, -class) %>%
   separate(sciname, c("family", "spp"), " ", remove=T) %>% 
   mutate(sciname = NA) %>% 
-  left_join(taxa_table %>% select(family, order) %>% distinct(family, .keep_all=T)) %>% 
+  left_join(taxa_table %>% select(family, order, class) %>% distinct(family, .keep_all=T)) %>% 
   select(-spp)
 
 dta_family2 = dta_family %>% 
@@ -434,7 +419,7 @@ dta_genus = data_sci3 %>%
 
 genus_missing = dta_genus %>% 
   filter(is.na(family)) %>% 
-  select(-family, -order) %>%
+  select(-family, -order, -class) %>%
   left_join(taxa_table)
 
 dta_genus2 = dta_genus %>% 
@@ -447,9 +432,36 @@ dta_other = data_sci3 %>%
 
 data_sci4 = rbind(dta_species2, dta_genus2, dta_family2, dta_other) %>% 
   mutate(class = if_else(order == "Actinopterygii", "Actinopterygii", class),
-         order = na_if(order, "Actinopterygii"))
+         order = na_if(order, "Actinopterygii")) %>% 
+  select(-kingdom, -phylum, -taxa_id, -taxa_db, -taxa_type, -taxa_level) %>% 
+  select(sciname, sciname_orig, genus, family, order, class, common_name, food_name, food_name_orig, everything())
 
-# Export
+# Export data with some taxonomic information
 saveRDS(data_sci4, file=file.path(outdir, "AFCD_data_taxa.Rds"))
 
+# Export data with complete scientific name
+data_sci_only = rbind(dta_species2, dta_genus2, dta_family2, dta_other) %>% 
+  mutate(class = if_else(order == "Actinopterygii", "Actinopterygii", class),
+         order = na_if(order, "Actinopterygii")) %>% 
+  filter(taxa_type == "species") %>% 
+  select(-kingdom, -phylum, -taxa_id, -taxa_db, -taxa_type, -taxa_level) %>% 
+  select(sciname, sciname_orig, genus, family, order, class, common_name, food_name, food_name_orig, everything())
 
+
+saveRDS(data_sci3, file=file.path(outdir, "AFCD_data_sci.Rds"))
+
+##Export data without scientific names
+data_comm_Nosci = data_comm %>% 
+  filter(is.na(sciname)) %>% 
+  select(-kingdom, -phylum, -taxa_id, -taxa_db, -taxa_type, -taxa_level, -class, -family, -genus, -order, -notes, -sciname, -sciname_orig)
+
+# Inspect
+freeR::complete(data_comm_Nosci)
+
+# Export
+saveRDS(data_comm_Nosci, file=file.path(outdir, "AFCD_data_comm.Rds"))
+
+##Export data in the wide format (data_taxa)
+data_sci4_wide = data_sci4 %>% 
+  unique() %>% 
+  spread(nutrient, value)

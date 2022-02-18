@@ -484,14 +484,3 @@ data2 = data2 %>%
 
 # Export data
 saveRDS(data2, file=file.path(outdir, "AFCD_data_pass2.Rds"))  
-
-##Assign scientific names
-sci_names <- readRDS(file=file.path(outdir, "AFCD_data_sci.Rds")) %>%
-  left_join(common_name_key, by = c("food_name" = "food_name_orig")) %>% 
-  select(common_name, sciname) %>% 
-  distinct(common_name, .keep_all = TRUE) %>% 
-  drop_na(common_name)
-
-data2 = data2 %>% 
-  left_join(sci_names)
-
