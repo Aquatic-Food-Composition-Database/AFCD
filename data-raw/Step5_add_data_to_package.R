@@ -13,14 +13,27 @@ indir <- "data-raw/raw"
 outdir <- "data-raw/processed"
 
 # Read data
-afcd1 <- readRDS(file=file.path(outdir, "AFCD_data_sci.Rds"))
-afcd2 <- readRDS(file=file.path(outdir, "AFCD_data_comm.Rds"))
+afcd <- readRDS(file=file.path(outdir, "AFCD_data_taxa.Rds"))
+afcd_sci <- readRDS(file=file.path(outdir, "AFCD_data_sci.Rds"))
+afcd_common <- readRDS(file=file.path(outdir, "AFCD_data_comm.Rds"))
 afcd_refs <- readRDS(file=file.path(outdir, "AFCD_reference_key.Rds"))
 afcd_nutrients <- readRDS(file=file.path(outdir, "AFCD_nutrient_key.Rds"))
 
+##Parts key
+afcd_parts = afcd %>% 
+  group_by(food_part) %>% 
+  count()
+
+##Parts key
+afcd_prep = afcd %>% 
+  group_by(food_prep) %>% 
+  count()
 
 # Export data
-usethis::use_data(afcd1, overwrite = T)
-usethis::use_data(afcd2, overwrite = T)
+usethis::use_data(afcd, overwrite = T)
+usethis::use_data(afcd_sci, overwrite = T)
+usethis::use_data(afcd_common, overwrite = T)
 usethis::use_data(afcd_refs, overwrite = T)
 usethis::use_data(afcd_nutrients, overwrite = T)
+usethis::use_data(afcd_parts, overwrite = T)
+usethis::use_data(afcd_prep, overwrite = T)

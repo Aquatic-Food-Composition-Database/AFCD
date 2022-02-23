@@ -1,3 +1,36 @@
+#' Aquatic Foods Composition Database (AFCD) - all taxa
+#'
+#' A cleaned version of the Aquatic Foods Composition Database (AFCD). This dataset includes observations with foods identified by scientific names or broad taxa (Genus, Family, Order or Class).
+#'
+#' @format A data frame with the following attributes:
+#' \describe{
+#'   \item{sciname}{Scientific name, harmonized}
+#'   \item{sciname_orig}{Scientific name, in the raw AFCD}
+#'   \item{taxa_type}{Taxa type, species or a group of species}
+#'   \item{taxa_level}{Taxa level (species, genus, family, order, other)}
+#'   \item{study_type}{Study type (peer-reviewed paper or FCT report)}
+#'   \item{study_id}{Study id}
+#'   \item{iso3}{ISO3 of source country(s)}
+#'   \item{country}{Source country(s)}
+#'   \item{prod_catg}{Production category (farmed, wild capture, unknown)}
+#'   \item{food_part}{Part of food}
+#'   \item{food_prep}{Preparation of food}
+#'   \item{food_name}{Name of food, in English}
+#'   \item{food_name_orig}{Name of food, in original data}
+#'   \item{fct_code_orig}{FCT code, in original data}
+#'   \item{food_id}{Food id}
+#'   \item{edible_prop}{Edible proportion}
+#'   \item{notes}{Notes}
+#'   \item{nutrient_type}{Nutient type}
+#'   \item{nutrient}{Nutient name}
+#'   \item{nutrient_orig}{Nutient name, in the raw AFCD}
+#'   \item{nutrient_desc}{Description of nutrient}
+#'   \item{nutrient_units}{Units per 100g of edible food portion}
+#'   \item{value}{Value}
+#' }
+#' @source Golden CD, Koehn JZ, Shepon A, Passarelli S, Free CM, Viana DF, Matthey H, Eurich JG, Gephart JA, Fluet-Chouinnard E, Nyboer EA, Lynch AJ, Kjellevold M, Bromage S, Charlebois P, Barange M, Vannuccini S, Cao L, Kleisner KM, Rimm EB, Danaei G, DeSisto C, Kelahan H, Fiorella KJ, Little DC, Allison EH, Fanzo J, Thilsted SH (2021) Aquatic foods to nourish nations. Nature 598: 315-320.
+"afcd"
+
 #' Aquatic Foods Composition Database (AFCD) - scientific names
 #'
 #' A cleaned version of the Aquatic Foods Composition Database (AFCD). This dataset includes observations with foods identified by scientific names.
@@ -29,9 +62,9 @@
 #'   \item{value}{Value}
 #' }
 #' @source Golden CD, Koehn JZ, Shepon A, Passarelli S, Free CM, Viana DF, Matthey H, Eurich JG, Gephart JA, Fluet-Chouinnard E, Nyboer EA, Lynch AJ, Kjellevold M, Bromage S, Charlebois P, Barange M, Vannuccini S, Cao L, Kleisner KM, Rimm EB, Danaei G, DeSisto C, Kelahan H, Fiorella KJ, Little DC, Allison EH, Fanzo J, Thilsted SH (2021) Aquatic foods to nourish nations. Nature 598: 315-320.
-"afcd1"
+"afcd_sci"
 
-#' Aquatic Foods Composition Database (AFCD) - w/out scientific names
+#' Aquatic Foods Composition Database (AFCD) - w/out taxa information
 #'
 #' A cleaned version of the Aquatic Foods Composition Database (AFCD). This dataset includes observations with foods identified by general names (not scientific names).
 #'
@@ -60,7 +93,7 @@
 #'   \item{value}{Value}
 #' }
 #' @source Golden CD, Koehn JZ, Shepon A, Passarelli S, Free CM, Viana DF, Matthey H, Eurich JG, Gephart JA, Fluet-Chouinnard E, Nyboer EA, Lynch AJ, Kjellevold M, Bromage S, Charlebois P, Barange M, Vannuccini S, Cao L, Kleisner KM, Rimm EB, Danaei G, DeSisto C, Kelahan H, Fiorella KJ, Little DC, Allison EH, Fanzo J, Thilsted SH (2021) Aquatic foods to nourish nations. Nature 598: 315-320.
-"afcd2"
+"afcd_common"
 
 #' Aquatic Foods Composition Database (AFCD) nutrient key
 #'
@@ -94,3 +127,27 @@
 #' }
 #' @source Golden CD, Koehn JZ, Shepon A, Passarelli S, Free CM, Viana DF, Matthey H, Eurich JG, Gephart JA, Fluet-Chouinnard E, Nyboer EA, Lynch AJ, Kjellevold M, Bromage S, Charlebois P, Barange M, Vannuccini S, Cao L, Kleisner KM, Rimm EB, Danaei G, DeSisto C, Kelahan H, Fiorella KJ, Little DC, Allison EH, Fanzo J, Thilsted SH (2021) Aquatic foods to nourish nations. Nature 598: 315-320.
 "afcd_refs"
+
+#' Aquatic Foods Composition Database (AFCD) food parts key
+#'
+#' Parts key for the Aquatic Foods Composition Database (AFCD).
+#'
+#' @format A data frame with the following attributes:
+#' \describe{
+#'   \item{food_part}{Food part type}
+#'   \item{n}{Number of observations}
+#' }
+#' @source Golden CD, Koehn JZ, Shepon A, Passarelli S, Free CM, Viana DF, Matthey H, Eurich JG, Gephart JA, Fluet-Chouinnard E, Nyboer EA, Lynch AJ, Kjellevold M, Bromage S, Charlebois P, Barange M, Vannuccini S, Cao L, Kleisner KM, Rimm EB, Danaei G, DeSisto C, Kelahan H, Fiorella KJ, Little DC, Allison EH, Fanzo J, Thilsted SH (2021) Aquatic foods to nourish nations. Nature 598: 315-320.
+"afcd_parts"
+
+#' Aquatic Foods Composition Database (AFCD) preparation key
+#'
+#' Preparation key for the Aquatic Foods Composition Database (AFCD).
+#'
+#' @format A data frame with the following attributes:
+#' \describe{
+#'   \item{food_prep}{Preparation type}
+#'   \item{n}{Number of observations}
+#' }
+#' @source Golden CD, Koehn JZ, Shepon A, Passarelli S, Free CM, Viana DF, Matthey H, Eurich JG, Gephart JA, Fluet-Chouinnard E, Nyboer EA, Lynch AJ, Kjellevold M, Bromage S, Charlebois P, Barange M, Vannuccini S, Cao L, Kleisner KM, Rimm EB, Danaei G, DeSisto C, Kelahan H, Fiorella KJ, Little DC, Allison EH, Fanzo J, Thilsted SH (2021) Aquatic foods to nourish nations. Nature 598: 315-320.
+"afcd_prep"

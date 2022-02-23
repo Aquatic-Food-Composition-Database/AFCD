@@ -326,7 +326,9 @@ spp_key2 <- spp_key1 %>%
   select(taxa_type, taxa_level, sciname_final, sciname_orig, sciname_matched_nwords, match_type) %>%
   # Rename and arrange
   rename(sciname=sciname_final) %>%
-  arrange(taxa_type, taxa_level, sciname)
+  arrange(taxa_type, taxa_level, sciname) %>% 
+  # Squish
+  mutate(sciname=stringr::str_squish(sciname))
 
 # Inspect
 freeR::complete(spp_key2)
@@ -335,7 +337,36 @@ freeR::complete(spp_key2)
 # Cyparica samplomoneta, Sciania hatei, Chichorus virginicus = don't know who these are
 spp_key2 %>% filter(taxa_level=="species" & is.na(sciname_matched_nwords)) %>% pull(sciname_orig) %>% sort()
 
+# Inspect remaining species with more than two words
+spp_key2 %>% filter(taxa_type=="species" & freeR::nwords(sciname)>2) %>% pull(sciname) %>% sort()
 
+# Inspect remaining species with more than two words
+taxa_table = freeR::all_fish() %>% 
+  mutate(is_right = 1) %>% 
+  select(sciname, is_right) %>% 
+  unique()
+
+long_names = spp_key2 %>% filter(taxa_type=="species" & freeR::nwords(sciname)>2) %>% select(sciname, sciname_orig) %>% 
+  separate(sciname, c("spp1", "spp2", "spp3"), " ", remove=F) %>% 
+  mutate(name1 = paste(spp1, spp2, sep=" "),
+         name2 = paste(spp1, spp3, sp = " ")) %>% 
+  select(sciname, sciname_orig, name1, name2) %>% 
+  reshape2::melt(id.vars = c("sciname", "sciname_orig")) %>% 
+  rename(name = value) %>% 
+  select(-variable) %>% 
+  mutate(name = stringr::str_squish(name)) %>% 
+  left_join(taxa_table, by = c("name" = "sciname")) %>% 
+  drop_na(is_right) %>% 
+  select(-sciname, -is_right) %>% 
+  rename(sciname2 = name) %>% 
+  distinct(sciname_orig, .keep_all = T)
+  
+spp_key3 = spp_key2 %>% 
+  left_join(long_names) %>% 
+  rename(sciname1 = sciname) %>% 
+  mutate(sciname = if_else(is.na(sciname2), sciname1, sciname2)) %>% 
+  select(taxa_type, taxa_level, sciname, sciname_orig, sciname_matched_nwords, match_type)
+  
 # Add updated scientific names to data
 ################################################################################
 
@@ -344,7 +375,7 @@ data_sci2 <- data_sci1 %>%
   # Rename
   rename(sciname_orig=sciname) %>%
   # Add updated scientific name
-  left_join(spp_key2 %>% select(taxa_type:sciname_orig), by=c("sciname_orig")) %>%
+  left_join(spp_key3 %>% select(taxa_type:sciname_orig), by=c("sciname_orig")) %>%
   # Simplify
   select(sciname, sciname_orig, taxa_type, taxa_level, everything()) %>%
   # Remove columns
@@ -434,7 +465,8 @@ data_sci4 = rbind(dta_species2, dta_genus2, dta_family2, dta_other) %>%
   mutate(class = if_else(order == "Actinopterygii", "Actinopterygii", class),
          order = na_if(order, "Actinopterygii")) %>% 
   select(-kingdom, -phylum, -taxa_id, -taxa_db, -taxa_type, -taxa_level) %>% 
-  select(sciname, sciname_orig, genus, family, order, class, common_name, food_name, food_name_orig, everything())
+  select(sciname, sciname_orig, genus, family, order, class, common_name, food_name, food_name_orig, everything()) %>% 
+  unique()
 
 # Export data with some taxonomic information
 saveRDS(data_sci4, file=file.path(outdir, "AFCD_data_taxa.Rds"))
@@ -445,16 +477,17 @@ data_sci_only = rbind(dta_species2, dta_genus2, dta_family2, dta_other) %>%
          order = na_if(order, "Actinopterygii")) %>% 
   filter(taxa_type == "species") %>% 
   select(-kingdom, -phylum, -taxa_id, -taxa_db, -taxa_type, -taxa_level) %>% 
-  select(sciname, sciname_orig, genus, family, order, class, common_name, food_name, food_name_orig, everything())
+  select(sciname, sciname_orig, genus, family, order, class, common_name, food_name, food_name_orig, everything()) %>% 
+  unique()
 
 
-saveRDS(data_sci3, file=file.path(outdir, "AFCD_data_sci.Rds"))
+saveRDS(data_sci_only, file=file.path(outdir, "AFCD_data_sci.Rds"))
 
 ##Export data without scientific names
 data_comm_Nosci = data_comm %>% 
   filter(is.na(sciname)) %>% 
-  select(-kingdom, -phylum, -taxa_id, -taxa_db, -taxa_type, -taxa_level, -class, -family, -genus, -order, -notes, -sciname, -sciname_orig)
-
+  select(-kingdom, -phylum, -taxa_id, -taxa_db, -taxa_type, -taxa_level, -class, -family, -genus, -order, -notes, -sciname, -sciname_orig) %>% 
+  unique()
 # Inspect
 freeR::complete(data_comm_Nosci)
 
@@ -462,6 +495,9 @@ freeR::complete(data_comm_Nosci)
 saveRDS(data_comm_Nosci, file=file.path(outdir, "AFCD_data_comm.Rds"))
 
 ##Export data in the wide format (data_taxa)
-data_sci4_wide = data_sci4 %>% 
-  unique() %>% 
+data_taxa_wide = data_sci4 %>% 
+  distinct(sciname, sciname_orig, genus, family, order, class, common_name, food_name, food_name_orig, fct_code_orig, food_id, common_name_detailed, food_prep, food_prep_detailed, food_part, food_part_detailed, prod_catg, other_ingredients, study_type, study_id, iso3, country, fao3, edible_prop, notes, nutrient_type, nutrient, nutrient_orig, nutrient_desc, nutrient_code_fao, nutrient_units, .keep_all = T) %>% 
   spread(nutrient, value)
+
+# Export
+saveRDS(data_taxa_wide, file=file.path(outdir, "AFCD_data_taxa_wide.Rds"))

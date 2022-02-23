@@ -5,7 +5,7 @@ family_info <- rfishbase::load_taxa(server="https://fishbase.ropensci.org") %>%
   as.data.frame() %>% 
   dplyr::select(Genus, Family, Order, Class) %>% 
   distinct(Genus, .keep_all = TRUE) %>% 
-  mutate(class = recode(class,
+  mutate(Class = recode(Class,
                         "Elasmobranchii" = "Chondrichthyes"))
 
 ##clean taxa
