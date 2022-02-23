@@ -6,25 +6,34 @@
 #' \describe{
 #'   \item{sciname}{Scientific name, harmonized}
 #'   \item{sciname_orig}{Scientific name, in the raw AFCD}
-#'   \item{taxa_type}{Taxa type, species or a group of species}
-#'   \item{taxa_level}{Taxa level (species, genus, family, order, other)}
-#'   \item{study_type}{Study type (peer-reviewed paper or FCT report)}
-#'   \item{study_id}{Study id}
-#'   \item{iso3}{ISO3 of source country(s)}
-#'   \item{country}{Source country(s)}
-#'   \item{prod_catg}{Production category (farmed, wild capture, unknown)}
-#'   \item{food_part}{Part of food}
-#'   \item{food_prep}{Preparation of food}
+#'   \item{genus}{species Genus}
+#'   \item{family}{species Family}
+#'   \item{order}{species Order}
+#'   \item{class}{species Class}
+#'   \item{common_name}{species English common name}
 #'   \item{food_name}{Name of food, in English}
 #'   \item{food_name_orig}{Name of food, in original data}
 #'   \item{fct_code_orig}{FCT code, in original data}
 #'   \item{food_id}{Food id}
+#'   \item{common_name_detailed}{different versions of species English common name}
+#'   \item{food_prep}{Preparation of food}
+#'   \item{food_prep_detailed}{Preparation of food with more detailed description}
+#'   \item{food_part}{Part of food}
+#'   \item{food_part_detailed}{Part of food with more detailed description}
+#'   \item{prod_catg}{Production category (farmed, wild capture)}
+#'   \item{other_ingredients}{added ingredients}
+#'   \item{study_type}{Study type (peer-reviewed paper or FCT report)}
+#'   \item{study_id}{Study id}
+#'   \item{iso3}{ISO3 of source country(s)}
+#'   \item{country}{Source country(s)}
+#'   \item{fao3}{FAO code of source country(s)}
 #'   \item{edible_prop}{Edible proportion}
 #'   \item{notes}{Notes}
 #'   \item{nutrient_type}{Nutient type}
 #'   \item{nutrient}{Nutient name}
 #'   \item{nutrient_orig}{Nutient name, in the raw AFCD}
 #'   \item{nutrient_desc}{Description of nutrient}
+#'   \item{nutrient_code_fao}{FAO nutrient code}
 #'   \item{nutrient_units}{Units per 100g of edible food portion}
 #'   \item{value}{Value}
 #' }
@@ -39,25 +48,34 @@
 #' \describe{
 #'   \item{sciname}{Scientific name, harmonized}
 #'   \item{sciname_orig}{Scientific name, in the raw AFCD}
-#'   \item{taxa_type}{Taxa type, species or a group of species}
-#'   \item{taxa_level}{Taxa level (species, genus, family, order, other)}
-#'   \item{study_type}{Study type (peer-reviewed paper or FCT report)}
-#'   \item{study_id}{Study id}
-#'   \item{iso3}{ISO3 of source country(s)}
-#'   \item{country}{Source country(s)}
-#'   \item{prod_catg}{Production category (farmed, wild capture, unknown)}
-#'   \item{food_part}{Part of food}
-#'   \item{food_prep}{Preparation of food}
+#'   \item{genus}{species Genus}
+#'   \item{family}{species Family}
+#'   \item{order}{species Order}
+#'   \item{class}{species Class}
+#'   \item{common_name}{species English common name}
 #'   \item{food_name}{Name of food, in English}
 #'   \item{food_name_orig}{Name of food, in original data}
 #'   \item{fct_code_orig}{FCT code, in original data}
 #'   \item{food_id}{Food id}
+#'   \item{common_name_detailed}{different versions of species English common name}
+#'   \item{food_prep}{Preparation of food}
+#'   \item{food_prep_detailed}{Preparation of food with more detailed description}
+#'   \item{food_part}{Part of food}
+#'   \item{food_part_detailed}{Part of food with more detailed description}
+#'   \item{prod_catg}{Production category (farmed, wild capture)}
+#'   \item{other_ingredients}{added ingredients}
+#'   \item{study_type}{Study type (peer-reviewed paper or FCT report)}
+#'   \item{study_id}{Study id}
+#'   \item{iso3}{ISO3 of source country(s)}
+#'   \item{country}{Source country(s)}
+#'   \item{fao3}{FAO code of source country(s)}
 #'   \item{edible_prop}{Edible proportion}
 #'   \item{notes}{Notes}
 #'   \item{nutrient_type}{Nutient type}
 #'   \item{nutrient}{Nutient name}
 #'   \item{nutrient_orig}{Nutient name, in the raw AFCD}
 #'   \item{nutrient_desc}{Description of nutrient}
+#'   \item{nutrient_code_fao}{FAO nutrient code}
 #'   \item{nutrient_units}{Units per 100g of edible food portion}
 #'   \item{value}{Value}
 #' }
@@ -70,25 +88,30 @@
 #'
 #' @format A data frame with the following attributes:
 #' \describe{
-#'   \item{taxa_name_source}{English or original food name}
-#'   \item{taxa_name}{Food name}
-#'   \item{study_type}{Study type (peer-reviewed paper or FCT report)}
-#'   \item{study_id}{Study id}
-#'   \item{iso3}{ISO3 of source country(s)}
-#'   \item{country}{Source country(s)}
-#'   \item{prod_catg}{Production category (farmed, wild capture, unknown)}
-#'   \item{food_part}{Part of food}
-#'   \item{food_prep}{Preparation of food}
+#'   \item{common_name}{species English common name}
 #'   \item{food_name}{Name of food, in English}
 #'   \item{food_name_orig}{Name of food, in original data}
 #'   \item{fct_code_orig}{FCT code, in original data}
 #'   \item{food_id}{Food id}
+#'   \item{common_name_detailed}{different versions of species English common name}
+#'   \item{food_prep}{Preparation of food}
+#'   \item{food_prep_detailed}{Preparation of food with more detailed description}
+#'   \item{food_part}{Part of food}
+#'   \item{food_part_detailed}{Part of food with more detailed description}
+#'   \item{prod_catg}{Production category (farmed, wild capture)}
+#'   \item{other_ingredients}{added ingredients}
+#'   \item{study_type}{Study type (peer-reviewed paper or FCT report)}
+#'   \item{study_id}{Study id}
+#'   \item{iso3}{ISO3 of source country(s)}
+#'   \item{country}{Source country(s)}
+#'   \item{fao3}{FAO code of source country(s)}
 #'   \item{edible_prop}{Edible proportion}
 #'   \item{notes}{Notes}
 #'   \item{nutrient_type}{Nutient type}
 #'   \item{nutrient}{Nutient name}
 #'   \item{nutrient_orig}{Nutient name, in the raw AFCD}
 #'   \item{nutrient_desc}{Description of nutrient}
+#'   \item{nutrient_code_fao}{FAO nutrient code}
 #'   \item{nutrient_units}{Units per 100g of edible food portion}
 #'   \item{value}{Value}
 #' }
