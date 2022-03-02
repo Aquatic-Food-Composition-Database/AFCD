@@ -19,7 +19,7 @@ plotdir <- "data-raw/figures"
 # Nature: https://www.nature.com/articles/s41586-021-03917-1?proof=t%2Btarget%3D#data-availability
 
 # Read data
-data_orig <- read.csv(file.path(indir, "20210914_AFCD.csv"), na.strings = c("", "NA"))
+data_orig <- read.csv(file.path(indir, "20220302_AFCD.csv"), na.strings = c("", "NA"))
 
 # Read reference key
 ref_fct_orig <- readxl::read_excel(file.path(indir, "afcd_references.xlsx"), sheet="fct_references")
@@ -98,15 +98,13 @@ data1 <- data_orig %>%
          edible_prop=edible_portion_coefficient,
          study_id=study_id_number,
          iso3=country_iso3,
-         fao3=fao_3a_code,
          fct_code_orig=original_fct_food_code,
-         food_id=food_item_id,
          food_name=food_name_in_english,
          food_name_orig=food_name_in_original_language) %>%
   # Arrange
-  select(sciname:food_name_orig, food_id, notes, everything()) %>%
+  select(sciname:food_name_orig, notes, everything()) %>%
   # Gather nutrients (maintain capitalization)
-  gather(key="nutrient_orig", value="value", 23:ncol(.)) %>%
+  gather(key="nutrient_orig", value="value", 21:ncol(.)) %>%
   mutate(nutrient_orig=stringr::str_to_sentence(nutrient_orig)) %>%
   # Reduce to rows with data
   filter(!is.na(value))
@@ -245,8 +243,8 @@ data2 <- data1 %>%
   rename(taxa_name=sciname, taxa_name_source=sciname_source) %>%
   # Arrange
   select(taxa_name, taxa_name_source, kingdom:taxa_db,
-         study_type, study_id, peer_review, iso3, country, fao3,
-         prod_catg, food_part, food_prep, food_name, food_name_orig, fct_code_orig, food_id, edible_prop, notes,
+         study_type, study_id, peer_review, iso3, country,
+         prod_catg, food_part, food_prep, food_name, food_name_orig, fct_code_orig, edible_prop, notes,
          nutrient_type, nutrient, nutrient_orig, nutrient_desc, nutrient_code_fao, nutrient_units, value, everything()) %>%
   # Remove unimportant columns
   select(-c(peer_review))
