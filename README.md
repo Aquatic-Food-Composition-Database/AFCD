@@ -26,13 +26,13 @@ library(AFCD)
 
 The package contains the following datasets:
 
-1. Aquatic Foods Composition Database (foods ID'ed by any taxonomic information): `?afcd`
-2. Aquatic Foods Composition Database (foods ID'ed by scientific names): `?afcd_sci`
-3. Aquatic Foods Composition Database (foods ID'ed by general food names only): `?afcd_common`
-4. Aquatic Foods Composition Database nutrient key: `?afcd_nutrients`
-5. Aquatic Foods Composition Database food part key: `?afcd_parts`
-6. Aquatic Foods Composition Database preparation type key: `?afcd_prep`
-7. Aquatic Foods Composition Database reference key: `?afcd_refs`
+1. AFCD foods ID'ed by any taxonomic information: `?afcd`
+2. AFCD foods ID'ed by scientific names): `?afcd_sci`
+3. AFCD foods ID'ed by general food names only): `?afcd_common`
+4. AFCD nutrient key: `?afcd_nutrients`
+5. AFCD food part key: `?afcd_parts`
+6. AFCD preparation type key: `?afcd_prep`
+7. AFCD reference key: `?afcd_refs`
 
 ## Citation
 
