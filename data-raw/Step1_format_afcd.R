@@ -335,48 +335,48 @@ write.csv(nutr_key,
 # Inspect
 freeR::complete(nutr_key)
 
-# Setup theme
-my_theme <-  theme(axis.text=element_text(size=6),
-                   axis.title=element_text(size=8),
-                   legend.text=element_text(size=6),
-                   legend.title=element_text(size=8),
-                   strip.text=element_text(size=8),
-                   plot.title=element_text(size=10),
-                   # Gridlines
-                   panel.grid.major = element_blank(),
-                   panel.grid.minor = element_blank(),
-                   panel.background = element_blank(),
-                   axis.line = element_line(colour = "black"),
-                   # Legend
-                   legend.background = element_rect(fill=alpha('blue', 0)))
-
-# Plot sample size: fatty acids
-g1 <- ggplot(nutr_key %>% filter(nutrient_type=="Fatty acid"), aes(y=reorder(nutrient,n), x=n)) +
-  facet_grid(nutrient_type~., scales="free_y", space="free_y") +
-  geom_bar(stat="identity") +
-  # Labels
-  labs(x="Number of observations", y="") +
-  # Theme
-  theme_bw() + my_theme
-g1
-
-# Export
-ggsave(g1, filename=file.path(plotdir, "AFCD_nutrient_sample_size_fatty_acids.pdf"),
-       width=8.5, height=11, units="in", dpi=600)
-
-# Plot sample size: fatty acids
-g2 <- ggplot(nutr_key %>% filter(nutrient_type!="Fatty acid"), aes(y=reorder(nutrient,n), x=n)) +
-  facet_grid(nutrient_type~., scales="free_y", space="free_y") +
-  geom_bar(stat="identity") +
-  # Labels
-  labs(x="Number of observations", y="") +
-  # Theme
-  theme_bw() + my_theme
-g2
-
-# Export
-ggsave(g2, filename=file.path(plotdir, "AFCD_nutrient_sample_size_non_fatty_acids.pdf"),
-       width=8.5, height=11, units="in", dpi=600)
+# # Setup theme
+# my_theme <-  theme(axis.text=element_text(size=6),
+#                    axis.title=element_text(size=8),
+#                    legend.text=element_text(size=6),
+#                    legend.title=element_text(size=8),
+#                    strip.text=element_text(size=8),
+#                    plot.title=element_text(size=10),
+#                    # Gridlines
+#                    panel.grid.major = element_blank(),
+#                    panel.grid.minor = element_blank(),
+#                    panel.background = element_blank(),
+#                    axis.line = element_line(colour = "black"),
+#                    # Legend
+#                    legend.background = element_rect(fill=alpha('blue', 0)))
+# 
+# # Plot sample size: fatty acids
+# g1 <- ggplot(nutr_key %>% filter(nutrient_type=="Fatty acid"), aes(y=reorder(nutrient,n), x=n)) +
+#   facet_grid(nutrient_type~., scales="free_y", space="free_y") +
+#   geom_bar(stat="identity") +
+#   # Labels
+#   labs(x="Number of observations", y="") +
+#   # Theme
+#   theme_bw() + my_theme
+# g1
+# 
+# # Export
+# ggsave(g1, filename=file.path(plotdir, "AFCD_nutrient_sample_size_fatty_acids.pdf"),
+#        width=8.5, height=11, units="in", dpi=600)
+# 
+# # Plot sample size: fatty acids
+# g2 <- ggplot(nutr_key %>% filter(nutrient_type!="Fatty acid"), aes(y=reorder(nutrient,n), x=n)) +
+#   facet_grid(nutrient_type~., scales="free_y", space="free_y") +
+#   geom_bar(stat="identity") +
+#   # Labels
+#   labs(x="Number of observations", y="") +
+#   # Theme
+#   theme_bw() + my_theme
+# g2
+# 
+# # Export
+# ggsave(g2, filename=file.path(plotdir, "AFCD_nutrient_sample_size_non_fatty_acids.pdf"),
+#        width=8.5, height=11, units="in", dpi=600)
 
 
 
