@@ -468,35 +468,117 @@ data_sci4 = rbind(dta_species2, dta_genus2, dta_family2, dta_other) %>%
   select(sciname, sciname_orig, genus, family, order, class, common_name, food_name, food_name_orig, everything()) %>% 
   unique()
 
+
+##Further clean species without taxa information
+# data_comm_Nosci = data_comm %>% 
+#   filter(is.na(sciname)) %>% 
+#   select(-kingdom, -phylum, -taxa_id, -taxa_db, -taxa_type, -taxa_level, -class, -family, -genus, -order, -notes, -sciname, -sciname_orig) %>% 
+#   unique()
+##Load Taxa_table
+taxa_table = readRDS("data-raw/taxa-table/taxa_table.Rds")
+
+data_comm2 = data_comm %>% 
+  filter(is.na(sciname)) %>% 
+  select(-kingdom, -phylum, -taxa_id, -taxa_db, -taxa_type, -taxa_level, -class, -family, -order) %>% 
+  unique() %>% 
+  mutate(food_name_orig = if_else(is.na(food_name_orig), food_name, food_name_orig),
+         food_name = tolower(food_name),
+         ##Class
+         class = case_when(
+           #Decapoda
+           str_detect(food_name, paste(c("fish", "char"), collapse = '|')) ~ "actinopterygii",
+           str_detect(food_name, paste(c("shark", "ray"), collapse = '|')) ~ "chondrichthyes",
+           str_detect(food_name, paste(c("shellfish", "mollusk"), collapse = '|')) ~ "bivalvia",
+           str_detect(food_name, paste(c("snail"), collapse = '|')) ~ "gastropoda"),
+         ##Order
+         order = case_when(
+           #Decapoda
+           str_detect(food_name, paste(c("shrimp", "crab", "lobster", "prawn"), collapse = '|')) ~ "decapoda",
+           #Squid
+           str_detect(food_name, "squid") ~ "teuthida",
+           #Herrings
+           str_detect(food_name, paste(c("herring", "anchovy", "sardine"), collapse = '|')) ~ "clupeiformes",
+           #Cod
+           str_detect(food_name, "cod") ~ "gadiformes",
+           #Turtle
+           str_detect(food_name, "turtle") ~ "testudines",
+           #Pike
+           str_detect(food_name, "pike") ~ "esociformes",
+           #Carp
+           str_detect(food_name, "carp") ~ "cypriniformes"),
+         ##Family
+         family = case_when(
+           #Shrimps
+           str_detect(food_name, "shrimp") ~ "penaeidae",
+           #mussels
+           str_detect(food_name, "mussel") ~ "mytilidae",
+           #oysters
+           str_detect(food_name, "oyster") ~ "ostreidae",
+           #octopus
+           str_detect(food_name, "octopus") ~ "octopodidae",
+           #tuna
+           str_detect(food_name, "tuna") ~ "scombridae",
+           #salmon, trout
+           str_detect(food_name, paste(c("salmon", "trout"), collapse = '|')) ~ "salmonidae",
+           #flatfish
+           str_detect(food_name, "flat") ~ "scophthalmidae",
+           #conch
+           str_detect(food_name, "conch") ~ "strombidae",
+           #rockfish
+           str_detect(food_name, "rockfish") ~ "sebastidae",
+           #Milkfish
+           str_detect(food_name, "milk fish") ~ "chanidae",
+           #Swimming crab
+           str_detect(food_name, "swimming crab") ~ "portunidae",
+           #Halibut
+           str_detect(food_name, "halibut") ~ "pleuronectidae",
+           #Mackerel
+           str_detect(food_name, "mackerel") ~ "scombridae"))
+
+afcd_common_family = data_comm2 %>%
+  filter(!is.na(family)) %>% 
+  select(-class, -order) %>% 
+  left_join(taxa_table %>% select(-genus) %>% unique())
+
+afcd_common_order = data_comm2 %>%
+  filter(is.na(family),
+         !is.na(order)) %>% 
+  select(-class) %>% 
+  left_join(taxa_table %>% select(-genus, -family) %>% unique())
+
+afcd_common_class = data_comm2 %>%
+  filter(is.na(family),
+         is.na(order),
+         !is.na(class))
+
+afcd_missing = data_comm2 %>%
+  filter(is.na(family),
+         is.na(order),
+         is.na(class))
+
+data_comm_taxa = rbind(afcd_common_family, 
+                       afcd_common_order, 
+                       afcd_common_class)
+
+data_sci5 = rbind(data_sci4, data_comm_taxa)
+
 # Export data with some taxonomic information
-saveRDS(data_sci4, file=file.path(outdir, "AFCD_data_taxa.Rds"))
+saveRDS(data_sci5, file=file.path(outdir, "AFCD_data_taxa.Rds"))
 
 # Export data with complete scientific name
-data_sci_only = rbind(dta_species2, dta_genus2, dta_family2, dta_other) %>% 
-  mutate(class = if_else(order == "Actinopterygii", "Actinopterygii", class),
-         order = na_if(order, "Actinopterygii")) %>% 
-  filter(taxa_type == "species") %>% 
-  select(-kingdom, -phylum, -taxa_id, -taxa_db, -taxa_type, -taxa_level) %>% 
+data_sci_only = data_sci5 %>% 
+  drop_na(sciname) %>% 
   select(sciname, sciname_orig, genus, family, order, class, common_name, food_name, food_name_orig, everything()) %>% 
   unique()
-
 
 saveRDS(data_sci_only, file=file.path(outdir, "AFCD_data_sci.Rds"))
 
 ##Export data without scientific names
-data_comm_Nosci = data_comm %>% 
-  filter(is.na(sciname)) %>% 
-  select(-kingdom, -phylum, -taxa_id, -taxa_db, -taxa_type, -taxa_level, -class, -family, -genus, -order, -notes, -sciname, -sciname_orig) %>% 
-  unique()
-# Inspect
-freeR::complete(data_comm_Nosci)
-
-# Export
-saveRDS(data_comm_Nosci, file=file.path(outdir, "AFCD_data_comm.Rds"))
+saveRDS(afcd_missing, file=file.path(outdir, "AFCD_data_comm.Rds"))
 
 ##Export data in the wide format (data_taxa)
-data_taxa_wide = data_sci4 %>% 
-  distinct(sciname, sciname_orig, genus, family, order, class, common_name, food_name, food_name_orig, fct_code_orig, food_id, common_name_detailed, food_prep, food_prep_detailed, food_part, food_part_detailed, prod_catg, other_ingredients, study_type, study_id, iso3, country, fao3, edible_prop, notes, nutrient_type, nutrient, nutrient_orig, nutrient_desc, nutrient_code_fao, nutrient_units, .keep_all = T) %>% 
+data_taxa_wide = data_sci5 %>% 
+  distinct(sciname, sciname_orig, genus, family, order, class, common_name, food_name, food_name_orig, fct_code_orig, common_name_detailed, food_prep, food_prep_detailed, food_part, food_part_detailed, prod_catg, other_ingredients, study_type, study_id, iso3, country, edible_prop, notes, nutrient_type, nutrient, nutrient_orig, nutrient_desc, nutrient_code_fao, nutrient_units, .keep_all = T) %>% 
   spread(nutrient, value)
 
 # Export

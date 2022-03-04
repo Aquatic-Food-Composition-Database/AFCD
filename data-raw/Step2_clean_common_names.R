@@ -119,13 +119,13 @@ com_names = data_orig %>%
     str_detect(value, paste(c("fillet", "whole", "roe", "flesh", "gutted", "cleaned fish", "incl", "entire", "intestines", "viscera", "meat", "arms", "tentacles", "body", "claw", "mantle", "gonads", "tail part", "caviar", "muscle", "muslce", "esophagus", "eggs", "head included", "eyes included", "boneless", "skinless", "skinned", "eyes excluded", "eyes partly excluded", "without bones", "without skin", "less skin", "skinon", "with bones", "peeled", "scales removed"), collapse = '|')) ~ "part",
     value %in% c("dressed with head", "with ovary", "without head", "with shell", "with skin", "skin", "ventral with skin", "solids with bone", "skin & bones", "foot", "milt", "liver", "tail", "dorsal with skin") ~ "part", 
     ## Scientific Names
-    value %in% c("c. demersum", "b. violocea", "p. aemingiana", "l. xanthophilus", "s.cavalla", "d. auricularia", "t. anomala", "s.niphonius", "tridacna maxima", "tripneustes gratilla") ~ "sci",
+    value %in% c("c. demersum", "b. violocea", "p. aemingiana", "l. xanthophilus", "s.cavalla", "d. auricularia", "t. anomala", "s.niphonius", "tridacna maxima", "tripneustes gratilla", "eiocheir japoncus", "ostrea denselamellosa") ~ "sci",
     ## Regions
     value %in% c("chile", "european", "africa", "europe", "greenland", "asean/bangladesh", "euroamerican", "ireland", "china", "denmark", "northeast pacific", "ne atlantic", "north america", "bangladesh", "vietnam", "norway", "uk", "usa", "iceland", "germany", "new zealand", "northeast atlantic", "asean", "mediterranean sea", "northwest atlantic", "norwegian") ~ "region",
     ## Seasons
     str_detect(value, paste(c("summer", "winter", "autumn", "spring"), collapse = '|')) ~ "season",
     ## Other ingredients
-    value %in% c("in tomato sauce", "onion", "with cream", "with sugar", "marinated", "marinated in vinegar", "with potatoes", "with egg", "with seasoning", "with seaweed", "with mayonnaise", "with mustard sauce", "seasoned with mirin", "split seasoned with mirin", "green chili", "spices", "sour cream", "tomato", "rolled in breadcrumbs", "milk added", "in oil", "in flour", "in jelly", "rolled in flour", "floured", "bread", "cheese", "soy souce", "soy sauce", "sugar", "seasoned", "garlic", "salt", "salt added to water", "filled", "fish paté") ~ "other_ingredients",
+    value %in% c("in tomato sauce", "onion", "with cream", "with sugar", "marinated", "sweet pepper sauce", "marinated in vinegar", "with potatoes", "with egg", "with seasoning", "with seaweed", "with mayonnaise", "with mustard sauce", "seasoned with mirin", "split seasoned with mirin", "green chili", "spices", "sour cream", "tomato", "rolled in breadcrumbs", "milk added", "in oil", "in flour", "in jelly", "rolled in flour", "floured", "bread", "cheese", "soy souce", "soy sauce", "sugar", "seasoned", "garlic", "salt", "salt added to water", "filled", "fish paté", "in spicy marinade", "creamed", "crumbed") ~ "other_ingredients",
     ## Sex
     value %in% c("male", "female") ~ "sex",
     ## Genus
@@ -133,12 +133,12 @@ com_names = data_orig %>%
     ##Other information (to keep)
     value %in% c("fresh", "frozen", "not previously frozen", "may have been previously frozen", "packaged frozen", "previously frozen", "purchased frozen") ~ "other_info",
     ## Other information (to remove)
-    value %in% c("n.s.", "with integument", "lox", "commercially processed", "mashed", "natural", "traditionally", "light", "laboratory", "restaurant style", "full grown", "fully grown", "combined species", "solids", "fins", "liquid", "back", "lakestocked", "talley's", "home recipe", "imitation", "flavoured", "unflavoured", "regular", "fat not further defined", "findus", "first price", "bones",  "tempera",
+    value %in% c("n.s.", "with integument", "lox", "commercially processed", "not further specified", "pelagic", "prepared products", "coop xtra fiskegrateng", "findus steketorsk", "enghav fiskegrateng med makaroni", "soaked in water", "southern rock", "fingers", "commercial", "mashed", "natural", "traditionally", "light", "laboratory", "restaurant style", "full grown", "fully grown", "combined species", "solids", "fins", "liquid", "back", "lakestocked", "talley's", "home recipe", "imitation", "flavoured", "unflavoured", "regular", "fat not further defined", "findus", "first price", "bones",  "tempera",
                  "total can contents", "usda commodity", "–lumi", "medium size", "size", "small size", "edible portion", "ready to eat", "from takeaway outlet", "blended frying fat", "new york state", "adult fish", "maki", "nigiri", "brinesoaked", "marine water", "edible part", "large", "large size", "mature",
-                 "ajitsukehirakiboshi", "–nama", "mezashi", "shiokara", "namaboshi", "mirinboshi", "kabayaki", "tazukuri", "shioiwashi", "denbu", "ameni", "ikura", "shirasuboshi", "shirayaki", "sujiko", "mefun", "shiozake", "kusaya", "aramaki", "–kaikoso", "hirakiboshi", "niboshi", "maruboshi", "amazuzuke", "kanroni", "tsukudani", "sababushi", "–walu", "–kai",
-                 "middle portion", "virgin olive oil", "veg.oil", "sour", "sea water", "sea", "unheated", "ventral", "first price fiskegrateng med makaron", "findus familiens fiskegrateng", "lobnobs", "young <1yr", "minced", "industrially made", "marine waters", "mayjune", "little spicies", "all type", "plain", "along dorsal line", "eta", "northern", "assorted flavours", 
-                 "sealord", "treated", "young", "small fish", "fatty", "2y", "2yr", "45y", "4y", "50", "60", "75", "a fish", "with bones", "freshwater", "unspecified", "edible parts", "channel", "composite", "without salt", "solids & liquid", "slices", "70", "ocean", "fish patties", "lean", "eastern", "without salt and fat","etc.", 
-                 "as part of a recipe", "with or without added fat", "portion", "julyseptember", "belly flaps removed", "without visible fat", "palmkernel oil", "stabburlaks", "fat not further defined", "caudal end", "takeaway outlet", "may have been previously frozen", "without salt or fat", "no added fat", "mixed species", "fat") ~ "remove", 
+                 "ajitsukehirakiboshi", "–nama", "mezashi", "shiokara", "namaboshi", "mirinboshi", "kabayaki", "tazukuri", "shioiwashi", "denbu", "ameni", "ikura", "shirasuboshi", "shirayaki", "sujiko", "mefun", "shiozake", "kusaya", "aramaki", "–kaikoso", "hirakiboshi", "niboshi", "maruboshi", "amazuzuke", "kanroni", "tsukudani", "sababushi", "–walu", "–kai", "lerøy saithe", "first price fiskegrateng med makaroni",
+                 "middle portion", "virgin olive oil", "veg.oil", "sour", "sea water", "sea", "unheated", "ventral", "first price fiskegrateng med makaron", "findus familiens fiskegrateng", "fields river", "helix", "lobnobs", "young <1yr", "minced", "industrially made", "marine waters", "mayjune", "little spicies", "all type", "plain", "along dorsal line", "eta", "northern", "assorted flavours", "tusk cusk", "basa bassa",
+                 "sealord", "treated", "young", "small fish", "fatty", "2y", "2yr", "45y", "4y", "50", "60", "75", "a fish", "with bones", "freshwater", "unspecified", "edible parts", "channel", "composite", "without salt", "solids & liquid", "slices", "70", "ocean", "fish patties", "lean", "eastern", "without salt and fat","etc.", "coop", "refrigerated", "enghav fiskegrateng med makaroni", 
+                 "as part of a recipe", "seafoods", "with or without added fat", "portion", "julyseptember", "belly flaps removed", "without visible fat", "palmkernel oil", "stabburlaks", "fat not further defined", "caudal end", "takeaway outlet", "may have been previously frozen", "without salt or fat", "no added fat", "mixed species", "fat", "compressed") ~ "remove", 
     TRUE ~ "com_name")) %>% 
   filter(!name_type == "remove") %>% 
   select(-variable, -food_name)
@@ -332,7 +332,9 @@ sci_clean = sci_wide %>%
                           "l. xanthophilus" = "Leiostomus xanthurus",
                           "b. violocea" = "Batissa violacea",
                           "p. aemingiana" = "Polinices aemingiana",
-                          "tripneustes gratilla" = "Tripneustes gratilla"))
+                          "tripneustes gratilla" = "Tripneustes gratilla",
+                          "eiocheir japoncus" = "Eiocheir japoncus",
+                          "ostrea denselamellosa" = "Ostrea denselamellosa"))
 
 #####################Check regions
 ##Long list
@@ -474,11 +476,11 @@ data2 = data2 %>%
 
 #Organize columns
 data2 = data2 %>% 
-  select("food_name", "food_name_orig", "fct_code_orig", "food_id", 
+  select("food_name", "food_name_orig", "fct_code_orig", 
          "taxa_name", "taxa_name_source", "kingdom", "phylum", "class",
          "order", "family", "genus", "taxa_id", "taxa_db", "common_name", "common_name_detailed",
          "food_prep", "food_prep_detailed", "food_part", "food_part_detailed", "prod_catg",
-         "other_ingredients", "study_type", "study_id", "iso3", "country", "fao3", 
+         "other_ingredients", "study_type", "study_id", "iso3", "country", 
          "edible_prop", "notes", "nutrient_type", "nutrient", "nutrient_orig",
          "nutrient_desc", "nutrient_code_fao", "nutrient_units", "value")         
 
