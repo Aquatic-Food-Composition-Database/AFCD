@@ -6,7 +6,8 @@ fishbase_table <- rfishbase::load_taxa(server="fishbase") %>%
   dplyr::select(Genus, Family, Order, Class) %>% 
   distinct(Genus, .keep_all = TRUE) %>% 
   mutate(Class = recode(Class,
-                        "Elasmobranchii" = "Chondrichthyes"))
+                        "Elasmobranchii" = "Chondrichthyes",
+                        "Actinopteri" = "Actinopterygii"))
 
 ##clean taxa
 
