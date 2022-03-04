@@ -1,42 +1,42 @@
 "nutrient_orig","nutrient","units","description","fao_code"
 "Alanine","Alanine","mg","Includes only L-alanine.","ALA"
-"Alanine_plus_arginine","Alanine plus arginine",NA,NA,NA
+"Alanine_plus_arginine","Alanine plus arginine","mg","Alanine + arginine","ALA_A_ARG"
 "Alphacarotene","Alphacarotene","mcg","Alpha-carotene, all-trans alpha carotene only","CARTA"
-"Alphatocopherol","Alphatocopherol",NA,NA,NA
+"Alphatocopherol","Alphatocopherol","mg",NA,"TOCPHA"
 "Aluminum","Aluminum","mcg","Aluminium","AL"
-"Amino_acids_total_sulfurcontaining","Amino acids total sulfurcontaining",NA,NA,NA
+"Amino_acids_total_sulfurcontaining","Amino acids total sulfurcontaining","mg","Amino acids, total sulphur-containing","AAS"
 "Antimony","Antimony","mcg","Antimony","SB"
 "Arginine","Arginine","mg","Includes only L-arginine","ARG"
 "Arsenic","Arsenic","mcg","Arsenic","AS"
 "Ash","Ash","g","Ash, synonym minerals","Ash"
-"Asparagine_plus_aspartic_acid","Asparagine plus aspartic acid",NA,NA,NA
+"Asparagine_plus_aspartic_acid","Asparagine plus aspartic acid","mg","Asparagine + aspartic acid",NA
 "Aspartic_acid","Aspartic acid","mg","Aspartic acid; includes only L-aspartic acid","ASP"
-"Astaxanthin","Astaxanthin",NA,NA,NA
+"Astaxanthin","Astaxanthin","mcg",NA,"ATX"
 "Barium","Barium","mcg","Barium","BA"
-"Beta_sitosterol","Beta sitosterol",NA,NA,NA
+"Beta_sitosterol","Beta sitosterol","mg",NA,NA
 "Betacarotene","Betacarotene","mcg","Beta-carotene, all-trans beta-carotene only","CARTB"
 "Betacarotene_equivalents","Betacarotene equivalents","mcg","Beta-carotene equivalents; sum of the beta-carotene plus the quantity of the other carotenoids with vitamin A activity; synonym provitamin A carotenoids","CARTBEQ"
 "Brassicasterol","Brassicasterol","mg","Brassicasterol","BRASTR"
 "Bromide","Bromide","mcg","Bromide","BRD"
 "Cadmium","Cadmium","mcg","Cadmium","CD"
 "Calcium","Calcium","mg","Calcium","CA"
-"Campesterol_total","Campesterol total",NA,NA,NA
+"Campesterol_total","Campesterol total","mg","campesterol, total","CAMT"
 "Carbohydrate_available_calculated_by_difference","Carbohydrate available calculated by difference","g","Carbohydrates, available; calculated by difference.","CHOAVLDF"
 "Carbohydrate_method_of_determination_unknown_or_variable","Carbohydrate method of determination unknown or variable","g",NA,NA
 "Carbohydrate_total_calculated_by_difference","Carbohydrate total calculated by difference","g","Carbohydrates, total; calculated by difference.","CHOCDF"
-"Carotenoids_total","Carotenoids total",NA,NA,NA
+"Carotenoids_total","Carotenoids total","mcg","Total Carotenoids","CARTOID"
 "Cellulose","Cellulose","g","Cellulose","CELLU"
-"Cesium","Cesium",NA,NA,NA
+"Cesium","Cesium","mcg",NA,"CS"
 "Chloride","Chloride","mg","Chloride synonym chlorine","CLD"
 "Cholecalciferol_d3","Cholecalciferol d3","mcg","Cholecalciferol; syonym Vitamin D-3","CHOCAL"
 "Cholesterol_determined_by_enzymatic_or_chromatographic_method","Cholesterol determined by enzymatic or chromatographic method","mg","Cholesterol; determined by enzymatic or chromatographic method","CHOLE"
 "Cholesterol_method_unknown_or_variable","Cholesterol method unknown or variable","mg","Cholesterol; method of determination unknown or variable","CHOL-"
-"Cholesterylester_total","Cholesterylester total",NA,NA,NA
+"Cholesterylester_total","Cholesterylester total","mg","cholesteryl-ester, total","CHOLEST"
 "Chromium","Chromium","mcg","Chromium","CR"
 "Cobalt","Cobalt","mcg","Cobalt","CO"
 "Copper","Copper","mg","Copper","CU"
 "Cystine","Cystine","mg","Cysteine is often the natural form, which is converted to cystine during chromatography; includes only the L-amino acid","CYS"
-"Dehydroretinol","Dehydroretinol",NA,NA,NA
+"Dehydroretinol","Dehydroretinol","mcg",NA,"RETOLDH"
 "Diglycerides_total","Diglycerides total","g","Total diglycerides","DGLY"
 "Dry_matter","Dry matter","g","Dry matter","DM"
 "Energy_gross_determined_by_direct_analysis_using_bomb_calorimetry_kcal","Energy gross determined by direct analysis using bomb calorimetry kcal","kcal","Energy in kilocalories, calculated by direct analysis using bomb calorimetry",NA
@@ -44,7 +44,7 @@
 "Energy_total_metabolizable_calculated_from_the_energy_producing_food_components_original_as_from_source_kcal","Energy total metabolizable calculated from the energy producing food components original as from source kcal","kcal","Energy in kilocalories, total metabolizable; calculated from the energy-producing food components",NA
 "Energy_total_metabolizable_calculated_from_the_energy_producing_food_components_original_as_from_source_kj","Energy total metabolizable calculated from the energy producing food components original as from source kj","kj","Energy in kilojoules, total metabolizable; calculated from the energy-producing food components","ENERC"
 "Ergocalciferol_d2","Ergocalciferol d2","mcg","Ergocalciferol Vitamin D-2","ERGCAL"
-"Fat_method_of_determination_unknown_or_mixed_methods","Fat method of determination unknown or mixed methods",NA,"Fat method unknown or mixed",NA
+"Fat_method_of_determination_unknown_or_mixed_methods","Fat method of determination unknown or mixed methods","g","Fat method unknown or mixed","FAT-"
 "Fat_total","Fat total","g","Fat, total. Synonym total lipids. Sum of triglycerides, phospholipids, sterols and related compounds. The analytical method is a mixed solvent extraction.","FAT"
 "Fat_total_derived_by_analysis_using_continuous_extraction","Fat total derived by analysis using continuous extraction","g","Fat, total; derived by analysis using continuous extraction.","FATCE"
 "Fatty_acid_10_0","Fatty acid 10 0","g","Fatty acid 10:0",NA
@@ -140,7 +140,7 @@
 "Fatty_acid_20_4_cis_n6","Fatty acid 20 4 cis n6","g","Fatty acid 20:4 double bond on 6th carbon-carbon bond in cis configuration",NA
 "Fatty_acid_20_4_n3","Fatty acid 20 4 n3","g","Fatty acid 20:4 double bond on 3rd carbon-carbon bond",NA
 "Fatty_acid_20_4_n6","Fatty acid 20 4 n6","g","Fatty acid 20:4 double bond on 6th carbon-carbon bond",NA
-"Fatty_acid_20_4_n6_fatty_acid_22_1","Fatty acid 20 4 n6 fatty acid 22 1",NA,"Combinations of two fatty acids coming from peer review",NA
+"Fatty_acid_20_4_n6_fatty_acid_22_1","Fatty acid 20 4 n6 fatty acid 22 1",NA,NA,NA
 "Fatty_acid_20_5","Fatty acid 20 5","g","Fatty acid 20:5",NA
 "Fatty_acid_20_5_cis_n3","Fatty acid 20 5 cis n3","g","Fatty acid 20:5 double bond on 3rd carbon-carbon bond in cis configuration",NA
 "Fatty_acid_20_5_n3","Fatty acid 20 5 n3","g","Fatty acid 20:5 double bond on 3rd carbon-carbon bond",NA
@@ -204,21 +204,21 @@
 "Fibre_waterinsoluble","Fibre waterinsoluble","g","Fibre is determined via neutral detergent method","FIBSOL"
 "Fibre_watersoluble","Fibre watersoluble","g",NA,"FIBINS"
 "Fluoride","Fluoride","mcg","Fluoride, synonym fluorine","FD"
-"Folate_method_unknown_or_variable","Folate method unknown or variable",NA,NA,NA
+"Folate_method_unknown_or_variable","Folate method unknown or variable","mcg","folate; method unknown or variable","FOL-"
 "Folate_total","Folate total","mcg","Folacin, folic acid","FOL"
 "Glucose","Glucose","g","Glucose; d-glucose only; inclues only free monosaccharide","GLUS"
 "Glutamic_acid","Glutamic acid","mg","Includes only L-glutamic acid","GLU"
 "Glutamine","Glutamine","mg","Includes only L-glutamine","GLN"
-"Glutamine_plus_glutamic_acid","Glutamine plus glutamic acid",NA,NA,NA
-"Glutamine_plus_histidine","Glutamine plus histidine",NA,NA,NA
+"Glutamine_plus_glutamic_acid","Glutamine plus glutamic acid","mg",NA,NA
+"Glutamine_plus_histidine","Glutamine plus histidine","mg","Glutamine + Histadine","GLU_A_HIS"
 "Glycine","Glycine","mg","Includes only L-glycine","GLY"
 "Glycogen","Glycogen","g","Glycogen","GLYC"
 "Histidine","Histidine","mg","Histidine","HIS"
-"Hydroxylysine","Hydroxylysine",NA,NA,NA
+"Hydroxylysine","Hydroxylysine","g",NA,NA
 "Hydroxyproline","Hydroxyproline","mg","Hydroxyproline","HYP"
 "Iodine","Iodine","mcg","Iodine","I"
 "Iron_total","Iron total","mg","Total iron is sum of heme and non-heme iron","FE"
-"Isoleucine","Isoleucine",NA,NA,NA
+"Isoleucine","Isoleucine","mg","Isoleucine","ILE"
 "Lascorbic_acid","Lascorbic acid","mg","L-ascorbic acid","ASCL"
 "Lead","Lead","mcg","Lead","PB"
 "Leucine","Leucine","mg","Includes only L-leucine.","LEU"
@@ -231,15 +231,15 @@
 "Methionine","Methionine","mg","Includes only L-methionine.","MET"
 "Molybdenum","Molybdenum","mcg","Molybdenum","MO"
 "Monoglycerides_total","Monoglycerides total","g","Total monoglycerides","MGLY"
-"Neoxanthin","Neoxanthin",NA,NA,NA
+"Neoxanthin","Neoxanthin","mcg","Needed to be converted from mg to mcg to align with INFOODs tagname","NEOX"
 "Niacin_equivalents","Niacin equivalents","mg","Niacin equivalents, total (preformed niacin plus niacin)","NIAEQ"
-"Niacin_method_or_form_unknown","Niacin method or form unknown",NA,NA,NA
+"Niacin_method_or_form_unknown","Niacin method or form unknown","mg","niacin; method or form unknown","NIA-"
 "Niacin_preformed","Niacin preformed","mg","nicotinic acid; nicotinamide","NIA"
 "Nickel","Nickel","mcg","Nickel","NI"
-"Nitrogen_nonprotein","Nitrogen nonprotein",NA,NA,NA
+"Nitrogen_nonprotein","Nitrogen nonprotein","g",NA,NA
 "Nitrogen_protein","Nitrogen protein",NA,NA,NA
-"Nitrogen_total","Nitrogen total",NA,NA,NA
-"Ornithine","Ornithine",NA,NA,NA
+"Nitrogen_total","Nitrogen total","g",NA,NA
+"Ornithine","Ornithine","mg",NA,"ORN"
 "Oxalic_acid","Oxalic acid","mg","Oxalic acid","OXALAC"
 "Pantothenic_acid","Pantothenic acid","mg","D-pantothenate, Vitamin B5","PANTAC"
 "Ph_hydrogen_ion_concentration","Ph hydrogen ion concentration","ph","pH value of nutrients studied",NA
@@ -252,54 +252,54 @@
 "Proline","Proline","mg","Includes only L-proline","PRO"
 "Protein_total_calculated_from_protein_nitrogen","Protein total calculated from protein nitrogen","g","Protein, total; calculated from protein nitrogen","PROTCNP"
 "Protein_total_calculated_from_total_nitrogen","Protein total calculated from total nitrogen","g","Total protein calculated from nitrogen","PROTCNT"
-"Protein_total_method_of_determination_unknown_or_variable","Protein total method of determination unknown or variable",NA,"Protein calculated from unknown/variable method",NA
+"Protein_total_method_of_determination_unknown_or_variable","Protein total method of determination unknown or variable","g","Protein calculated from unknown/variable method","PROT-"
 "Pyridoxine","Pyridoxine","mg","Vitamin B-6 alcohol form.","PYRXN"
-"Pyridoxine_hcl","Pyridoxine hcl",NA,NA,NA
+"Pyridoxine_hcl","Pyridoxine hcl","mg","pyridoxine hydrochloride","PYRXNHCL"
 "Retinol","Retinol","mcg","preformed vitamin A, all-trans retinol only","RETOL"
 "Retinol_13_cis","Retinol 13 cis",NA,NA,NA
 "Riboflavin","Riboflavin","g","Riboflavin","RIBF"
 "Rubidium","Rubidium","mg","Rubidium","RB"
-"Saccharose","Saccharose",NA,NA,NA
+"Saccharose","Saccharose","g",NA,NA
 "Salt","Salt","mg","Salt","NACL"
 "Selenium","Selenium","mcg","Selenium","SE"
 "Serine","Serine","mg","Serine includes only L-serine","SER"
 "Silver","Silver","mcg","Silver","AG"
 "Sitosterol","Sitosterol","mg","Beta-sitosterol only","SITSTR"
 "Sodium","Sodium","mg","Sodium","NA"
-"Squalene","Squalene",NA,NA,NA
+"Squalene","Squalene","mg",NA,"SQUAL"
 "Starch_total","Starch total","g","Sum of all polysaccharides, including amylose, amylopectin, glycogen and dextrisn","STARCH"
 "Sterols_total","Sterols total","mg","Total sterols, non-specific colorimetric method or sum of cholesterol and phytosterols","STERT"
-"Stigmasterol_unspecified","Stigmasterol unspecified",NA,NA,NA
+"Stigmasterol_unspecified","Stigmasterol unspecified","mg","stigmasterol, unspecified","STGSTR"
 "Strontium","Strontium","mcg","Strontium","SR"
 "Sucrose","Sucrose","g","Sucrose","SUCS"
 "Sugars_total","Sugars total","g",NA,"SUGAR"
 "Sulphur","Sulphur","mg","Sulphur","S"
-"Summation_retinol_transretinol_cisretinol","Summation retinol transretinol cisretinol",NA,NA,NA
+"Summation_retinol_transretinol_cisretinol","Summation retinol transretinol cisretinol","mcg","summation, retinol = trans-retinol + cis-retinol","RETOLSUM"
 "Tannins_total","Tannins total","mg","Tannins","TAN"
 "Taurine","Taurine","mg","Taurine","TAU"
 "Thiamin","Thiamin","mg","Thiamin, synonym vitamin b1, aneurin","THIA"
 "Threonine","Threonine","mg","Threonine includes only L-threonine","THR"
 "Tin","Tin","mcg","Tin","SN"
 "Titanum","Titanum","mg","Titanium",NA
-"Total_flavonoids","Total flavonoids",NA,NA,NA
+"Total_flavonoids","Total flavonoids","mg",NA,NA
 "Triglycerides_total","Triglycerides total","g","Triglycerides, total","TGLY"
 "Tryptophan","Tryptophan","mg","Includes only L-tryptophan.","TRYPN"
 "Tyrosine","Tyrosine","mg","Includes only L-tyrosine","TYR"
 "Valine","Valine","mg","Includes only L-valine","VAL"
 "Vanadium","Vanadium","mcg","Vanadium","V"
-"Violaxanthin","Violaxanthin",NA,NA,NA
+"Violaxanthin","Violaxanthin","mcg","Needed to be converted from mg to mcg to align with INFOODs tagname","VIOLX"
 "Vitamin_a_calculated_by_summation_of_the_vitamin_a_activities_of_retinol_and_the_active_carotenoids","Vitamin a calculated by summation of the vitamin a activities of retinol and the active carotenoids","mcg","Vitamin A; calculated by summation of the vitamin A activities of retinol and the active carotenoids.","VITA"
 "Vitamin_a_international_units_iu_sum_of_carotenoids_usda_indicates_over_estimates_bioavailability","Vitamin a international units iu sum of carotenoids usda indicates over estimates bioavailability","iu",NA,NA
-"Vitamin_a_method_of_determination_unknown","Vitamin a method of determination unknown",NA,NA,NA
+"Vitamin_a_method_of_determination_unknown","Vitamin a method of determination unknown","mcg","vitamin A; method of determination unknown","VITA-"
 "Vitamin_a_retinol_activity_equivalent_rae_calculated_by_summation_of_the_vitamin_a_activities_of_retinol_and_the_active_carotenoids","Vitamin a retinol activity equivalent rae calculated by summation of the vitamin a activities of retinol and the active carotenoids","mcg","Vitamin A; calculated by summation of the vitamin A activities of retinol and the active carotenoids.","VITA_RAE"
-"Vitamin_b1_analysed_and_expressed_as_thiamin_hydrochloride","Vitamin b1 analysed and expressed as thiamin hydrochloride",NA,NA,NA
+"Vitamin_b1_analysed_and_expressed_as_thiamin_hydrochloride","Vitamin b1 analysed and expressed as thiamin hydrochloride","mg","Vit B1 analysed and expressed as thiamin hydrochloride","THIAHCL"
 "Vitamin_b12","Vitamin b12","mcg","Includes all the active forms of vitamin B-12 in food","VITB12"
 "Vitamin_b6_method_unknown_or_variable","Vitamin b6 method unknown or variable","mg","Vitamin B6, method of determination unknown or variable","VITB6-"
 "Vitamin_b6_total_calculated_by_summation","Vitamin b6 total calculated by summation","mg","Vitamin B6 total calculated by summation","VITB6C"
 "Vitamin_b6_total_determined_by_analysis","Vitamin b6 total determined by analysis","mg","Vitamin B6 total determiend by analysis","VITB6A"
 "Vitamin_c","Vitamin c","mg","Vitamin C. L-ascorbic acid plus L-dehydroascorbic acid.","VITC"
-"Vitamin_c_method_unknown_or_variable","Vitamin c method unknown or variable",NA,NA,NA
-"Vitamin_d","Vitamin d",NA,NA,NA
+"Vitamin_c_method_unknown_or_variable","Vitamin c method unknown or variable","mg",NA,NA
+"Vitamin_d","Vitamin d","mcg","Vitamin D, calculated by summation of ergocalciferol and cholecalciferol","VITD"
 "Vitamin_e_method_or_determination_unknown_or_variable","Vitamin e method or determination unknown or variable","mg","vitamin E, method of determination unknown or variable; expressed as alpha-tocopherol equivalents.","VITE-"
 "Vitamin_k1","Vitamin k1","mcg","Vitamin K-1",NA
 "Water","Water","g","Water; synonym moisture","WATER"
