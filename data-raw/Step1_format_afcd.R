@@ -328,7 +328,10 @@ nutr_key <- data2 %>%
 
 # Export data
 saveRDS(nutr_key, file=file.path(outdir, "AFCD_nutrient_key.Rds"))
-
+write.csv(nutr_key,
+          file = file.path(indir,"afcd_nutrient_key.csv"),
+          row.names=FALSE
+          )
 # Inspect
 freeR::complete(nutr_key)
 
