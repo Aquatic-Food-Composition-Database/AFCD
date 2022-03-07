@@ -8,9 +8,7 @@ fishbase_table <- rfishbase::load_taxa(server="fishbase") %>%
   mutate(Class = recode(Class,
                         "Elasmobranchii" = "Chondrichthyes",
                         "Actinopteri" = "Actinopterygii"))
-
 ##clean taxa
-
 ##Sealifebase
 sealife_table = rfishbase::load_taxa(server="sealifebase") %>% #recent update on how to load sealifebase in package
   dplyr::select(Genus, Family, Order, Class) %>% 

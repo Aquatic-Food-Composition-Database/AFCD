@@ -533,7 +533,11 @@ data_comm2 = data_comm %>%
            #Halibut
            str_detect(food_name, "halibut") ~ "pleuronectidae",
            #Mackerel
-           str_detect(food_name, "mackerel") ~ "scombridae"))
+           str_detect(food_name, "mackerel") ~ "scombridae",
+           #Agar seaweed
+           str_detect(food_name, "agar") ~ "gelideaceae",
+           #Nori seaweed
+           str_detect(food_name, "nori") ~ "bangiaceae"))
 
 afcd_common_family = data_comm2 %>%
   filter(!is.na(family)) %>% 
