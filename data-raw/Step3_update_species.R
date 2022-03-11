@@ -341,7 +341,9 @@ spp_key2 %>% filter(taxa_level=="species" & is.na(sciname_matched_nwords)) %>% p
 spp_key2 %>% filter(taxa_type=="species" & freeR::nwords(sciname)>2) %>% pull(sciname) %>% sort()
 
 # Inspect remaining species with more than two words
-taxa_table = freeR::all_fish() %>% 
+fishbase_taxa <- rfishbase::load_taxa("fishbase")
+
+taxa_table = freeR::all_fish() %>% #this function no longer works with rfishbase, need to update load_taxa
   mutate(is_right = 1) %>% 
   select(sciname, is_right) %>% 
   unique()
@@ -355,7 +357,7 @@ long_names = spp_key2 %>% filter(taxa_type=="species" & freeR::nwords(sciname)>2
   rename(name = value) %>% 
   select(-variable) %>% 
   mutate(name = stringr::str_squish(name)) %>% 
-  left_join(taxa_table, by = c("name" = "sciname")) %>% 
+  left_join(taxa_table, by = c("name" = "sciname")) %>% #and because all_fish doesn't work, this doesn't work
   drop_na(is_right) %>% 
   select(-sciname, -is_right) %>% 
   rename(sciname2 = name) %>% 
@@ -537,7 +539,14 @@ data_comm2 = data_comm %>%
            #Agar seaweed
            str_detect(food_name, "agar") ~ "gelideaceae",
            #Nori seaweed
-           str_detect(food_name, "nori") ~ "bangiaceae"))
+           str_detect(food_name, "nori") ~ "bangiaceae"
+           ),
+         #Species
+         sciname = case_when(
+           #Corocoro aka Grunt
+           str_detect(food_name, "corocoro") ~ "haemulom aurolineatum",
+         )
+         )
 
 afcd_common_family = data_comm2 %>%
   filter(!is.na(family)) %>% 
