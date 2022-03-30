@@ -341,9 +341,38 @@ spp_key2 %>% filter(taxa_level=="species" & is.na(sciname_matched_nwords)) %>% p
 spp_key2 %>% filter(taxa_type=="species" & freeR::nwords(sciname)>2) %>% pull(sciname) %>% sort()
 
 # Inspect remaining species with more than two words
-fishbase_taxa <- rfishbase::load_taxa("fishbase")
+all_fish <- function(){
+  
+  # Build FB key
+  taxa_key_fb <- rfishbase::load_taxa(server="fishbase") %>% #new syntax for loading fishbase taxa
+    as.data.frame() %>%
+    mutate(type="fish") %>%
+    select(type, everything()) %>%
+    setNames(tolower(colnames(.))) %>%
+    rename(sciname=species) %>%
+    mutate(species=stringr::word(sciname, start=2, end=sapply(strsplit(sciname, " "), length))) %>%
+    mutate_all(as.character)
+  
+  # Build SLB key
+  taxa_key_slb <- rfishbase::load_taxa(server="sealifebase") %>%#new syntax for loading sealifebase taxa
+    as.data.frame() %>%
+    mutate(type="invert") %>%
+    select(type, everything()) %>%
+    setNames(tolower(colnames(.))) %>%
+    mutate(sciname=paste(genus, species)) %>%
+    mutate_all(as.character)
+  
+  taxa_key <-  taxa_key_fb %>%
+    bind_rows(taxa_key_slb) %>%
+    setNames(tolower(names(.))) %>%
+    select(type, class, order, family, genus, species, sciname) %>%
+    unique()
+  
+  return(taxa_key)
+  
+}
 
-taxa_table = freeR::all_fish() %>% #this function no longer works with rfishbase, need to update load_taxa
+taxa_table = all_fish() %>% #freeR package needs an update, I fixed it and included the funciton immediately above
   mutate(is_right = 1) %>% 
   select(sciname, is_right) %>% 
   unique()
@@ -484,6 +513,7 @@ data_comm2 = data_comm %>%
   select(-kingdom, -phylum, -taxa_id, -taxa_db, -taxa_type, -taxa_level, -class, -family, -order) %>% 
   unique() %>% 
   mutate(food_name_orig = if_else(is.na(food_name_orig), food_name, food_name_orig),
+         food_name = enc2native(food_name), #added encoding to native to play nice between windows/mac/linux
          food_name = tolower(food_name),
          ##Class
          class = case_when(
