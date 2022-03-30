@@ -81,7 +81,8 @@ com_names = data_orig %>%
                             "Fish, halibut, Atlantic and Pacific, raw" = "Fish, halibut, raw",
                             "Fish, halibut, Atlantic and Pacific, cooked, dry heat" = "Fish, halibut, cooked, dry heat",
                             "Atlantic horse mackerel, atlantic, wild, lean, fillet w/o skin, raw" = "Atlantic horse mackerel, wild, lean, fillet w/o skin, raw",
-                            "Mackerel, Spanish, “Walu”, raw" = "Mackerel, Spanish, raw")) %>%
+                            "Mackerel, Spanish, “Walu”, raw" = "Mackerel, Spanish, raw")
+         ) %>%
   ##Remove "and"
   mutate(food_name = gsub("salmon and trout;", "", food_name)) %>%
   mutate(food_name = gsub("w/o", "without", food_name)) %>%
@@ -89,8 +90,12 @@ com_names = data_orig %>%
   mutate(food_name = gsub("whole/no skin", "whole with no skin", food_name)) %>%
   mutate(food_name = gsub("cod liver", "cod, liver", food_name)) %>%
   mutate(food_name = gsub(" and ", ",", food_name)) %>%
+  mutate(food_name = enc2native(food_name)) %>% #added to deal with ASCII encodings, now to native encoding working on MacOSX, Linux and Windows
   ##Seperate food name from other information
-  separate(food_name, c("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "L", "M"), sep = "([_;,()%/])", remove=F) %>% 
+  separate(food_name, 
+           into=c("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "L", "M"), 
+           sep = "([_;,()%/])",
+           remove=F) %>%
   ##Change to long format
   reshape2::melt(id.vars = c("ID", "food_name_orig", "food_name")) %>%
   ##Remove blancks and NAs
