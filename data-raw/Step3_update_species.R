@@ -416,7 +416,7 @@ data_sci2 <- data_sci1 %>%
 freeR::complete(data_sci2)
 
 # Confirm that the datasets are the right size
-nrow(data_comm) + nrow(data_sci2) == nrow(data_orig)
+#nrow(data_comm) + nrow(data_sci2) == nrow(data_orig)
 
 # Input scientific name based on common name
 ################################################################################
@@ -437,66 +437,231 @@ data_comm <- data_orig %>%
 data_comm_sci = data_comm %>% 
   filter(!is.na(sciname))
 
-data_sci3 = rbind(data_sci2, data_comm_sci)
+data_sci3 = rbind(data_sci2, data_comm_sci) %>% 
+  ##Remove non-aquatic animals
+  filter(!sciname %in% c("Crocothemis servilia", 
+                         "Cybister tripunctatus",
+                         "Laccotrephes maculatus",
+                         "Lethocerus indicus",
+                         "Hydrophilus olivaceous",
+                         "Chichorus virginicus",
+                         "Sciania hatei",
+                         "Megaloancistrus aculeatus",
+                         "Lysimachia nummularia",
+                         "Rorippa amphibia",
+                         "Sarcocornia ambigua",
+                         "Najas armata",
+                         "Lactobacillus delbrueckii",
+                         "Ephemeroptera spp.",
+                         "Polyrenus spp.",
+                         "Dangia sp.",
+                         "Chironomus sp")) %>% 
+  ##Fix more scinames
+  mutate(sciname = recode(sciname,
+                          "Chionoectes opilio" = "Chionoecetes opilio",
+                          "Salmophasia phulo" = "Salmostoma phulo",             
+                          "Lutianus blackfordii" = "Lutjanus campechanus",          
+                          "Somanniathelphusa sexpunctata" = "Sayamia sexpunctata", 
+                          "Odohenus rosmarus" = "Odobenus rosmarus",
+                          "Nordotis discus discus" = "Haliotis discus",        
+                          "Photololigo chinensis" = "Uroteuthis chinensis",         
+                          "Dosinorbis japonicus" = "Dosinia japonica",         
+                          "Nordotis gigantea" = "Haliotis gigantea",               
+                          "Peronidia venulosa" = "Megangulus venulosus",              
+                          "Sulculus diversicolor supertexta" = "Haliotis discus",
+                          "Patinigera magellanica" = "Nacella magellanica",          
+                          "Cyparica samplomoneta" = "Cypraea tigris",           
+                          "Clarius batrachus" = "Clarias batrachus",               
+                          "Pseudolithus senegalensis" = "Pseudotolithus senegalensis",       
+                          "Ophiocephalus maruleus" = "Channa marulius",
+                          "Pleurogramma monopterygius" = "Pleurogrammus monopterygius",
+                          "Sanguina sanguine" = "Pseudopusula sanguinea",
+                          "Chrysophrys haffara" = "Rhabdosargus sarba",             
+                          "Batillus cornutus" = "Turbo cornutus",               
+                          "Nordotis discus" = "Haliotis discus",                 
+                          "Euphasia superba" = "Euphausia superba",                
+                          "Pinctata radiata" = "Pinctada radiata",
+                          "Rastelliger kanagurta" = "Rastrelliger kanagurta",          
+                          "Halopeltis wilsonis" = "Rhodymenia wilsonis"))
 
 ##Fill in taxonomic informtion
 ##Load Taxa_table
 taxa_table = readRDS("data-raw/taxa-table/taxa_table.Rds")
-  
-dta_species = data_sci3 %>% 
-  filter(taxa_level=="species") %>% 
-  select(-genus) %>%
-  separate(sciname, c("genus", "spp"), " ", remove=FALSE) %>% 
-  select(-spp)
+missing_spp_matched_WORMS <- read_csv("data-raw/raw/missing_spp_matched_WORMS.csv")
 
+dta_species = data_sci3 %>% 
+  filter(taxa_level=="species") %>%
+  select(-c(genus, kingdom:family)) %>%
+  separate(sciname, c("genus", "spp"), " ", remove=FALSE) %>% 
+  select(-spp) %>% 
+  mutate(genus = tolower(genus)) %>% 
+  left_join(taxa_table)
+
+##Carrect otdated scientific names
 spp_missing = dta_species %>% 
   filter(is.na(family)) %>% 
-  select(-family, -order, -class) %>% 
+  left_join(missing_spp_matched_WORMS %>% select(ScientificName, ScientificName_accepted), by=c("sciname" = "ScientificName")) %>% 
+  rename(sciname_new = ScientificName_accepted) %>% 
+  select(-c(genus, kingdom:family)) %>%
+  separate(sciname_new, c("genus", "spp"), " ", remove=FALSE) %>% 
+  select(-spp) %>% 
+  mutate(genus = tolower(genus)) %>%
   left_join(taxa_table)
 
-dta_species2 = dta_species %>% 
+spp_corrected = spp_missing %>% 
   filter(!is.na(family)) %>% 
-  rbind(spp_missing)
+  select(-sciname) %>% 
+  rename(sciname = sciname_new)
 
-dta_family = data_sci3 %>% 
-  filter(taxa_level=="family")
+dta_species = dta_species %>% 
+  filter(!is.na(family)) %>%
+  rbind(spp_corrected)
 
-family_missing = dta_family %>% 
-  filter(is.na(family)) %>% 
-  select(-order, -family, -class) %>%
-  separate(sciname, c("family", "spp"), " ", remove=T) %>% 
-  mutate(sciname = NA) %>% 
-  left_join(taxa_table %>% select(family, order, class) %>% distinct(family, .keep_all=T)) %>% 
-  select(-spp)
-
-dta_family2 = dta_family %>% 
-  filter(!is.na(family)) %>% 
-  rbind(family_missing)
-
+##Fill taxonomic information for genus level
 dta_genus = data_sci3 %>% 
   filter(taxa_level=="genus") %>% 
+  select(-c(kingdom:genus)) %>%
   separate(sciname, c("genus", "spp"), " ", remove=T) %>%
-  mutate(sciname = NA) %>% 
-  select(-spp) 
-
-genus_missing = dta_genus %>% 
-  filter(is.na(family)) %>% 
-  select(-family, -order, -class) %>%
+  mutate(sciname = NA,
+         genus = tolower(genus)) %>% 
+  select(-spp) %>% 
+  filter(!genus %in% c("trypanotonous")) %>% 
+  mutate(genus = recode(genus,
+                        "oncorhyncus" = "oncorhynchus",
+                        "allotheutis" = "alloteuthis",
+                        "spiridia" = "spyridia",
+                        "penaus" = "penaeus",
+                        "mythrax" = "mithrax",
+                        "rajja" = "raja",
+                        "paralichtys" = "paralichthys",
+                        "caldophora" = "cladophora",
+                        "pomadasyas" = "pomadasys",
+                        "bonga" = "ethmalosa",
+                        "sargrassum" = "sargassum",
+                        "clariasgariepinus" = "clarias",
+                        "paralicthys" = "paralichthys",
+                        "liza" = "planiliza",
+                        "platicephalus"  = "heptanchus",
+                        "percaflavescens" = "perca",
+                        "callinestes" = "callinectes",
+                        "anadaragranosa" = "tegillarca",
+                        "cynoglossusarel" = "cynoglossus",
+                        "latescalcarifer" = "lates",
+                        "metapenaeusaffinis" = "metapenaeus",
+                        "polynemisindicus" = "Polynemus",
+                        "scromberomoruguttatus" = "scomberomorus",
+                        "canalicculata" = "Pomacea")) %>% 
   left_join(taxa_table)
 
-dta_genus2 = dta_genus %>% 
-  filter(!is.na(family)) %>% 
-  rbind(genus_missing)
+genus_missing = dta_genus %>% 
+  filter(is.na(family))
 
+##Check if missing are family
+genus_missing_family = genus_missing %>% 
+  select(-c(kingdom:family))  %>% 
+  mutate(genus = recode(genus,
+                        "siluroidei" = "siluridae",
+                        "cottoidea" = "cottidae",
+                        "pinnipedia" = "phocidae",
+                        "pleuronectinae" = "pleuronectidae",
+                         "logio" = "loliginidae",
+                        "scomper" = "scombridae",
+                        "salmus" = "salmonidae")) %>%
+  left_join(taxa_table %>% select(family, order, class, phylum, kingdom) %>% distinct(family, .keep_all=T), by=c("genus" = "family"))
+
+add_family = genus_missing_family %>% 
+  filter(!is.na(order)) %>% 
+  rename(family = genus) %>% 
+  mutate(genus = NA,
+         taxa_level = "family")
+
+##Check if missing are order
+genus_missing_order = genus_missing_family %>%
+  filter(is.na(order)) %>% 
+  select(-c(kingdom:order)) %>%
+  mutate(genus = recode(genus,
+                        "brachyura" = "decapoda")) %>% 
+  left_join(taxa_table %>% select(order, class, phylum, kingdom) %>% distinct(order, .keep_all=T), by=c("genus" = "order"))
+
+add_order = genus_missing_order %>% 
+  filter(!is.na(class)) %>% 
+  rename(order = genus) %>% 
+  mutate(genus = NA,
+         family = NA)
+
+##Check if missing are class
+genus_missing_class = genus_missing_order %>%
+  filter(is.na(class)) %>% 
+  select(-c(kingdom:class)) %>%
+  mutate(genus = recode(genus,
+                        "lamellibranchia" = "bivalvia",
+                        "oligochaeta" = "polychaeta")) %>% 
+  left_join(taxa_table %>% select(class, phylum, kingdom) %>% distinct(class, .keep_all=T), by=c("genus" = "class"))
+
+add_class = genus_missing_class %>% 
+  filter(!is.na(phylum)) %>% 
+  rename("class" = genus) %>% 
+  mutate(genus = NA,
+         family = NA,
+         order = NA)
+
+##Check if missing are phylum
+genus_missing_phylum = genus_missing_class %>%
+  filter(is.na(phylum)) %>% 
+  select(-c(kingdom:phylum)) %>%
+  left_join(taxa_table %>% select(phylum, kingdom) %>% distinct(phylum, .keep_all=T), by=c("genus" = "phylum"))
+
+add_phylum = genus_missing_phylum %>% 
+  filter(!is.na(kingdom)) %>% 
+  rename("phylum" = genus) %>% 
+  mutate(genus = NA,
+         family = NA,
+         order = NA,
+         class = NA)
+
+still_missing = genus_missing_phylum %>%
+  filter(is.na(kingdom))
+
+add_common = still_missing %>% 
+  filter(genus %in% c("various")) %>% 
+  mutate(genus = NA,
+         family = NA,
+         order = NA,
+         sciname = NA,
+         phylum = NA,
+         class = NA)
+
+##Missing taxa information
+#"Salvinia natans", "Azolla pinnata", "Neptunia oleracea", 
+#"nannochloropsis", "ankistrodesmus", "chlorococcum", "cystoseria" 
+
+##Fill taxonomic information for family level taxa
+dta_family = data_sci3 %>%
+  filter(taxa_level=="family") %>%
+  select(-c(kingdom:family)) %>%
+  separate(sciname, c("family", "spp"), " ", remove=T) %>% 
+  mutate(sciname = NA,
+         family = tolower(family),
+         family = recode(family, 
+                         "branchiostegidae" = "malacanthidae",
+                         "aloseinae" = "clupeidae",       
+                         "catostominae" = "catostomidae",
+                         "haliotididae" = "haliotidae",
+                         "hippoglossinae" = "pleuronectidae",  
+                         "petromyzontinae" = "petromyzontidae")) %>%
+  left_join(taxa_table %>% select(family, order, class, phylum, kingdom) %>% distinct(family, .keep_all=T)) %>% 
+  select(-spp) %>% 
+  rbind(add_family)
 
 dta_other = data_sci3 %>% 
-  filter(taxa_level=="other")
+  filter(taxa_level=="other") %>% 
+  rbind(add_class, add_order, add_phylum)
 
-data_sci4 = rbind(dta_species2, dta_genus2, dta_family2, dta_other) %>% 
+data_sci4 = rbind(dta_species, dta_genus, dta_family, dta_other) %>% 
   mutate(class = if_else(order == "Actinopterygii", "Actinopterygii", class),
          order = na_if(order, "Actinopterygii")) %>% 
-  select(-kingdom, -phylum, -taxa_id, -taxa_db, -taxa_type, -taxa_level) %>% 
-  select(sciname, sciname_orig, genus, family, order, class, common_name, food_name, food_name_orig, everything()) %>% 
+  select(-taxa_id, -taxa_db, -taxa_type, -taxa_level) %>% 
+  select(sciname, sciname_orig, genus, family, order, class, phylum, kingdom, common_name, food_name, food_name_orig, everything()) %>% 
   unique()
 
 
@@ -506,10 +671,11 @@ data_sci4 = rbind(dta_species2, dta_genus2, dta_family2, dta_other) %>%
 #   select(-kingdom, -phylum, -taxa_id, -taxa_db, -taxa_type, -taxa_level, -class, -family, -genus, -order, -notes, -sciname, -sciname_orig) %>% 
 #   unique()
 ##Load Taxa_table
-taxa_table = readRDS("data-raw/taxa-table/taxa_table.Rds")
+#taxa_table = readRDS("data-raw/taxa-table/taxa_table.Rds")
 
 data_comm2 = data_comm %>% 
-  filter(is.na(sciname)) %>% 
+  filter(is.na(sciname)) %>%
+  rbind(add_common) %>% 
   select(-kingdom, -phylum, -taxa_id, -taxa_db, -taxa_type, -taxa_level, -class, -family, -order) %>% 
   unique() %>% 
   mutate(food_name_orig = if_else(is.na(food_name_orig), food_name, food_name_orig),
@@ -574,9 +740,7 @@ data_comm2 = data_comm %>%
          #Species
          sciname = case_when(
            #Corocoro aka Grunt
-           str_detect(food_name, "corocoro") ~ "haemulom aurolineatum",
-         )
-         )
+           str_detect(food_name, "corocoro") ~ "haemulom aurolineatum"))
 
 afcd_common_family = data_comm2 %>%
   filter(!is.na(family)) %>% 
@@ -592,7 +756,8 @@ afcd_common_order = data_comm2 %>%
 afcd_common_class = data_comm2 %>%
   filter(is.na(family),
          is.na(order),
-         !is.na(class))
+         !is.na(class)) %>% 
+  left_join(taxa_table %>% select(-genus, -family, -order) %>% unique())
 
 afcd_missing = data_comm2 %>%
   filter(is.na(family),
@@ -619,10 +784,10 @@ saveRDS(data_sci_only, file=file.path(outdir, "AFCD_data_sci.Rds"))
 ##Export data without scientific names
 saveRDS(afcd_missing, file=file.path(outdir, "AFCD_data_comm.Rds"))
 
-##Export data in the wide format (data_taxa)
-data_taxa_wide = data_sci5 %>% 
-  distinct(sciname, sciname_orig, genus, family, order, class, common_name, food_name, food_name_orig, fct_code_orig, common_name_detailed, food_prep, food_prep_detailed, food_part, food_part_detailed, prod_catg, other_ingredients, study_type, study_id, iso3, country, edible_prop, notes, nutrient_type, nutrient, nutrient_orig, nutrient_desc, nutrient_code_fao, nutrient_units, .keep_all = T) %>% 
-  spread(nutrient, value)
-
-# Export
-saveRDS(data_taxa_wide, file=file.path(outdir, "AFCD_data_taxa_wide.Rds"))
+# ##Export data in the wide format (data_taxa)
+# data_taxa_wide = data_sci5 %>% 
+#   distinct(sciname, sciname_orig, genus, family, order, class, common_name, food_name, food_name_orig, fct_code_orig, common_name_detailed, food_prep, food_prep_detailed, food_part, food_part_detailed, prod_catg, other_ingredients, study_type, study_id, iso3, country, edible_prop, notes, nutrient_type, nutrient, nutrient_orig, nutrient_desc, nutrient_code_fao, nutrient_units, .keep_all = T) %>% 
+#   spread(nutrient, value)
+# 
+# # Export
+# saveRDS(data_taxa_wide, file=file.path(outdir, "AFCD_data_taxa_wide.Rds"))
