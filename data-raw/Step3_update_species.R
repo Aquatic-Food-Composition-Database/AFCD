@@ -768,7 +768,15 @@ data_comm_taxa = rbind(afcd_common_family,
                        afcd_common_order, 
                        afcd_common_class)
 
-data_sci5 = rbind(data_sci4, data_comm_taxa)
+data_sci5 = rbind(data_sci4, data_comm_taxa) %>% 
+  mutate(portion_size = "per 100g")
+
+##nutrients missing
+# missing_nutrients = data_sci5 %>% 
+#   filter(is.na(nutrient)) %>% 
+#   rbind(data_sci5 %>% filter(nutrient_units %in% c("Not provided in unformatted AFCD", "none"))) %>% 
+#   distinct(nutrient_orig, .keep_all = T) %>% 
+#   select(nutrient_orig, nutrient, nutrient_type, nutrient_desc, nutrient_units)
 
 # Export data with some taxonomic information
 saveRDS(data_sci5, file=file.path(outdir, "AFCD_data_taxa.Rds"))
