@@ -653,11 +653,82 @@ dta_family = data_sci3 %>%
   select(-spp) %>% 
   rbind(add_family)
 
+##Other taxa
 dta_other = data_sci3 %>% 
-  filter(taxa_level=="other") %>% 
-  rbind(add_class, add_order, add_phylum)
+  filter(taxa_level=="other")
 
-data_sci4 = rbind(dta_species, dta_genus, dta_family, dta_other) %>% 
+##First assign taxa to those that have a genus assigned
+dta_other_missing = dta_other %>% 
+  select(sciname, genus) %>% 
+  distinct(sciname, .keep_all = T) %>% 
+  mutate(genus = gsub(',', "", genus),
+         genus = recode(genus, 
+                        "Sander<U+00a0>Lucioperca" = "Sanderlucioperca",
+                        "Morone\nSaxatilis" = "Morone",
+                        "Porphyra/Pyropia" = "Pyropia",
+                        "Tisbe\nSp" = "Tisbe",
+                        "Spirulinales" = "Spirulina",
+                        "Centropristes" = "Centropristis"),
+         genus = tolower(genus)) %>%
+  mutate(genus = recode(genus,
+                        "simmered" = "mysis",
+                        "acanthropagrus" = "acanthopagrus",
+                        "corallinales" = "amphora",
+                        "navodon" = "monacanthus",
+                        "sanderlucioperca" = "sander",
+                        "theragra" = "gadus")) %>% 
+  left_join(taxa_table)
+
+dta_other_genus = dta_other_missing %>% 
+  filter(!is.na(family))
+
+##Fill with family
+dta_other_missing1 = dta_other_missing %>% 
+  filter(is.na(family)) %>% 
+  select(-c(family:kingdom)) %>% 
+  rename(family = genus) %>%
+  mutate(family = recode(family,
+                         "clupeinae" = "clupeidae",
+                         "catla" = "cyprinidae",
+                         "order" = "teuthoidea",
+                         "chilina" = "chilinidae",
+                         "phosidae" = "phocidae",
+                         "pleuronectinae" = "pleuronectidae"),
+         family = case_when(sciname == "Palaemonidae/penaeidae spp." ~ "palaemonidae",
+                            sciname == "Penaeidae, pandalidae" ~ "penaeidae",
+                            sciname == "Loligoidae, ommastrephidae" ~ "ommastrephidae",
+                            sciname == "Bothidae, pleuronectidae" ~ "bothidae",
+                            sciname == "Percichthyidae, centrarchidae" ~ "percichthyidae",
+                            TRUE ~ family)) %>% 
+  left_join(taxa_table %>% select(-genus) %>% drop_na(family) %>% distinct(family, .keep_all=T)) %>% 
+  mutate(genus = NA)
+
+dta_other_family = dta_other_missing1 %>% 
+  filter(!is.na(order))
+
+#Fill with order
+dta_other_order = dta_other_missing1 %>% 
+  filter(is.na(order)) %>% 
+  select(-c(order:genus)) %>% 
+  rename(order = family) %>% 
+  mutate(order = recode(order,
+                        "teuthoidea" = "teuthida",
+                        "chilinidae" = "basommatophora",
+                        "caridea" = "decapoda"),
+         order = case_when(sciname == "Astacus, orconectes,, procambarus spp." ~ "decapoda",
+                           TRUE ~ order)) %>% 
+  left_join(taxa_table %>% select(-genus, -family) %>% drop_na(order) %>% distinct(order, .keep_all=T)) %>% 
+  mutate(genus = NA,
+         family = NA)
+
+dta_other_taxa = rbind(dta_other_genus, dta_other_family, dta_other_order) %>% 
+  distinct(sciname, .keep_all = T)
+
+dta_other2 = dta_other %>% 
+  select(-c(kingdom:genus)) %>% 
+  left_join(dta_other_taxa)
+
+data_sci4 = rbind(dta_species, dta_genus, dta_family, dta_other2) %>% 
   mutate(class = if_else(order == "Actinopterygii", "Actinopterygii", class),
          order = na_if(order, "Actinopterygii")) %>% 
   select(-taxa_id, -taxa_db, -taxa_type, -taxa_level) %>% 
