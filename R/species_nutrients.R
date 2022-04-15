@@ -38,72 +38,87 @@ species_nutrients = function(sci_name, prep, part, nut){
     group_by(sciname, nutrient) %>% 
     summarize(smean = mean(value),
               ssd = sd(value),
-              count = n()) %>% 
+              count = n(),
+              smedian = median(value)) %>% 
     mutate(se = ssd / sqrt(count),
            lower_ci = lower_ci(smean, se, count),
-           upper_ci = upper_ci(smean, se, count)) %>% 
+           upper_ci = upper_ci(smean, se, count),
+           lower_ci = if_else(lower_ci<0, 0, lower_ci),
+           upper_ci = if_else(upper_ci<0, 0, upper_ci)) %>% 
     ungroup() %>% 
     drop_na(sciname) %>% 
     mutate(sciname = tolower(sciname)) %>% 
-    rename(value = smean)
+    rename(value = smedian)
   
     #calculate mean values for genus
     afcd_genus = AFCD %>%
     group_by(genus, nutrient) %>% 
     summarize(smean = mean(value),
               ssd = sd(value),
-              count = n()) %>% 
+              count = n(),
+              smedian = median(value)) %>% 
     mutate(se = ssd / sqrt(count),
            lower_ci = lower_ci(smean, se, count),
-           upper_ci = upper_ci(smean, se, count)) %>% 
+           upper_ci = upper_ci(smean, se, count),
+           lower_ci = if_else(lower_ci<0, 0, lower_ci),
+           upper_ci = if_else(upper_ci<0, 0, upper_ci)) %>% 
     ungroup() %>% 
     drop_na(genus) %>% 
     mutate(genus = tolower(genus)) %>% 
-    rename(value = smean)
+    rename(value = smedian)
   
   #calculate mean values for family
   afcd_family = AFCD %>%
     group_by(family, nutrient) %>% 
     summarize(smean = mean(value),
               ssd = sd(value),
-              count = n()) %>% 
+              count = n(),
+              smedian = median(value)) %>% 
     mutate(se = ssd / sqrt(count),
            lower_ci = lower_ci(smean, se, count),
-           upper_ci = upper_ci(smean, se, count)) %>% 
+           upper_ci = upper_ci(smean, se, count),
+           lower_ci = if_else(lower_ci<0, 0, lower_ci),
+           upper_ci = if_else(upper_ci<0, 0, upper_ci)) %>% 
     ungroup() %>% 
     drop_na(family) %>% 
     mutate(family = tolower(family)) %>% 
-    rename(value = smean)
+    rename(value = smedian)
   
   #calculate mean values for order
   afcd_order = AFCD %>%
     group_by(order, nutrient) %>% 
     summarize(smean = mean(value),
               ssd = sd(value),
-              count = n()) %>% 
+              count = n(),
+              smedian = median(value)) %>% 
     mutate(se = ssd / sqrt(count),
            lower_ci = lower_ci(smean, se, count),
-           upper_ci = upper_ci(smean, se, count)) %>% 
+           upper_ci = upper_ci(smean, se, count),
+           lower_ci = if_else(lower_ci<0, 0, lower_ci),
+           upper_ci = if_else(upper_ci<0, 0, upper_ci)) %>% 
     ungroup() %>% 
     drop_na(order) %>% 
     mutate(order = tolower(order)) %>% 
-    rename(value = smean)
+    rename(value = smedian)
   
   #calculate mean values for class
   afcd_class = AFCD %>%
     group_by(class, nutrient) %>% 
     summarize(smean = mean(value),
               ssd = sd(value),
-              count = n()) %>% 
+              count = n(),
+              smedian = median(value)) %>% 
     mutate(se = ssd / sqrt(count),
            lower_ci = lower_ci(smean, se, count),
-           upper_ci = upper_ci(smean, se, count)) %>% 
+           upper_ci = upper_ci(smean, se, count),
+           lower_ci = if_else(lower_ci<0, 0, lower_ci),
+           upper_ci = if_else(upper_ci<0, 0, upper_ci)) %>% 
     ungroup() %>% 
     drop_na(class) %>% 
     mutate(class = tolower(class)) %>% 
-    rename(value = smean)
+    rename(value = smedian)
   
-  
+  ##Fill taxonomic information for species
   all_spp = data.frame(species = rep(sci_name, length(nut)),
                        nutrient = rep(nut, length(sci_name)) %>% sort()) %>%
     mutate(species = tolower(species)) %>% 
