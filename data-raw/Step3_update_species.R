@@ -556,6 +556,9 @@ dta_genus = data_sci3 %>%
 genus_missing = dta_genus %>% 
   filter(is.na(family))
 
+dta_genus = dta_genus %>% 
+  filter(!is.na(family))
+
 ##Check if missing are family
 genus_missing_family = genus_missing %>% 
   select(-c(kingdom:family))  %>% 
