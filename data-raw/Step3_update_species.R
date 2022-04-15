@@ -738,7 +738,6 @@ data_sci4 = rbind(dta_species, dta_genus, dta_family, dta_other2) %>%
   select(sciname, sciname_orig, genus, family, order, class, phylum, kingdom, common_name, food_name, food_name_orig, everything()) %>% 
   unique()
 
-
 ##Further clean species without taxa information
 # data_comm_Nosci = data_comm %>% 
 #   filter(is.na(sciname)) %>% 
