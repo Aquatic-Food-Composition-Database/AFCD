@@ -556,6 +556,9 @@ dta_genus = data_sci3 %>%
 genus_missing = dta_genus %>% 
   filter(is.na(family))
 
+dta_genus = dta_genus %>% 
+  filter(!is.na(family))
+
 ##Check if missing are family
 genus_missing_family = genus_missing %>% 
   select(-c(kingdom:family))  %>% 
@@ -734,7 +737,6 @@ data_sci4 = rbind(dta_species, dta_genus, dta_family, dta_other2) %>%
   select(-taxa_id, -taxa_db, -taxa_type, -taxa_level) %>% 
   select(sciname, sciname_orig, genus, family, order, class, phylum, kingdom, common_name, food_name, food_name_orig, everything()) %>% 
   unique()
-
 
 ##Further clean species without taxa information
 # data_comm_Nosci = data_comm %>% 
