@@ -848,7 +848,7 @@ data_comm_taxa = rbind(afcd_common_family,
                        afcd_common_class)
 
 data_sci5 = rbind(data_sci4, data_comm_taxa) %>% 
-  mutate(portion_size = "per 100g")
+  mutate(portion_size = "per 100g") 
 
 ##nutrients missing
 # missing_nutrients = data_sci5 %>% 
