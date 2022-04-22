@@ -87,4 +87,4 @@ colnames(correctly_specified_taxa) <- c("genus","family","order","class","phylum
 taxa_table_final <- rbind(taxa_table,correctly_specified_taxa)
 
 # and export Rds to use in other scripts
-saveRDS(taxa_table, "data-raw/taxa-table/taxa_table.Rds")
+saveRDS(taxa_table_final, "data-raw/taxa-table/taxa_table.Rds")
