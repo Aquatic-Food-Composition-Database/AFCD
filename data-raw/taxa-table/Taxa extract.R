@@ -82,10 +82,9 @@ correctly_specified_taxa <- rbind(
   c("mytilus","mytilidae","mytilida","bivalvia","mollusca","animalia") #
 ) 
 colnames(correctly_specified_taxa) <- c("genus","family","order","class","phylum","kingdom")
-
-
 # now add the correctly specified taxa back into overall table
 
-taxa_table_final <- rbind(taxa_table,correctly_specified_taxa
+taxa_table_final <- rbind(taxa_table,correctly_specified_taxa)
 
+# and export Rds to use in other scripts
 saveRDS(taxa_table, "data-raw/taxa-table/taxa_table.Rds")
