@@ -73,4 +73,19 @@ taxa_table = rbind(fishbase_table, sealife_table) %>%
                         "protomyst/des" = "protomyst")) %>% 
   mutate_all(~na_if(., "not assigned"))
 
+# remove row of incorrectly specified taxa
+taxa_table <- taxa_table %>% filter(
+    genus !="mytilus" #wrong family, order, class
+)
+# create df of correctly specified taxa
+correctly_specified_taxa <- rbind(
+  c("mytilus","mytilidae","mytilida","bivalvia","mollusca","animalia") #
+) 
+colnames(correctly_specified_taxa) <- c("genus","family","order","class","phylum","kingdom")
+
+
+# now add the correctly specified taxa back into overall table
+
+taxa_table_final <- rbind(taxa_table,correctly_specified_taxa
+
 saveRDS(taxa_table, "data-raw/taxa-table/taxa_table.Rds")
