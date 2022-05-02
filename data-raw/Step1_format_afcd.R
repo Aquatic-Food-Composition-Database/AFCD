@@ -148,7 +148,7 @@ nutr_key_orig <- data1 %>%
   select(nutrient_orig, nutrient, units, description, everything())
 
 # Export for formatting outside R
-write.csv(nutr_key_orig, file.path(indir, "AFCD_nutrient_key_work.csv"), row.names = F)
+# write.csv(nutr_key_orig, file.path(indir, "AFCD_nutrient_key_work.csv"), row.names = F)
 
 
 # Step 3. Format data
