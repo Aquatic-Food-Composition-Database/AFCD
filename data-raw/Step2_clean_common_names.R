@@ -13,6 +13,10 @@ outdir <- "data-raw/processed"
 
 # Read data
 data_orig <- readRDS(file.path(outdir, "AFCD_data_pass1.Rds"))
+data_to_clean <- readRDS(file.path(outdir, "AFCD_data_comm.Rds"))
+
+#import afcd_data_comm 
+#recode names, translate names 
 
 # Read ref key
 ref_key <- readRDS(file.path(outdir, "AFCD_reference_key.Rds"))
@@ -23,7 +27,34 @@ data_orig = data_orig %>%
   mutate(ID = 1:nrow(data_orig)) %>% 
   select(ID, everything())
 
-##Clean common names
+##Translate common names in other languages
+#translate from spanish 
+com_names_es_key = data_orig %>%
+  filter(study_id=="LATINFOODS") %>%
+  separate(food_name_orig, 
+           into=c("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "L", "M"), 
+           sep = "([_;,()%/])",
+           remove=F) %>%
+  rename("common_name_es"="A") %>%
+  select(common_name_es) %>% 
+  unique() %>%
+  #mutate(scinames_fb=rfishbase::common_to_sci(common_name_es, Language="Spanish")) %>% 
+  
+  #scinames_fb=rfishbase::common_to_sci(com_names_es_key$common_name_es, Language="Spanish")
+  #common <- rfishbase::common_names()
+
+##Clean common names w/o sciname
+com_names_es = data_orig %>%
+  filter(study_id=="LATINFOODS") %>%
+  mutate(scinames_en=rfishbase::common_to_sci(common_name, Language="Spanish")) 
+
+
+# common to sci spanish names study_id=LATINFOODS (may have to do this Step 3)
+# 1. common -> scientific names then scientific names -> common name (with english and spanish)
+# common to sci for study_id=Mozambique_V2_2011
+# already in scientific names (genus) for study_id
+
+##Clean common names in english 
 com_names = data_orig %>% 
   select(ID, food_name) %>% 
   unique() %>% 
@@ -32,6 +63,10 @@ com_names = data_orig %>%
   rename(food_name_orig=food_name) %>%
   mutate(food_name=food_name_orig,
          food_name = recode(food_name,
+                            "frog legs, raw" = "frog, raw, legs", 
+                            "cusk, tusk, raw" = "cusk, raw",
+                            "bassa (basa)" = "basa",
+                            "bassa" = "basa",
                             "wild blackspot seabream" = "wild, blackspot seabream",
                             "Fish eggs (Carp, Cod, Haddock, Herring, Pike, Shad)" = "Fish eggs",
                             "Fish; cod; walleye pollock*; \"Sukimidara\" (skinned; salted and dried fillet)__*Syn. Alaska pollock_ " = "Fish, walleye pollock, dried, fillet",
