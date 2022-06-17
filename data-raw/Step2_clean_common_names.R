@@ -15,44 +15,102 @@ outdir <- "data-raw/processed"
 data_orig <- readRDS(file.path(outdir, "AFCD_data_pass1.Rds"))
 data_to_clean <- readRDS(file.path(outdir, "AFCD_data_comm.Rds"))
 
+# only clean spanish names
+data_to_clean = filter(data_to_clean, study_id=="LATINFOODS")
+
 #import afcd_data_comm 
 #recode names, translate names 
 
 # Read ref key
 ref_key <- readRDS(file.path(outdir, "AFCD_reference_key.Rds"))
 
+# Read taxa table for spanish common names
+taxa_table = readRDS("data-raw/taxa-table/taxa_table.Rds")
 
 ##Create ID for each row
 data_orig = data_orig %>% 
   mutate(ID = 1:nrow(data_orig)) %>% 
   select(ID, everything())
 
-##Translate common names in other languages
-#translate from spanish 
+
+## Make a key of spanish common names to scientific names
 com_names_es_key = data_orig %>%
-  filter(study_id=="LATINFOODS") %>%
+  filter(study_id=="LATINFOODS", taxa_name_source=="Food name (original)") %>%
   separate(food_name_orig, 
-           into=c("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "L", "M"), 
+           into=c("ComName"), 
            sep = "([_;,()%/])",
            remove=F) %>%
-  rename("common_name_es"="A") %>%
-  select(common_name_es) %>% 
+  left_join(rfishbase::fb_tbl("comnames") |> filter(Language == "Spanish"), by="ComName") %>%
+  left_join(rfishbase::fb_tbl("species"), by="SpecCode") %>%
+  select("ComName", "Language",  "SpecCode", "Species", "Genus") %>% 
   unique() %>%
-  #mutate(scinames_fb=rfishbase::common_to_sci(common_name_es, Language="Spanish")) %>% 
-  
-  #scinames_fb=rfishbase::common_to_sci(com_names_es_key$common_name_es, Language="Spanish")
-  #common <- rfishbase::common_names()
+  janitor::clean_names() %>% 
+  mutate(genus=tolower(genus))%>%
+  left_join(taxa_table, by="genus") %>%
+  group_by(com_name) %>%
+  # mutate based on common taxa, start broad then narrow down, all are same phylum (need to double check) 
+  # the detailed taxa info isn't super necessary right now, but maybe will be used later on
+  mutate(class = case_when(length(unique(class)) == 1 ~ class, 
+                           length(unique(class)) > 1 ~ ""),
+         order = case_when(class == NA ~ "", 
+                           length(unique(order)) == 1 ~ order, 
+                            length(unique(order)) > 1 ~ ""),
+         family = case_when(order == "" ~ "", 
+                           length(unique(family)) == 1 ~ family, 
+                           length(unique(family)) > 1 ~ ""), 
+         genus = case_when(family == "" ~ "", 
+                            length(unique(genus)) == 1 ~ genus, 
+                            length(unique(genus)) > 1 ~ ""),
+         species = case_when(genus == "" ~ "", 
+                           length(unique(spec_code)) == 1 ~ species, 
+                           length(unique(spec_code)) > 1 ~ ""), 
+         spec_code = case_when(species == "" ~ "",
+                               species != "" ~ as.character(spec_code)) #remove species code for those that don't have a common species
+  ) %>%
+  mutate(sciname=paste(genus, species) ) %>%
+  mutate_all(na_if,"") %>%
+  select(-sciname) %>% 
+  unique() 
 
-##Clean common names w/o sciname
-com_names_es = data_orig %>%
-  filter(study_id=="LATINFOODS") %>%
-  mutate(scinames_en=rfishbase::common_to_sci(common_name, Language="Spanish")) 
+## Using scientific names, find common name in english fishbase db 
+com_names_key = com_names_es_key %>%
+  filter(!is.na(spec_code)) %>% # filter out names that don't have an associated species code
+  rename(SpecCode=spec_code) %>%
+  mutate(SpecCode=as.integer(SpecCode)) %>%
+  left_join(rfishbase::fb_tbl("comnames") |> filter(Language == "English"), by="SpecCode") %>%
+  select(SpecCode, com_name, ComName, PreferredName) %>%
+  filter(!is.na(ComName) & PreferredName==1 | SpecCode==8255) %>%
+  rename(es_name=com_name, en_name=ComName) %>%
+  distinct() %>%
+  select(es_name, en_name) 
 
 
-# common to sci spanish names study_id=LATINFOODS (may have to do this Step 3)
-# 1. common -> scientific names then scientific names -> common name (with english and spanish)
-# common to sci for study_id=Mozambique_V2_2011
-# already in scientific names (genus) for study_id
+# Find all unique preparation values 
+# temp = data_to_clean %>% # match common names to those in fishbase (get spec codes)
+#   filter(study_id =="LATINFOODS") %>%
+#   separate(food_name_orig, 
+#            into=c("ComName", "B", "C", "D", "E", "F", "G", 'H', "I", "J"), 
+#            sep = "([_;,()%/])",
+#            remove=F) %>%
+#   select("B", "C", "D", "E", "F", "G", 'H', "I", "J") %>%
+#   gather("letter", "value", c("B", "C", "D", "E", "F", "G", 'H', "I", "J")) %>%
+#   unique()
+
+
+#  TODO: translate cooking methods, add taxonomic information from previous step 
+
+# for spanish names, add english common name translation
+data_trans = data_orig %>%
+  filter(study_id=="LATINFOODS" & taxa_name_source=="Food name (original)") %>%
+  mutate(es_name=food_name_orig)  %>%
+  separate(food_name_orig, 
+           into=c("es_name"), 
+           sep = "([_;,()%/])",
+           remove=F) %>%
+  merge(., com_names_key, by="es_name", all = TRUE) %>%
+  mutate(food_name=tolower(en_name)) %>%
+  select(-c(es_name, en_name))
+
 
 ##Clean common names in english 
 com_names = data_orig %>% 
@@ -61,7 +119,7 @@ com_names = data_orig %>%
   drop_na() %>% 
   # Recode column names
   rename(food_name_orig=food_name) %>%
-  mutate(food_name=food_name_orig,
+  mutate(food_name=food_name_orig, # TODO: ONLY WHEN THERE IS NO FOOD_NAME
          food_name = recode(food_name,
                             "frog legs, raw" = "frog, raw, legs", 
                             "cusk, tusk, raw" = "cusk, raw",
@@ -143,6 +201,11 @@ com_names = data_orig %>%
   mutate(value = gsub("¾d.", "", value)) %>% 
   mutate(value = gsub("¾l.", "", value)) %>% 
   mutate(value = gsub("¾t.", "", value)) %>% 
+  mutate(food_name = gsub(" /30 min", " ", food_name)) %>%
+  mutate(food_name = gsub(" /45 min", " ", food_name)) %>%
+  mutate(food_name = gsub(" /12 min", " ", food_name)) %>%
+  mutate(food_name = gsub(" -30Â°C", " ", food_name)) %>%
+  mutate(food_name = gsub(" -18Â°C", " ", food_name)) %>%
   # Trim
   mutate(value=stringr::str_trim(value)) %>% 
   mutate(value = tolower(value)) %>% 
