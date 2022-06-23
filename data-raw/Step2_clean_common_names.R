@@ -32,8 +32,7 @@ data_orig = data_orig %>%
   mutate(ID = 1:nrow(data_orig)) %>% 
   select(ID, everything())
 
-
-## Make a key of spanish common names to scientific names
+## Make a key of spanish common names to scientific names 
 com_names_es_key = data_orig %>%
   filter(study_id=="LATINFOODS", taxa_name_source=="Food name (original)") %>%
   separate(food_name_orig, 
@@ -50,19 +49,19 @@ com_names_es_key = data_orig %>%
   group_by(com_name) %>%
   # mutate based on common taxa, start broad then narrow down, all are same phylum (need to double check) 
   # the detailed taxa info isn't super necessary right now, but maybe will be used later on
-  mutate(class = case_when(length(unique(class)) == 1 ~ class, 
-                           length(unique(class)) > 1 ~ ""),
-         order = case_when(class == NA ~ "", 
-                           length(unique(order)) == 1 ~ order, 
-                            length(unique(order)) > 1 ~ ""),
-         family = case_when(order == "" ~ "", 
-                           length(unique(family)) == 1 ~ family, 
-                           length(unique(family)) > 1 ~ ""), 
-         genus = case_when(family == "" ~ "", 
-                            length(unique(genus)) == 1 ~ genus, 
-                            length(unique(genus)) > 1 ~ ""),
-         species = case_when(genus == "" ~ "", 
-                           length(unique(spec_code)) == 1 ~ species, 
+  mutate(
+  #        class = case_when(length(unique(class)) == 1 ~ class, 
+  #                          length(unique(class)) > 1 ~ ""),
+  #        order = case_when(class == NA ~ "", 
+  #                          length(unique(order)) == 1 ~ order, 
+  #                           length(unique(order)) > 1 ~ ""),
+  #        family = case_when(order == "" ~ "", 
+  #                          length(unique(family)) == 1 ~ family, 
+  #                          length(unique(family)) > 1 ~ ""), 
+  #        genus = case_when(family == "" ~ "", 
+  #                           length(unique(genus)) == 1 ~ genus, 
+  #                           length(unique(genus)) > 1 ~ ""),
+         species = case_when(length(unique(spec_code)) == 1 ~ species, 
                            length(unique(spec_code)) > 1 ~ ""), 
          spec_code = case_when(species == "" ~ "",
                                species != "" ~ as.character(spec_code)) #remove species code for those that don't have a common species
@@ -86,41 +85,48 @@ com_names_key = com_names_es_key %>%
 
 
 # Find all unique preparation values 
-# temp = data_to_clean %>% # match common names to those in fishbase (get spec codes)
-#   filter(study_id =="LATINFOODS") %>%
-#   separate(food_name_orig, 
-#            into=c("ComName", "B", "C", "D", "E", "F", "G", 'H', "I", "J"), 
-#            sep = "([_;,()%/])",
-#            remove=F) %>%
-#   select("B", "C", "D", "E", "F", "G", 'H', "I", "J") %>%
-#   gather("letter", "value", c("B", "C", "D", "E", "F", "G", 'H', "I", "J")) %>%
-#   unique()
+temp = data_to_clean %>% # match common names to those in fishbase (get spec codes)
+  filter(study_id =="LATINFOODS") %>%
+  separate(food_name_orig,
+           into=c("ComName", "B", "C", "D", "E", "F", "G", 'H', "I", "J"),
+           sep = "([_;,()%/])",
+           remove=F) %>%
+  select("B", "C", "D", "E", "F", "G", 'H', "I", "J") %>%
+  gather("letter", "value", c("B", "C", "D", "E", "F", "G", 'H', "I", "J")) %>%
+  select(value) %>%
+  mutate(value=tolower(value)) %>%
+  unique() 
 
 
 #  TODO: translate cooking methods, add taxonomic information from previous step 
 
-# for spanish names, add english common name translation
-data_trans = data_orig %>%
+#translate spanish food names and other data
+data_orig_t = data_orig %>%
   filter(study_id=="LATINFOODS" & taxa_name_source=="Food name (original)") %>%
-  mutate(es_name=food_name_orig)  %>%
-  separate(food_name_orig, 
-           into=c("es_name"), 
-           sep = "([_;,()%/])",
-           remove=F) %>%
-  merge(., com_names_key, by="es_name", all = TRUE) %>%
-  mutate(food_name=tolower(en_name)) %>%
-  select(-c(es_name, en_name))
+  mutate(food_name=food_name_orig) %>%
+  mutate(food_name=gsub("^Surubí", "Spotted sorubim", food_name)) %>%
+  mutate(food_name=gsub("^Carpa", "Common carp", food_name)) %>%
+  mutate(food_name=gsub("^Chita", "Peruvian grunt", food_name)) %>%
+  mutate(food_name=gsub("^Paiche", "Arapaima", food_name)) %>%
+  mutate(food_name=gsub("^Corocoro", "Burro grunt", food_name)) %>%
+  mutate(food_name=gsub("^Gatuso", "Narrownose smooth-hound", food_name)) %>%
+  mutate(food_name=gsub("^Pintado", "Sand tiger shark", food_name)) %>%
+  mutate(food_name=gsub("^Cascudo", "Amazon sailfin catfish", food_name)) %>%
+  mutate(food_name=gsub("^Dourado", "Dorado", food_name)) %>%
+  mutate(food_name=gsub("^Pacu", "Cachama", food_name)) %>%
+  rbind(data_orig[!(data_orig$study_id=="LATINFOODS" & data_orig$taxa_name_source=="Food name (original)"),]) %>% # add back in 
+  unique()
 
-
-##Clean common names in english 
-com_names = data_orig %>% 
+##Clean common names in english, filters out the values that don't have food_name
+com_names = data_orig_t %>% 
   select(ID, food_name) %>% 
   unique() %>% 
   drop_na() %>% 
   # Recode column names
   rename(food_name_orig=food_name) %>%
-  mutate(food_name=food_name_orig, # TODO: ONLY WHEN THERE IS NO FOOD_NAME
-         food_name = recode(food_name,
+  mutate(food_name=food_name_orig) %>% 
+  #rbind(.,data_trans[c("ID", "food_name_orig", "food_name")]) %>% # add latinfoods
+  mutate(food_name = recode(food_name,
                             "frog legs, raw" = "frog, raw, legs", 
                             "cusk, tusk, raw" = "cusk, raw",
                             "bassa (basa)" = "basa",
@@ -195,6 +201,12 @@ com_names = data_orig %>%
   na_if("") %>%
   na_if(" ") %>% 
   drop_na(value) %>% 
+  # TODO: translate spanish prep types and more 
+  mutate(value=recode(value,
+    "cocido"="cooked",
+    "al natural"="",
+    # jessica add translations here
+  ))
   mutate(value = gsub('[*"”-]', "", value)) %>% 
   mutate(value = gsub("Syn.", "", value)) %>% 
   mutate(value = gsub("Ã©", "ao", value)) %>% 
@@ -209,7 +221,7 @@ com_names = data_orig %>%
   # Trim
   mutate(value=stringr::str_trim(value)) %>% 
   mutate(value = tolower(value)) %>% 
-  #Preperation types
+  #Preperation types 
   mutate(name_type = case_when(
     ## Preparation types
     str_detect(value, paste(c("boiled", "grilled", "soup", "bake", "microwaved", "kippered", "canned", "grill", "tempura", "moist heat", "smoke", "dried", "gratin", "simmered", "paste", "fried", "cured", "salted", "cooked", "roasted", "battered", "surimi", "pickled", "steam", "steaemed", "poach", "dry heat", "sushi", "sashimi", "breaded", "casserole", "pudding", "balls", "dressed", "cake", "drained", "brine", "fermented", "skewered"),collapse = '|')) ~ "prep",
@@ -242,7 +254,7 @@ com_names = data_orig %>%
                  "middle portion", "virgin olive oil", "veg.oil", "sour", "sea water", "sea", "unheated", "ventral", "first price fiskegrateng med makaron", "findus familiens fiskegrateng", "fields river", "helix", "lobnobs", "young <1yr", "minced", "industrially made", "marine waters", "mayjune", "little spicies", "all type", "plain", "along dorsal line", "eta", "northern", "assorted flavours", "tusk cusk", "basa bassa",
                  "sealord", "treated", "young", "small fish", "fatty", "2y", "2yr", "45y", "4y", "50", "60", "75", "a fish", "with bones", "freshwater", "unspecified", "edible parts", "channel", "composite", "without salt", "solids & liquid", "slices", "70", "ocean", "fish patties", "lean", "eastern", "without salt and fat","etc.", "coop", "refrigerated", "enghav fiskegrateng med makaroni", 
                  "as part of a recipe", "seafoods", "with or without added fat", "portion", "julyseptember", "belly flaps removed", "without visible fat", "palmkernel oil", "stabburlaks", "fat not further defined", "caudal end", "takeaway outlet", "may have been previously frozen", "without salt or fat", "no added fat", "mixed species", "fat", "compressed") ~ "remove", 
-    TRUE ~ "com_name")) %>% 
+    TRUE ~ "com_name")) %>% # anything that is not matched = common name 
   filter(!name_type == "remove") %>% 
   select(-variable, -food_name)
 
@@ -538,8 +550,9 @@ genus_wide = com_names %>%
 ######Include info in data
 
 #Include common name
-data2 = data_orig %>%
-  left_join(common_wide, by=c("food_name" = "food_name_orig"))
+data2 = data_orig_t %>%
+  left_join(common_wide, by=c("food_name" = "food_name_orig")) 
+
 
 #Include preparation types
 data2 = data2 %>% 
@@ -589,3 +602,4 @@ data2 = data2 %>%
 
 # Export data
 saveRDS(data2, file=file.path(outdir, "AFCD_data_pass2.Rds"))  
+
