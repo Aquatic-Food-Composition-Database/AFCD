@@ -203,10 +203,20 @@ com_names = data_orig_t %>%
   drop_na(value) %>% 
   # TODO: translate spanish prep types and more 
   mutate(value=recode(value,
-    "cocido"="cooked",
-    "al natural"="",
-    # jessica add translations here
-  ))
+    "cocido"="boiled","al natural"="canned natural","hormiga" = "ant", "Carne" = "meat", "agua dulce" = "freshwater", "Filete" = "fillet",
+                      "de agua dulce" = "freshwater","Entero" = "whole","Seco" = "dry","Entera" = "whole" ,"de ispi" = "", "carne sin piel" = "meat without skin",
+                      "Fresca" = "fresh" ,"de rana"="from frog", "huevera"="eggs","de pescado"="of fish","Grated"="grated", "con espinas"="with bones",
+                      "pulpa"="muscle tissue","Grande" = "big","Chino"="chinese", "Salado" = "salted","pulpa asada"="baked muscle tissue","enlatado"="canned",
+                      "crudo"="raw","en conserva"="canned","sardinha"="sardine","enlatada"="canned","al horno"="baked","filé"="muscle tissue","ovas"="eggs",
+                      "cocida"="boiled", "atum"="tuna","lomo"="muscle tissue","de camarón blanco y titi"="mixed shrimp species",
+                      "de camarón rosado y fidel"="mixed shrimp species","pescaditos fritos"="fried fish","água doce"="freshwater","músculo"="muscle tissue",
+                      "blanca"="white","de batracio"="amphibian","assado"="baked","assada"="baked","abacaxi"="","cachorro"="juvenile","cruda"="raw","cruda"="raw",
+                      "cocido y frito"="boiled and fried","frita"="fried","con huesos"="with bones","sin piel"="without skin", "frito"="fried","seca"="dry",
+                      "asada"="baked","sancochada"="boiled with condiments","deshidratado"="dry","sancochado"="boiled with condiments","en agua"="in water",
+                      "congelado"="frozen","crudas"="raw","ralado"="grated","sólido"="solid","crua"="raw","cru"="raw","en aceite"="in oil","dorada"="sea bream",
+                      "sardina"="sardine","precocido"="pre-boiled","40 min"="40 min","con sal"="with salt","salada"="salted","sadia"="healthy",
+                      "maionese e vegetais"="with mayonnaise and vegetables","conserva"="canned","molho branco"="in white sauce","rehidratado"="re-hydrated",
+                      "pimenta"="pepper","molho de tomate temperado"="in tomato sauce","cebola e louro"="onion and bay leaves","coqueiro"="coconut","light"="light"))%>% 
   mutate(value = gsub('[*"”-]', "", value)) %>% 
   mutate(value = gsub("Syn.", "", value)) %>% 
   mutate(value = gsub("Ã©", "ao", value)) %>% 
