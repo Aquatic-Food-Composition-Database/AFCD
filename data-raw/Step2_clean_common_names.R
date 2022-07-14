@@ -13,13 +13,6 @@ outdir <- "data-raw/processed"
 
 # Read data
 data_orig <- readRDS(file.path(outdir, "AFCD_data_pass1.Rds"))
-data_to_clean <- readRDS(file.path(outdir, "AFCD_data_comm.Rds"))
-
-# only clean spanish names
-data_to_clean = filter(data_to_clean, study_id=="LATINFOODS")
-
-#import afcd_data_comm 
-#recode names, translate names 
 
 # Read ref key
 ref_key <- readRDS(file.path(outdir, "AFCD_reference_key.Rds"))
@@ -83,27 +76,12 @@ com_names_key = com_names_es_key %>%
   distinct() %>%
   select(es_name, en_name) 
 
-
-# Find all unique preparation values 
-temp = data_to_clean %>% # match common names to those in fishbase (get spec codes)
-  filter(study_id =="LATINFOODS") %>%
-  separate(food_name_orig,
-           into=c("ComName", "B", "C", "D", "E", "F", "G", 'H', "I", "J"),
-           sep = "([_;,()%/])",
-           remove=F) %>%
-  select("B", "C", "D", "E", "F", "G", 'H', "I", "J") %>%
-  gather("letter", "value", c("B", "C", "D", "E", "F", "G", 'H', "I", "J")) %>%
-  select(value) %>%
-  mutate(value=tolower(value)) %>%
-  unique() 
-
-
 #  TODO: translate cooking methods, add taxonomic information from previous step 
 
-#translate spanish food names and other data
+# translate spanish food names and other data
 data_orig_t = data_orig %>%
   filter(study_id=="LATINFOODS" & taxa_name_source=="Food name (original)") %>%
-  mutate(food_name=food_name_orig) %>%
+  mutate(food_name=case_when(is.na(food_name) ~ food_name_orig, TRUE ~ food_name)) %>% # make food_name = food_name_orig when no food name
   mutate(food_name=gsub("^Surubí", "Spotted sorubim", food_name)) %>%
   mutate(food_name=gsub("^Carpa", "Common carp", food_name)) %>%
   mutate(food_name=gsub("^Chita", "Peruvian grunt", food_name)) %>%
@@ -114,19 +92,20 @@ data_orig_t = data_orig %>%
   mutate(food_name=gsub("^Cascudo", "Amazon sailfin catfish", food_name)) %>%
   mutate(food_name=gsub("^Dourado", "Dorado", food_name)) %>%
   mutate(food_name=gsub("^Pacu", "Cachama", food_name)) %>%
-  rbind(data_orig[!(data_orig$study_id=="LATINFOODS" & data_orig$taxa_name_source=="Food name (original)"),]) %>% # add back in 
+  rbind(data_orig[!(data_orig$study_id=="LATINFOODS" & data_orig$taxa_name_source=="Food name (original)"),]) %>% # add back in
   unique()
 
-##Clean common names in english, filters out the values that don't have food_name
+## Clean common names in english, filters out the values that don't have food_name
 com_names = data_orig_t %>% 
-  select(ID, food_name) %>% 
+  select(ID, food_name) %>% # this is filtering out a lot of fish names 
   unique() %>% 
   drop_na() %>% 
   # Recode column names
   rename(food_name_orig=food_name) %>%
   mutate(food_name=food_name_orig) %>% 
-  #rbind(.,data_trans[c("ID", "food_name_orig", "food_name")]) %>% # add latinfoods
   mutate(food_name = recode(food_name,
+                            "Trucha ahumada" = "Trucha, ahumada", 
+                            "Croqueta de merluza" = "merluza, croqueta", 
                             "frog legs, raw" = "frog, raw, legs", 
                             "cusk, tusk, raw" = "cusk, raw",
                             "bassa (basa)" = "basa",
@@ -186,9 +165,12 @@ com_names = data_orig_t %>%
   mutate(food_name = gsub("salmon and trout;", "", food_name)) %>%
   mutate(food_name = gsub("w/o", "without", food_name)) %>%
   mutate(food_name = gsub(" w/ ", " with ", food_name)) %>%
+  mutate(food_name = gsub(" c/ ", " with ", food_name)) %>%
   mutate(food_name = gsub("whole/no skin", "whole with no skin", food_name)) %>%
   mutate(food_name = gsub("cod liver", "cod, liver", food_name)) %>%
-  mutate(food_name = gsub(" and ", ",", food_name)) %>%
+  mutate(food_name = gsub("and ", ",", food_name)) %>%
+  mutate(food_name = gsub("de mar", ", ocean", food_name)) %>%
+  mutate(food_name = gsub("de río", ", river", food_name)) %>%
   mutate(food_name = enc2native(food_name)) %>% #added to deal with ASCII encodings, now to native encoding working on MacOSX, Linux and Windows
   ##Seperate food name from other information
   separate(food_name, 
@@ -201,36 +183,37 @@ com_names = data_orig_t %>%
   na_if("") %>%
   na_if(" ") %>% 
   drop_na(value) %>% 
+  # Trim
+  mutate(value=stringr::str_trim(value)) %>% 
+  mutate(value = tolower(value)) %>% 
   # TODO: translate spanish prep types and more 
   mutate(value=recode(value,
-    "cocido"="boiled","al natural"="canned natural","hormiga" = "ant", "Carne" = "meat", "agua dulce" = "freshwater", "Filete" = "fillet",
-                      "de agua dulce" = "freshwater","Entero" = "whole","Seco" = "dry","Entera" = "whole" ,"de ispi" = "", "carne sin piel" = "meat without skin",
-                      "Fresca" = "fresh" ,"de rana"="from frog", "huevera"="eggs","de pescado"="of fish","Grated"="grated", "con espinas"="with bones",
-                      "pulpa"="muscle tissue","Grande" = "big","Chino"="chinese", "Salado" = "salted","pulpa asada"="baked muscle tissue","enlatado"="canned",
+                      "cocido"="boiled","al natural"="canned natural","hormiga" = "ant", "carne" = "meat", "agua dulce" = "freshwater", "filete" = "fillet",
+                      "de agua dulce" = "freshwater","entero" = "whole","seco" = "dried","entera" = "whole" ,"de ispi" = "ispi", "carne sin piel" = "meat without skin",
+                      "fresca" = "fresh" ,"de rana"="from frog", "huevera"="eggs","de pescado"="of fish", "con espinas"="with bones",
+                      "pulpa"="muscle tissue","grande" = "big","chino"="chinese", "salado" = "salted","pulpa asada"="baked muscle tissue","enlatado"="canned",
                       "crudo"="raw","en conserva"="canned","sardinha"="sardine","enlatada"="canned","al horno"="baked","filé"="muscle tissue","ovas"="eggs",
                       "cocida"="boiled", "atum"="tuna","lomo"="muscle tissue","de camarón blanco y titi"="mixed shrimp species",
                       "de camarón rosado y fidel"="mixed shrimp species","pescaditos fritos"="fried fish","água doce"="freshwater","músculo"="muscle tissue",
                       "blanca"="white","de batracio"="amphibian","assado"="baked","assada"="baked","abacaxi"="","cachorro"="juvenile","cruda"="raw","cruda"="raw",
-                      "cocido y frito"="boiled and fried","frita"="fried","con huesos"="with bones","sin piel"="without skin", "frito"="fried","seca"="dry",
-                      "asada"="baked","sancochada"="boiled with condiments","deshidratado"="dry","sancochado"="boiled with condiments","en agua"="in water",
+                      "cocido y frito"="boiled and fried","frita"="fried","con huesos"="with bones","sin piel"="without skin", "frito"="fried","seca"="dried",
+                      "asada"="baked","sancochada"="boiled with condiments","deshidratado"="dried","sancochado"="boiled with condiments","en agua"="in water",
                       "congelado"="frozen","crudas"="raw","ralado"="grated","sólido"="solid","crua"="raw","cru"="raw","en aceite"="in oil","dorada"="sea bream",
-                      "sardina"="sardine","precocido"="pre-boiled","40 min"="40 min","con sal"="with salt","salada"="salted","sadia"="healthy",
+                      "sardina"="sardine", "sardinha"="sardine", "precocido"="pre-boiled","con sal"="with salt","salada"="salted","sadia"="healthy",
                       "maionese e vegetais"="with mayonnaise and vegetables","conserva"="canned","molho branco"="in white sauce","rehidratado"="re-hydrated",
-                      "pimenta"="pepper","molho de tomate temperado"="in tomato sauce","cebola e louro"="onion and bay leaves","coqueiro"="coconut","light"="light"))%>% 
+                      "pimenta"="pepper","molho de tomate temperado"="in tomato sauce","cebola e louro"="onion and bay leaves","coqueiro"="coconut")) %>% 
   mutate(value = gsub('[*"”-]', "", value)) %>% 
   mutate(value = gsub("Syn.", "", value)) %>% 
   mutate(value = gsub("Ã©", "ao", value)) %>% 
   mutate(value = gsub("¾d.", "", value)) %>% 
   mutate(value = gsub("¾l.", "", value)) %>% 
   mutate(value = gsub("¾t.", "", value)) %>% 
-  mutate(food_name = gsub(" /30 min", " ", food_name)) %>%
-  mutate(food_name = gsub(" /45 min", " ", food_name)) %>%
-  mutate(food_name = gsub(" /12 min", " ", food_name)) %>%
-  mutate(food_name = gsub(" -30Â°C", " ", food_name)) %>%
-  mutate(food_name = gsub(" -18Â°C", " ", food_name)) %>%
-  # Trim
-  mutate(value=stringr::str_trim(value)) %>% 
-  mutate(value = tolower(value)) %>% 
+  mutate(food_name = gsub("/30 min", "", food_name)) %>%
+  mutate(food_name = gsub("/45 min", "", food_name)) %>%
+  mutate(food_name = gsub("/40 min", "", food_name)) %>%
+  mutate(food_name = gsub("/12 min", "", food_name)) %>%
+  mutate(food_name = gsub("-30Â°C", "", food_name)) %>%
+  mutate(food_name = gsub("-18Â°C", "", food_name)) %>%
   #Preperation types 
   mutate(name_type = case_when(
     ## Preparation types
