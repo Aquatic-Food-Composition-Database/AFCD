@@ -780,7 +780,7 @@ com_names_es_key = data_comm %>%
   mutate(genus=tolower(genus), com_name=tolower(com_name))%>%
   left_join(taxa_table, by="genus") %>%
   group_by(com_name) %>%
-  # mutate based on common taxa, start broad then narrow down, all are same phylum (need to double check)
+  # mutate based on common taxa, start broad then narrow down
   # the detailed taxa info isn't super necessary right now, but maybe will be used later on
   mutate(
            class = case_when(length(unique(class)) == 1 ~ class,
