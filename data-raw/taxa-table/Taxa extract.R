@@ -29,6 +29,9 @@ non_animal_taxa <- read.csv(
 ##add additional taxa from WORMS
 additional_taxa_WORMS <- read_csv("data-raw/raw/additional_taxa_WORMS.csv") %>% 
   separate(sciname_new, c("genus", "spp"), " ", remove=FALSE) %>%
+  mutate(Class = recode(Class,
+                        "Elasmobranchii" = "Chondrichthyes",
+                        "Actinopteri" = "Actinopterygii")) %>% 
   rename(family = Family,
          order = Order,
          class = Class,
@@ -84,7 +87,7 @@ correctly_specified_taxa <- rbind(
 colnames(correctly_specified_taxa) <- c("genus","family","order","class","phylum","kingdom")
 # now add the correctly specified taxa back into overall table
 
-taxa_table_final <- rbind(taxa_table,correctly_specified_taxa)
+taxa_table_final <- rbind(taxa_table,correctly_specified_taxa) 
 
 # and export Rds to use in other scripts
 saveRDS(taxa_table_final, "data-raw/taxa-table/taxa_table.Rds")
