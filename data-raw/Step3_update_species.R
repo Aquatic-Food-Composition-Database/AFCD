@@ -941,4 +941,3 @@ saveRDS(afcd_missing, file=file.path(outdir, "AFCD_data_comm.Rds"))
 # 
 # # Export
 # saveRDS(data_taxa_wide, file=file.path(outdir, "AFCD_data_taxa_wide.Rds"))
-

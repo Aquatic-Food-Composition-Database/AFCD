@@ -52,8 +52,8 @@ com_names = data_orig_t %>%
   rename(food_name_orig=food_name) %>%
   mutate(food_name=food_name_orig) %>% 
   mutate(food_name = recode(food_name,
-                            "Trucha ahumada" = "Trucha, ahumada", 
-                            "Croqueta de merluza" = "merluza, croqueta", 
+                            "Trucha ahumada " = "Trucha, ahumada", 
+                            "Hueva de pescado" = "Pescado, hueva",
                             "frog legs, raw" = "frog, raw, legs", 
                             "cusk, tusk, raw" = "cusk, raw",
                             "bassa (basa)" = "basa",
@@ -142,10 +142,10 @@ com_names = data_orig_t %>%
   mutate(value = tolower(value)) %>% 
   # TODO: translate spanish prep types and more 
   mutate(value=recode(value,
-                      "cocido"="boiled","al natural"="canned natural","hormiga" = "ant", "carne" = "meat", "agua dulce" = "freshwater", "filete" = "fillet",
+                      "cocido"="boiled","al natural"="canned natural","hormiga" = "ant", "carne" = "meat", "agua dulce" = "freshwater", "de agua dulce" = "freshwater", "filete" = "fillet",
                       "de agua dulce" = "freshwater","entero" = "whole","seco" = "dried","entera" = "whole" ,"de ispi" = "ispi", "carne sin piel" = "meat without skin",
-                      "fresca" = "fresh" ,"de rana"="from frog", "huevera"="eggs","de pescado"="of fish", "con espinas"="with bones",
-                      "pulpa"="muscle tissue","grande" = "big","chino"="chinese", "salado" = "salted","pulpa asada"="baked muscle tissue","enlatado"="canned",
+                      "fresca" = "fresh" ,"de rana"="from frog", "huevera"="eggs", "hueva"="eggs", "de pescado"="fish", "peces"="fishes", "con espinas"="with bones",
+                      "pulpa"="muscle tissue","grande" = "big","chino"="china", "salado" = "salted","pulpa asada"="baked muscle tissue","enlatado"="canned",
                       "crudo"="raw","en conserva"="canned","sardinha"="sardine","enlatada"="canned","al horno"="baked","filé"="muscle tissue","ovas"="eggs",
                       "cocida"="boiled", "atum"="tuna","lomo"="muscle tissue","de camarón blanco y titi"="mixed shrimp species",
                       "de camarón rosado y fidel"="mixed shrimp species","pescaditos fritos"="fried fish","água doce"="freshwater","músculo"="muscle tissue",
@@ -154,7 +154,7 @@ com_names = data_orig_t %>%
                       "asada"="baked","sancochada"="boiled with condiments","deshidratado"="dried","sancochado"="boiled with condiments","en agua"="in water",
                       "congelado"="frozen","crudas"="raw","ralado"="grated","sólido"="solid","crua"="raw","cru"="raw","en aceite"="in oil","dorada"="sea bream",
                       "sardina"="sardine", "sardinha"="sardine", "precocido"="pre-boiled","con sal"="with salt","salada"="salted","sadia"="healthy",
-                      "maionese e vegetais"="with mayonnaise and vegetables","conserva"="canned","molho branco"="in white sauce","rehidratado"="re-hydrated",
+                      "maionese e vegetais"="with mayonnaise and vegetables","conserva"="canned","molho branco"="in white sauce","rehidratado"="rehydrated",
                       "pimenta"="pepper","molho de tomate temperado"="in tomato sauce","cebola e louro"="onion and bay leaves","coqueiro"="coconut")) %>% 
   mutate(value = gsub('[*"”-]', "", value)) %>% 
   mutate(value = gsub("Syn.", "", value)) %>% 
@@ -165,7 +165,7 @@ com_names = data_orig_t %>%
   #Preperation types 
   mutate(name_type = case_when(
     ## Preparation types
-    str_detect(value, paste(c("boiled", "grilled", "soup", "bake", "microwaved", "kippered", "canned", "grill", "tempura", "moist heat", "smoke", "dried", "gratin", "simmered", "paste", "fried", "cured", "salted", "cooked", "roasted", "battered", "surimi", "pickled", "steam", "steaemed", "poach", "dry heat", "sushi", "sashimi", "breaded", "casserole", "pudding", "balls", "dressed", "cake", "drained", "brine", "fermented", "skewered"),collapse = '|')) ~ "prep",
+    str_detect(value, paste(c("boiled", "grilled", "soup", "bake", "microwaved", "kippered", "canned", "grill", "tempura", "moist heat", "smoke", "dried", "rehydrated", "gratin", "simmered", "paste", "fried", "cured", "salted", "cooked", "roasted", "battered", "surimi", "pickled", "steam", "steaemed", "poach", "dry heat", "sushi", "sashimi", "breaded", "casserole", "pudding", "balls", "dressed", "cake", "drained", "brine", "fermented", "skewered", "grated"),collapse = '|')) ~ "prep",
     value %in% c("raw", "can") ~ "prep", 
     ## Broad groups
     value %in% c("mollusks", "fish", "crustacean", "crustaceans", "lean fish", "reef fish", "reef") ~ "broad_group", 
@@ -181,7 +181,7 @@ com_names = data_orig_t %>%
     ## Seasons
     str_detect(value, paste(c("summer", "winter", "autumn", "spring"), collapse = '|')) ~ "season",
     ## Other ingredients
-    value %in% c("in tomato sauce", "onion", "with cream", "with sugar", "marinated", "sweet pepper sauce", "marinated in vinegar", "with potatoes", "with egg", "with seasoning", "with seaweed", "with mayonnaise", "with mustard sauce", "seasoned with mirin", "split seasoned with mirin", "green chili", "spices", "sour cream", "tomato", "rolled in breadcrumbs", "milk added", "in oil", "in flour", "in jelly", "rolled in flour", "floured", "bread", "cheese", "soy souce", "soy sauce", "sugar", "seasoned", "garlic", "salt", "salt added to water", "filled", "fish paté", "in spicy marinade", "creamed", "crumbed") ~ "other_ingredients",
+    value %in% c("in tomato sauce", "onion", "with cream", "with sugar", "marinated", "sweet pepper sauce", "marinated in vinegar", "with potatoes", "with egg", "with seasoning", "with seaweed", "with mayonnaise", "with mustard sauce", "seasoned with mirin", "split seasoned with mirin", "green chili", "spices", "sour cream", "tomato", "rolled in breadcrumbs", "milk added", "in oil", "in flour", "in jelly", "rolled in flour", "floured", "bread", "cheese", "soy souce", "soy sauce", "sugar", "seasoned", "garlic", "salt", "salt added to water", "filled", "fish paté", "in spicy marinade", "creamed", "crumbed", "in water") ~ "other_ingredients",
     ## Sex
     value %in% c("male", "female") ~ "sex",
     ## Genus
@@ -189,7 +189,7 @@ com_names = data_orig_t %>%
     ##Other information (to keep)
     value %in% c("fresh", "frozen", "not previously frozen", "may have been previously frozen", "packaged frozen", "previously frozen", "purchased frozen") ~ "other_info",
     ## Other information (to remove)
-    value %in% c("n.s.", "with integument", "lox", "commercially processed", "not further specified", "pelagic", "prepared products", "coop xtra fiskegrateng", "findus steketorsk", "enghav fiskegrateng med makaroni", "soaked in water", "southern rock", "fingers", "commercial", "mashed", "natural", "traditionally", "light", "laboratory", "restaurant style", "full grown", "fully grown", "combined species", "solids", "fins", "liquid", "back", "lakestocked", "talley's", "home recipe", "imitation", "flavoured", "unflavoured", "regular", "fat not further defined", "findus", "first price", "bones",  "tempera",
+    value %in% c("n.s.", "healthy", "big", "with integument", "lox", "commercially processed", "not further specified", "pelagic", "prepared products", "coop xtra fiskegrateng", "findus steketorsk", "enghav fiskegrateng med makaroni", "soaked in water", "southern rock", "fingers", "commercial", "mashed", "natural", "traditionally", "light", "laboratory", "restaurant style", "full grown", "fully grown", "combined species", "solids", "fins", "liquid", "back", "lakestocked", "talley's", "home recipe", "imitation", "flavoured", "unflavoured", "regular", "fat not further defined", "findus", "first price", "bones",  "tempera",
                  "total can contents", "usda commodity", "–lumi", "medium size", "size", "small size", "edible portion", "ready to eat", "from takeaway outlet", "blended frying fat", "new york state", "adult fish", "maki", "nigiri", "brinesoaked", "marine water", "edible part", "large", "large size", "mature",
                  "ajitsukehirakiboshi", "–nama", "mezashi", "shiokara", "namaboshi", "mirinboshi", "kabayaki", "tazukuri", "shioiwashi", "denbu", "ameni", "ikura", "shirasuboshi", "shirayaki", "sujiko", "mefun", "shiozake", "kusaya", "aramaki", "–kaikoso", "hirakiboshi", "niboshi", "maruboshi", "amazuzuke", "kanroni", "tsukudani", "sababushi", "–walu", "–kai", "lerøy saithe", "first price fiskegrateng med makaroni",
                  "middle portion", "virgin olive oil", "veg.oil", "sour", "sea water", "sea", "unheated", "ventral", "first price fiskegrateng med makaron", "findus familiens fiskegrateng", "fields river", "helix", "lobnobs", "young <1yr", "minced", "industrially made", "marine waters", "mayjune", "little spicies", "all type", "plain", "along dorsal line", "eta", "northern", "assorted flavours", "tusk cusk", "basa bassa",
