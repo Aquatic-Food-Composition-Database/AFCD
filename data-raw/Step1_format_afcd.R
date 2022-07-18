@@ -72,10 +72,15 @@ ref_peer <- ref_peer_orig %>%
 colnames(ref_peer)
 table(ref_peer$region)
 
-# Merge reference key
+# Merge reference key & extract year 
 ref_key <- bind_rows(ref_peer, ref_fct) %>%
   arrange(study_type, study_id) %>%
-  select(study_type, study_id, citation, everything())
+  # extract year
+  mutate(study_year=str_extract(citation, "\\(\\d{4}\\)"),
+         study_year=case_when(is.na(study_year) ~ str_extract(citation, "(2\\d{3}|19\\d{2})"), TRUE ~ study_year),
+         study_year=gsub('(\\(|\\))', "", study_year)
+  ) %>%
+  select(study_type, study_id, citation, everything()) 
 
 # Inspect
 freeR::complete(ref_key)
