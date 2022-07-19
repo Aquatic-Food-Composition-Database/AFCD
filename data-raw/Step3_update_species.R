@@ -18,6 +18,9 @@ data_orig <- readRDS(file.path(outdir, "AFCD_data_pass2.Rds"))
 # Read ref key
 ref_key <- readRDS(file.path(outdir, "AFCD_reference_key.Rds"))
 
+# FAO-SAU ASFIS Key
+fao_sau_key <- read_csv(file.path(indir,"FAO_SAU_merge_key.csv"))
+
 # Prepare data: with taxonomy worked out
 ################################################################################
 
@@ -848,7 +851,10 @@ data_comm_taxa = rbind(afcd_common_family,
                        afcd_common_class)
 
 data_sci5 = rbind(data_sci4, data_comm_taxa) %>% 
-  mutate(portion_size = "per 100g") 
+  mutate(portion_size = "per 100g") %>%
+  left_join(fao_sau_key,by=c("sciname"="species_merge")) %>%
+  rename(isscaap_code=isscaap) %>%
+  select(sciname:food_name_orig,isscaap_code:sau_species_code,everything())
 
 ##nutrients missing
 # missing_nutrients = data_sci5 %>% 
@@ -863,7 +869,11 @@ saveRDS(data_sci5, file=file.path(outdir, "AFCD_data_taxa.Rds"))
 # Export data with complete scientific name
 data_sci_only = data_sci5 %>% 
   drop_na(sciname) %>% 
-  select(sciname, sciname_orig, genus, family, order, class, common_name, food_name, food_name_orig, everything()) %>% 
+  select(
+    sciname, sciname_orig, genus, family, order, class, 
+    common_name, food_name, food_name_orig, 
+    fao_taxocode,fao_3a_code,sau_species_code,isscaap_code,
+    everything()) %>% 
   unique()
 
 saveRDS(data_sci_only, file=file.path(outdir, "AFCD_data_sci.Rds"))
