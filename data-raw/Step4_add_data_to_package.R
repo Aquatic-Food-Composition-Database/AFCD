@@ -44,5 +44,5 @@ usethis::use_data(afcd_prep, overwrite = T)
 usethis::use_data(taxa_table, overwrite = T)
 
 ##To update functions
-# library(roxygen2); # Read in the roxygen2 R package
-# roxygenise();      # Builds the help files
+# library(roxygen2) # Read in the roxygen2 R package
+# roxygenise()      # Builds the help files
