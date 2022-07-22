@@ -495,7 +495,7 @@ data_sci3 = rbind(data_sci2, data_comm_sci) %>%
 
 ##Fill in taxonomic informtion
 ##Load Taxa_table
-taxa_table = readRDS("data-raw/taxa-table/taxa_table.Rds")
+taxa_table <- readRDS(file=file.path(outdir,"taxa_table.Rds"))
 missing_spp_matched_WORMS <- read_csv("data-raw/raw/missing_spp_matched_WORMS.csv")
 
 dta_species = data_sci3 %>% 

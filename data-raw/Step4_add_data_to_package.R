@@ -19,7 +19,7 @@ afcd_sci <- readRDS(file=file.path(outdir, "AFCD_data_sci.Rds"))
 afcd_common <- readRDS(file=file.path(outdir, "AFCD_data_comm.Rds"))
 afcd_refs <- readRDS(file=file.path(outdir, "AFCD_reference_key.Rds"))
 afcd_nutrients <- readRDS(file=file.path(outdir, "AFCD_nutrient_key.Rds"))
-taxa_table <- readRDS(file=file.path("data-raw","taxa-table","taxa_table.Rds"))
+taxa_table <- readRDS(file=file.path(outdir,"taxa_table.Rds"))
 
 
 ##Parts key

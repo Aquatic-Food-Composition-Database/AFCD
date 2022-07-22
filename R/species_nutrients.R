@@ -22,7 +22,7 @@ species_nutrients = function(sci_name, prep, part, nut){
   }
   
   ##Taxa_table
-  taxa_table = readRDS("data-raw/taxa-table/taxa_table.Rds")
+  taxa_table = readRDS(file=file.path("data-raw/processed/taxa_table.Rds"))
   
   ##Load AFCD
   AFCD = readRDS("data-raw/processed/AFCD_data_taxa.Rds") %>% 
