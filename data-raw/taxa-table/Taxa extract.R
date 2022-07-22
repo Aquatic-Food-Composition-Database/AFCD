@@ -91,3 +91,5 @@ taxa_table_final <- rbind(taxa_table,correctly_specified_taxa)
 
 # and export Rds to use in other scripts
 saveRDS(taxa_table_final, "data-raw/taxa-table/taxa_table.Rds")
+saveRDS(taxa_table_final, file=file.path("data-raw/processed/taxa_table.Rds"))
+
