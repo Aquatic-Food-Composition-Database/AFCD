@@ -22,10 +22,13 @@ species_nutrients = function(sci_name, prep, part, nut){
   }
   
   ##Taxa_table
-  taxa_table = readRDS(file=file.path("data-raw/processed/taxa_table.Rds"))
+  # This loads as you call it due to lazyLoad, no need to readRDS
+  # taxa_table = readRDS(file=file.path("data-raw/processed/taxa_table.Rds"))
   
   ##Load AFCD
-  AFCD = readRDS("data-raw/processed/AFCD_data_taxa.Rds") %>% 
+  # again, this loads as you call it due to lazyLoad, no need to readRDS
+  # AFCD = readRDS("data-raw/processed/AFCD_data_taxa.Rds") %>% 
+  AFCD = afcd %>%
     filter(nutrient %in% nut,
            food_prep %in% prep,
            food_part %in% part)
