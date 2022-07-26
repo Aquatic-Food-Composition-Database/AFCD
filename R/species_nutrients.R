@@ -12,7 +12,18 @@
 #' # species_nutrients(sci_name = c("Salmo salar", "Oreochromis niloticus"), prep = "raw", part = "muscle tissue", nut = c("Iron, total", "Zinc"))
 #' @export
 species_nutrients = function(sci_name, prep, part, nut){
-  
+  # to test with a mix of easy and hard to find species and nutrients
+  # sci_name=c("Thunnus alalunga","Thunnus obesus","Istiompax indica","Makaira nigricans","Coryphaena hippurus")
+  # prep = "raw"
+  # part = "muscle tissue"
+  # nut=c(
+  #   "Iron, total","Zinc","Iodine",
+  #   "Vitamin A; sum of retinol/carotenoids, expressed as retinol activity equivalent (RAE)",
+  #   "Riboflavin","Selenium","Magnesium","Vitamin B12",
+  #   "Fatty acid 20:5, n3","Fatty acid 22:6, n3",
+  #   "Calcium",
+  #   "Protein, total; calculated from total nitrogen"
+  # )
   ##Calculate confidence intervals
   lower_ci <- function(mean, se, n, conf_level = 0.95){
     lower_ci <- mean - qt(1 - ((1 - conf_level) / 2), n - 1) * se
@@ -158,7 +169,7 @@ species_nutrients = function(sci_name, prep, part, nut){
   #find NAs
   missing = spp_nutrient %>% 
     filter(is.na(value)) %>% 
-    select(-value, -ssd, -count, -se, -lower_ci, -upper_ci)
+    select(-value,-smean, -ssd, -count, -se, -lower_ci, -upper_ci)
   
   spp_nutrient = spp_nutrient %>% 
     filter(!is.na(value)) %>% 
@@ -177,7 +188,7 @@ species_nutrients = function(sci_name, prep, part, nut){
   ##Seperate remaining missing values
   missing = missing %>% 
     filter(is.na(value)) %>% 
-    dplyr::select(-value, -ssd, -count, -se, -lower_ci, -upper_ci)
+    dplyr::select(-value,-smean, -ssd, -count, -se, -lower_ci, -upper_ci)
   
   
   ###############Fill missing with family #######################
@@ -194,7 +205,7 @@ species_nutrients = function(sci_name, prep, part, nut){
   ##Seperate remaining missing values
   missing = missing %>% 
     filter(is.na(value)) %>% 
-    dplyr::select(-value, -ssd, -count, -se, -lower_ci, -upper_ci)
+    dplyr::select(-value,-smean, -ssd, -count, -se, -lower_ci, -upper_ci)
   
   ##Join for family = genus
   #Join datasets
@@ -209,7 +220,7 @@ species_nutrients = function(sci_name, prep, part, nut){
   ##Seperate remaining missing values
   missing = missing %>% 
     filter(is.na(value)) %>% 
-    dplyr::select(-value, -ssd, -count, -se, -lower_ci, -upper_ci)
+    dplyr::select(-value,-smean, -ssd, -count, -se, -lower_ci, -upper_ci)
   
   ###############Fill missing with order #######################
   #Join datasets
@@ -224,7 +235,7 @@ species_nutrients = function(sci_name, prep, part, nut){
   ##Seperate remaining missing values
   missing = missing %>% 
     filter(is.na(value)) %>% 
-    dplyr::select(-value, -ssd, -count, -se, -lower_ci, -upper_ci)
+    dplyr::select(-value,-smean, -ssd, -count, -se, -lower_ci, -upper_ci)
   
   ##genus = order
   #Join datasets
@@ -239,7 +250,7 @@ species_nutrients = function(sci_name, prep, part, nut){
   ##Seperate remaining missing values
   missing = missing %>% 
     filter(is.na(value)) %>% 
-    dplyr::select(-value, -ssd, -count, -se, -lower_ci, -upper_ci)
+    dplyr::select(-value,-smean, -ssd, -count, -se, -lower_ci, -upper_ci)
   
   ###############Fill missing with class #######################
   
@@ -255,7 +266,7 @@ species_nutrients = function(sci_name, prep, part, nut){
   ##Seperate remaining missing values
   missing = missing %>% 
     filter(is.na(value)) %>% 
-    dplyr::select(-value, -ssd, -count, -se, -lower_ci, -upper_ci)
+    dplyr::select(-value,-smean, -ssd, -count, -se, -lower_ci, -upper_ci)
   
   ##Genus = class
   #Join datasets
