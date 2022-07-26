@@ -142,7 +142,7 @@ species_nutrients = function(sci_name, prep, part, nut){
   #Fill taxa by family
   missing_family = all_spp %>% 
     filter(is.na(class)) %>% 
-    select(-order, -class) %>% 
+    select(-order,-phylum,-kingdom,-class) %>% 
     left_join(taxa_table %>% select(-genus) %>% distinct(family, .keep_all=T), by = c("genus" = "family"))
   
   all_spp = all_spp %>% 
@@ -152,7 +152,7 @@ species_nutrients = function(sci_name, prep, part, nut){
   #Fill taxa by order
   missing_order = all_spp %>% 
     filter(is.na(class)) %>% 
-    select(-class) %>% 
+    select(-class,-phylum,-kingdom) %>% 
     left_join(taxa_table %>% select(-genus, -family) %>% distinct(order, .keep_all=T), by = c("genus" = "order"))
   
   all_spp = all_spp %>% 
