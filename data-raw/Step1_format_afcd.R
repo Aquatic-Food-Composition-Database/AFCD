@@ -57,7 +57,7 @@ ref_peer <- ref_peer_orig %>%
   janitor::clean_names() %>%
   rename(study_id=study_id_number,
          doi=study_doi,
-         region=study_region,
+         country_origin_study=study_region,
          citation=study_apa_citation) %>%
   # Add study type
   mutate(study_type="Peer-reviewed literature") %>%
@@ -102,7 +102,7 @@ data1 <- data_orig %>%
          prod_catg=production_category,
          edible_prop=edible_portion_coefficient,
          study_id=study_id_number,
-         iso3=country_iso3,
+         country_origin_sample=country_iso3,
          fct_code_orig=original_fct_food_code,
          food_name=food_name_in_english,
          food_name_orig=food_name_in_original_language) %>%
@@ -188,9 +188,9 @@ data2 <- data1 %>%
   left_join(ref_key %>% select(study_id, study_type), by=c("study_id")) %>%
   mutate(study_type=ifelse(is.na(study_type), "Id not in AFCD reference key", study_type)) %>%
   # Format I30
-  mutate(iso3=stringr::str_trim(iso3),
-         iso3=ifelse(is.na(iso3), "Not provided in unformatted AFCD", iso3),
-         iso3=recode(iso3,
+  mutate(country_origin_sample=stringr::str_trim(country_origin_sample),
+         country_origin_sample=ifelse(is.na(country_origin_sample), "Not provided in unformatted AFCD", country_origin_sample),
+         country_origin_sample=recode(country_origin_sample,
                      "SAu"="SAU",
                      "BNG"="IND", # West Bengal which is part of India - study 1407
                      "GRB"="GBR", # study 789 mis-recorded
@@ -210,8 +210,8 @@ data2 <- data1 %>%
                      "FAO.infoods.west.africa"="FAO INFOODS West Africa",
                      "FAO.latinfoods"="FAO Latin Foods")) %>%
   # Add country
-  mutate(country=countrycode::countrycode(iso3, "iso3c", "country.name")) %>%
-  mutate(country=ifelse(is.na(country), iso3, country),
+  mutate(country=countrycode::countrycode(country_origin_sample, "iso3c", "country.name")) %>%
+  mutate(country=ifelse(is.na(country), country_origin_sample, country),
          country=recode(country,
                         "BGD, KHM"="Bangladesh, Cambodia",
                         "CHN, JPN, KOR"="China, Japan, South Korea",
@@ -248,7 +248,7 @@ data2 <- data1 %>%
   rename(taxa_name=sciname, taxa_name_source=sciname_source) %>%
   # Arrange
   select(taxa_name, taxa_name_source, kingdom:taxa_db,
-         study_type, study_id, peer_review, iso3, country,
+         study_type, study_id, peer_review, country_origin_sample, country,
          prod_catg, food_part, food_prep, food_name, food_name_orig, fct_code_orig, edible_prop, notes,
          nutrient_type, nutrient, nutrient_orig, nutrient_desc, nutrient_code_fao, nutrient_units, value, everything()) %>%
   # Remove unimportant columns
@@ -306,10 +306,10 @@ sort(unique(data2$food_name)) # terrible
 sort(unique(data2$food_name_orig)) # terrible
 
 # Inspect countries
-sort(unique(data2$iso3))
+sort(unique(data2$country_origin_sample))
 sort(unique(data2$country))
 cntry_key <- data2 %>%
-  group_by(iso3, country) %>%
+  group_by(country_origin_sample, country) %>%
   summarize(n=n())
 
 # Export data
