@@ -92,8 +92,35 @@ saveRDS(ref_key, file.path(outdir, "AFCD_reference_key.Rds"))
 # Step 1. Rename columns and go from wide to long
 ################################################################################
 
+##Combine some columns
+dta = data_orig %>% 
+  mutate(energy_total_combined = if_else(is.na(Energy_total_metabolizable_calculated_from_the_energy_producing_food_components_original_as_from_source_kcal), 
+                                         Energy_total_metabolizable_calculated_from_the_energy_producing_food_components_original_as_from_source_kj/4.184,
+                                         Energy_total_metabolizable_calculated_from_the_energy_producing_food_components_original_as_from_source_kcal),
+         protein_total_combined = if_else(is.na(Protein_total_calculated_from_total_nitrogen), 
+                                          Protein_total_method_of_determination_unknown_or_variable,
+                                          Protein_total_calculated_from_protein_nitrogen),
+         nitrogen_total_combined = if_else(is.na(Nitrogen_total),
+                                           Nitrogen_nonprotein,
+                                           Nitrogen_total),
+         nitrogen_total_combined = if_else(is.na(nitrogen_total_combined), 
+                                           Nitrogen_protein, nitrogen_total_combined),
+         vitamin_a_combined = if_else(is.na(Vitamin_a_retinol_activity_equivalent_rae_calculated_by_summation_of_the_vitamin_a_activities_of_retinol_and_the_active_carotenoids),
+                                      Retinol, Vitamin_a_retinol_activity_equivalent_rae_calculated_by_summation_of_the_vitamin_a_activities_of_retinol_and_the_active_carotenoids),
+         vitamin_a_combined = if_else(is.na(vitamin_a_combined), 
+                                      0.3*Vitamin_a_international_units_iu_sum_of_carotenoids_usda_indicates_over_estimates_bioavailability,
+                                      vitamin_a_combined),
+         DHA = if_else(is.na(Fatty_acid_20_5), Fatty_acid_20_5_n3, Fatty_acid_20_5),
+         DHA = if_else(is.na(DHA), Fatty_acid_20_5_cis_n3, DHA),
+         EPA = if_else(is.na(Fatty_acid_22_6), Fatty_acid_22_6_n3, Fatty_acid_22_6),
+         EPA = if_else(is.na(EPA), Fatty_acid_22_6_cis_n3, EPA),
+         ALA = if_else(is.na(Fatty_acid_18_3), Fatty_acid_18_3_n3, Fatty_acid_18_3),
+         ALA = if_else(is.na(EPA), Fatty_acid_18_3_cis_n3, EPA),
+         DHA_EPA = if_else(is.na(EPA), DHA, EPA+DHA),
+         DHA_EPA = if_else(is.na(DHA_EPA), EPA, DHA_EPA))
+
 # Format data
-data1 <- data_orig %>%
+data1 <- dta %>%
   # Rename columns
   janitor::clean_names() %>%
   rename(sciname=taxa_name,
@@ -258,6 +285,13 @@ data2 <- data1 %>%
 data2 %>%
   filter(grepl(pattern="includes|Includes", x=taxa_name)) %>% pull(taxa_name) %>% unique() %>% sort()
 
+# Export data
+################################################################################
+
+# Export data
+saveRDS(data2, file=file.path(outdir, "AFCD_data_pass1.Rds"))
+
+
 # Step 4. Inspect data
 ################################################################################
 
@@ -312,13 +346,6 @@ cntry_key <- data2 %>%
   group_by(country_origin_sample, country) %>%
   summarize(n=n())
 
-# Export data
-################################################################################
-
-# Export data
-saveRDS(data2, file=file.path(outdir, "AFCD_data_pass1.Rds"))
-
-
 # Nutrient key
 ################################################################################
 
@@ -339,50 +366,3 @@ write.csv(nutr_key,
           )
 # Inspect
 freeR::complete(nutr_key)
-
-# # Setup theme
-# my_theme <-  theme(axis.text=element_text(size=6),
-#                    axis.title=element_text(size=8),
-#                    legend.text=element_text(size=6),
-#                    legend.title=element_text(size=8),
-#                    strip.text=element_text(size=8),
-#                    plot.title=element_text(size=10),
-#                    # Gridlines
-#                    panel.grid.major = element_blank(),
-#                    panel.grid.minor = element_blank(),
-#                    panel.background = element_blank(),
-#                    axis.line = element_line(colour = "black"),
-#                    # Legend
-#                    legend.background = element_rect(fill=alpha('blue', 0)))
-# 
-# # Plot sample size: fatty acids
-# g1 <- ggplot(nutr_key %>% filter(nutrient_type=="Fatty acid"), aes(y=reorder(nutrient,n), x=n)) +
-#   facet_grid(nutrient_type~., scales="free_y", space="free_y") +
-#   geom_bar(stat="identity") +
-#   # Labels
-#   labs(x="Number of observations", y="") +
-#   # Theme
-#   theme_bw() + my_theme
-# g1
-# 
-# # Export
-# ggsave(g1, filename=file.path(plotdir, "AFCD_nutrient_sample_size_fatty_acids.pdf"),
-#        width=8.5, height=11, units="in", dpi=600)
-# 
-# # Plot sample size: fatty acids
-# g2 <- ggplot(nutr_key %>% filter(nutrient_type!="Fatty acid"), aes(y=reorder(nutrient,n), x=n)) +
-#   facet_grid(nutrient_type~., scales="free_y", space="free_y") +
-#   geom_bar(stat="identity") +
-#   # Labels
-#   labs(x="Number of observations", y="") +
-#   # Theme
-#   theme_bw() + my_theme
-# g2
-# 
-# # Export
-# ggsave(g2, filename=file.path(plotdir, "AFCD_nutrient_sample_size_non_fatty_acids.pdf"),
-#        width=8.5, height=11, units="in", dpi=600)
-
-
-
-

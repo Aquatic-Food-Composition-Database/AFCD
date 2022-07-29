@@ -87,18 +87,22 @@ saveRDS(ref_key, file.path(outdir, "AFCD_reference_key.Rds"))
 # Step 1. Rename columns and go from wide to long
 ################################################################################
 dta = data_orig %>% 
-    mutate(energy_total_final = if_else(is.na(Energy_total_metabolizable_calculated_from_the_energy_producing_food_components_original_as_from_source_kcal), 
+    mutate(energy_total_combined = if_else(is.na(Energy_total_metabolizable_calculated_from_the_energy_producing_food_components_original_as_from_source_kcal), 
                                       Energy_total_metabolizable_calculated_from_the_energy_producing_food_components_original_as_from_source_kj/4.184,
-                                      Energy_total_metabolizable_calculated_from_the_energy_producing_food_components_original_as_from_source_kcal)) %>% 
-    select(Energy_total_metabolizable_calculated_from_the_energy_producing_food_components_original_as_from_source_kcal,
-         Energy_total_metabolizable_calculated_from_the_energy_producing_food_components_original_as_from_source_kj,
-         energy_total_final)
-    mutate(protein_total_final = if_else(is.na(Protein_total_calculated_from_total_nitrogen), 
-                                       Protein_total_method_of_determination_unknown_or_variable,
-                                       Protein_total_calculated_from_protein_nitrogen)) %>% 
-    mutate(nitrogen_total_final = if_else(is.na(Nitrogen_total), 
-                                        Nitrogen_nonprotein,
-                                      Nitrogen_protein)) %>% 
+                                      Energy_total_metabolizable_calculated_from_the_energy_producing_food_components_original_as_from_source_kcal),
+           protein_total_combined = if_else(is.na(Protein_total_calculated_from_total_nitrogen), 
+                                         Protein_total_method_of_determination_unknown_or_variable,
+                                         Protein_total_calculated_from_protein_nitrogen),
+           nitrogen_total_combined = if_else(is.na(Nitrogen_total),
+                                             Nitrogen_nonprotein,
+                                             Nitrogen_total),
+           nitrogen_total_combined = if_else(is.na(nitrogen_total_combined), 
+                                             Nitrogen_protein, nitrogen_total_combined),
+           vitamin_a_combined = if_else(is.na(Vitamin_a_retinol_activity_equivalent_rae_calculated_by_summation_of_the_vitamin_a_activities_of_retinol_and_the_active_carotenoids),
+                                          Retinol, Vitamin_a_retinol_activity_equivalent_rae_calculated_by_summation_of_the_vitamin_a_activities_of_retinol_and_the_active_carotenoids),
+           vitamin_a_combined = if_else(is.na(vitamin_a_combined), 
+                                        0.3*Vitamin_a_international_units_iu_sum_of_carotenoids_usda_indicates_over_estimates_bioavailability,
+                                        vitamin_a_combined))
 
 
 # Format data
@@ -172,17 +176,12 @@ nutr_key_orig <- data1 %>%
 # Read formatted key
 nutr_key_use <- readxl::read_excel(file.path(indir, "AFCD_nutrient_key_work.xlsx"), na="NA")
 
-nutr_key_use2 = nutr_key_use %>% 
-  mutate(units = case_when(nutrient_orig == "Asparagine_plus_aspartic_acid" ~ "mg",
-                           TRUE ~ units)) %>%
-  mutate(units = case_when(nutrient_orig == "Fat_method_of_determination_unknown_or_mixed_methods" ~ "g",
-                          TRUE ~ units)) %>%
-  mutate(units = case_when(nutrient_orig == "Fatty_acid_16_1_cis" ~ "g",
-                           TRUE ~ units)) %>%
-  mutate(units = case_when(nutrient_orig == "Hydroxylysine" ~ "mg",
-                           TRUE ~ units)) %>%
-  mutate(units = case_when(nutrient_orig == "Summation_retinol_transretinol_cisretinol" ~ "mcg",
-                           TRUE ~ units)) %>%
+# nutr_key_use2 = nutr_key_use %>% 
+#   mutate(units = case_when(nutrient_orig == "Asparagine_plus_aspartic_acid" ~ "mg",
+#                            nutrient_orig == "Fat_method_of_determination_unknown_or_mixed_methods" ~ "g",
+#                            nutrient_orig == "Hydroxylysine" ~ "mg",
+#                            nutrient_orig == "Summation_retinol_transretinol_cisretinol" ~ "mcg",
+#                            TRUE ~ units))
 
 # Format data some more
 data2 <- data1 %>%
@@ -243,7 +242,7 @@ data2 <- data1 %>%
                         "NOR, FRA, ISL"="Norway, France, Israel",
                         "POL, AUS"="Poland, Australia")) %>%
   # Add nutrients
-  left_join(nutr_key_use, by=c("nutrient_orig")) %>%
+  left_join(nutr_key_use2, by=c("nutrient_orig")) %>%
   rename(nutrient_units=units, nutrient_desc=description, nutrient_code_fao=fao_code) %>%
    # Format nutrient units/description
   mutate(nutrient_units=ifelse(is.na(nutrient_units), "Not provided in unformatted AFCD", nutrient_units),
