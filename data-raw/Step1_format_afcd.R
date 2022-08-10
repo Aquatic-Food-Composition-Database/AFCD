@@ -57,7 +57,7 @@ ref_peer <- ref_peer_orig %>%
   janitor::clean_names() %>%
   rename(study_id=study_id_number,
          doi=study_doi,
-         region=study_region,
+         country_origin_study=study_region,
          citation=study_apa_citation) %>%
   # Add study type
   mutate(study_type="Peer-reviewed literature") %>%
@@ -72,10 +72,15 @@ ref_peer <- ref_peer_orig %>%
 colnames(ref_peer)
 table(ref_peer$region)
 
-# Merge reference key
+# Merge reference key & extract year 
 ref_key <- bind_rows(ref_peer, ref_fct) %>%
   arrange(study_type, study_id) %>%
-  select(study_type, study_id, citation, everything())
+  # extract year
+  mutate(study_year=str_extract(citation, "\\(\\d{4}\\)"),
+         study_year=case_when(is.na(study_year) ~ str_extract(citation, "(2\\d{3}|19\\d{2})"), TRUE ~ study_year),
+         study_year=gsub('(\\(|\\))', "", study_year)
+  ) %>%
+  select(study_type, study_id, citation, everything()) 
 
 # Inspect
 freeR::complete(ref_key)
@@ -87,8 +92,35 @@ saveRDS(ref_key, file.path(outdir, "AFCD_reference_key.Rds"))
 # Step 1. Rename columns and go from wide to long
 ################################################################################
 
+##Combine some columns
+dta = data_orig %>% 
+  mutate(energy_total_combined = if_else(is.na(Energy_total_metabolizable_calculated_from_the_energy_producing_food_components_original_as_from_source_kcal), 
+                                         Energy_total_metabolizable_calculated_from_the_energy_producing_food_components_original_as_from_source_kj/4.184,
+                                         Energy_total_metabolizable_calculated_from_the_energy_producing_food_components_original_as_from_source_kcal),
+         protein_total_combined = if_else(is.na(Protein_total_calculated_from_total_nitrogen), 
+                                          Protein_total_method_of_determination_unknown_or_variable,
+                                          Protein_total_calculated_from_protein_nitrogen),
+         nitrogen_total_combined = if_else(is.na(Nitrogen_total),
+                                           Nitrogen_nonprotein,
+                                           Nitrogen_total),
+         nitrogen_total_combined = if_else(is.na(nitrogen_total_combined), 
+                                           Nitrogen_protein, nitrogen_total_combined),
+         vitamin_a_combined = if_else(is.na(Vitamin_a_retinol_activity_equivalent_rae_calculated_by_summation_of_the_vitamin_a_activities_of_retinol_and_the_active_carotenoids),
+                                      Retinol, Vitamin_a_retinol_activity_equivalent_rae_calculated_by_summation_of_the_vitamin_a_activities_of_retinol_and_the_active_carotenoids),
+         vitamin_a_combined = if_else(is.na(vitamin_a_combined), 
+                                      0.3*Vitamin_a_international_units_iu_sum_of_carotenoids_usda_indicates_over_estimates_bioavailability,
+                                      vitamin_a_combined),
+         DHA = if_else(is.na(Fatty_acid_20_5), Fatty_acid_20_5_n3, Fatty_acid_20_5),
+         DHA = if_else(is.na(DHA), Fatty_acid_20_5_cis_n3, DHA),
+         EPA = if_else(is.na(Fatty_acid_22_6), Fatty_acid_22_6_n3, Fatty_acid_22_6),
+         EPA = if_else(is.na(EPA), Fatty_acid_22_6_cis_n3, EPA),
+         ALA = if_else(is.na(Fatty_acid_18_3), Fatty_acid_18_3_n3, Fatty_acid_18_3),
+         ALA = if_else(is.na(EPA), Fatty_acid_18_3_cis_n3, EPA),
+         DHA_EPA = if_else(is.na(EPA), DHA, EPA+DHA),
+         DHA_EPA = if_else(is.na(DHA_EPA), EPA, DHA_EPA))
+
 # Format data
-data1 <- data_orig %>%
+data1 <- dta %>%
   # Rename columns
   janitor::clean_names() %>%
   rename(sciname=taxa_name,
@@ -97,7 +129,7 @@ data1 <- data_orig %>%
          prod_catg=production_category,
          edible_prop=edible_portion_coefficient,
          study_id=study_id_number,
-         iso3=country_iso3,
+         country_origin_sample=country_iso3,
          fct_code_orig=original_fct_food_code,
          food_name=food_name_in_english,
          food_name_orig=food_name_in_original_language) %>%
@@ -183,9 +215,9 @@ data2 <- data1 %>%
   left_join(ref_key %>% select(study_id, study_type), by=c("study_id")) %>%
   mutate(study_type=ifelse(is.na(study_type), "Id not in AFCD reference key", study_type)) %>%
   # Format I30
-  mutate(iso3=stringr::str_trim(iso3),
-         iso3=ifelse(is.na(iso3), "Not provided in unformatted AFCD", iso3),
-         iso3=recode(iso3,
+  mutate(country_origin_sample=stringr::str_trim(country_origin_sample),
+         country_origin_sample=ifelse(is.na(country_origin_sample), "Not provided in unformatted AFCD", country_origin_sample),
+         country_origin_sample=recode(country_origin_sample,
                      "SAu"="SAU",
                      "BNG"="IND", # West Bengal which is part of India - study 1407
                      "GRB"="GBR", # study 789 mis-recorded
@@ -205,8 +237,8 @@ data2 <- data1 %>%
                      "FAO.infoods.west.africa"="FAO INFOODS West Africa",
                      "FAO.latinfoods"="FAO Latin Foods")) %>%
   # Add country
-  mutate(country=countrycode::countrycode(iso3, "iso3c", "country.name")) %>%
-  mutate(country=ifelse(is.na(country), iso3, country),
+  mutate(country=countrycode::countrycode(country_origin_sample, "iso3c", "country.name")) %>%
+  mutate(country=ifelse(is.na(country), country_origin_sample, country),
          country=recode(country,
                         "BGD, KHM"="Bangladesh, Cambodia",
                         "CHN, JPN, KOR"="China, Japan, South Korea",
@@ -243,7 +275,7 @@ data2 <- data1 %>%
   rename(taxa_name=sciname, taxa_name_source=sciname_source) %>%
   # Arrange
   select(taxa_name, taxa_name_source, kingdom:taxa_db,
-         study_type, study_id, peer_review, iso3, country,
+         study_type, study_id, peer_review, country_origin_sample, country,
          prod_catg, food_part, food_prep, food_name, food_name_orig, fct_code_orig, edible_prop, notes,
          nutrient_type, nutrient, nutrient_orig, nutrient_desc, nutrient_code_fao, nutrient_units, value, everything()) %>%
   # Remove unimportant columns
@@ -252,6 +284,13 @@ data2 <- data1 %>%
 # Inspect scinames with "includes"
 data2 %>%
   filter(grepl(pattern="includes|Includes", x=taxa_name)) %>% pull(taxa_name) %>% unique() %>% sort()
+
+# Export data
+################################################################################
+
+# Export data
+saveRDS(data2, file=file.path(outdir, "AFCD_data_pass1.Rds"))
+
 
 # Step 4. Inspect data
 ################################################################################
@@ -301,18 +340,11 @@ sort(unique(data2$food_name)) # terrible
 sort(unique(data2$food_name_orig)) # terrible
 
 # Inspect countries
-sort(unique(data2$iso3))
+sort(unique(data2$country_origin_sample))
 sort(unique(data2$country))
 cntry_key <- data2 %>%
-  group_by(iso3, country) %>%
+  group_by(country_origin_sample, country) %>%
   summarize(n=n())
-
-# Export data
-################################################################################
-
-# Export data
-saveRDS(data2, file=file.path(outdir, "AFCD_data_pass1.Rds"))
-
 
 # Nutrient key
 ################################################################################
@@ -334,50 +366,3 @@ write.csv(nutr_key,
           )
 # Inspect
 freeR::complete(nutr_key)
-
-# # Setup theme
-# my_theme <-  theme(axis.text=element_text(size=6),
-#                    axis.title=element_text(size=8),
-#                    legend.text=element_text(size=6),
-#                    legend.title=element_text(size=8),
-#                    strip.text=element_text(size=8),
-#                    plot.title=element_text(size=10),
-#                    # Gridlines
-#                    panel.grid.major = element_blank(),
-#                    panel.grid.minor = element_blank(),
-#                    panel.background = element_blank(),
-#                    axis.line = element_line(colour = "black"),
-#                    # Legend
-#                    legend.background = element_rect(fill=alpha('blue', 0)))
-# 
-# # Plot sample size: fatty acids
-# g1 <- ggplot(nutr_key %>% filter(nutrient_type=="Fatty acid"), aes(y=reorder(nutrient,n), x=n)) +
-#   facet_grid(nutrient_type~., scales="free_y", space="free_y") +
-#   geom_bar(stat="identity") +
-#   # Labels
-#   labs(x="Number of observations", y="") +
-#   # Theme
-#   theme_bw() + my_theme
-# g1
-# 
-# # Export
-# ggsave(g1, filename=file.path(plotdir, "AFCD_nutrient_sample_size_fatty_acids.pdf"),
-#        width=8.5, height=11, units="in", dpi=600)
-# 
-# # Plot sample size: fatty acids
-# g2 <- ggplot(nutr_key %>% filter(nutrient_type!="Fatty acid"), aes(y=reorder(nutrient,n), x=n)) +
-#   facet_grid(nutrient_type~., scales="free_y", space="free_y") +
-#   geom_bar(stat="identity") +
-#   # Labels
-#   labs(x="Number of observations", y="") +
-#   # Theme
-#   theme_bw() + my_theme
-# g2
-# 
-# # Export
-# ggsave(g2, filename=file.path(plotdir, "AFCD_nutrient_sample_size_non_fatty_acids.pdf"),
-#        width=8.5, height=11, units="in", dpi=600)
-
-
-
-
