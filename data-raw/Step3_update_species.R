@@ -755,15 +755,68 @@ data_sci4 = rbind(dta_species, dta_genus, dta_family, dta_other2) %>%
 ##Load Taxa_table
 #taxa_table = readRDS("data-raw/taxa-table/taxa_table.Rds")
 
+
+# ## Using scientific names, find names with corresponding common name in english fishbase db 
+# com_names_key = com_names_es_key %>%
+#   filter(!is.na(spec_code)) %>% # filter out names that don't have an associated species code
+#   rename(SpecCode=spec_code) %>%
+#   mutate(SpecCode=as.integer(SpecCode)) %>%
+#   left_join(rfishbase::fb_tbl("comnames") |> filter(Language == "English"), by="SpecCode") %>%
+#   select(SpecCode, com_name, ComName, PreferredName) %>%
+#   filter(!is.na(ComName) & PreferredName==1 | SpecCode==8255) %>%
+#   rename(es_name=com_name, en_name=ComName) %>%
+#   distinct() %>%
+#   select(es_name, en_name) 
+
+## Make a key of spanish common names to scientific names 
+com_names_es_key = data_comm %>%
+  filter(study_id=="LATINFOODS") %>%
+  separate(food_name_orig,
+           into=c("ComName"),
+           sep = "([_;,()%/])",
+           remove=F) %>%
+  left_join(rfishbase::fb_tbl("comnames") |> filter(Language == "Spanish"), by="ComName") %>%
+  left_join(rfishbase::fb_tbl("species"), by="SpecCode") %>%
+  select("ComName", "Language",  "SpecCode", "Species", "Genus") %>%
+  unique() %>%
+  janitor::clean_names() %>%
+  mutate(genus=tolower(genus), com_name=tolower(com_name))%>%
+  left_join(taxa_table, by="genus") %>%
+  group_by(com_name) %>%
+  # mutate based on common taxa, start broad then narrow down
+  # the detailed taxa info isn't super necessary right now, but maybe will be used later on
+  mutate(
+           class = case_when(length(unique(class)) == 1 ~ class,
+                             length(unique(class)) > 1 ~ ""),
+           order = case_when(class == NA ~ "",
+                             length(unique(order)) == 1 ~ order,
+                              length(unique(order)) > 1 ~ ""),
+           family = case_when(order == "" ~ "",
+                             length(unique(family)) == 1 ~ family,
+                             length(unique(family)) > 1 ~ ""),
+           genus = case_when(family == "" ~ "",
+                              length(unique(genus)) == 1 ~ genus,
+                              length(unique(genus)) > 1 ~ ""),
+    species = case_when(length(unique(spec_code)) == 1 ~ species,
+                        length(unique(spec_code)) > 1 ~ ""),
+    spec_code = case_when(species == "" ~ "",
+                          species != "" ~ as.character(spec_code)) #remove species code for those that don't have a common species
+  ) %>%
+  mutate(sciname=case_when(species!="" ~ paste(genus, species), TRUE ~ "")) %>%
+  mutate_all(na_if,"") %>%
+  select(-c(spec_code, species, language)) %>%
+  unique()
+
 data_comm2 = data_comm %>% 
   filter(is.na(sciname)) %>%
   rbind(add_common) %>% 
-  select(-kingdom, -phylum, -taxa_id, -taxa_db, -taxa_type, -taxa_level, -class, -family, -order) %>% 
+  select(-kingdom, -phylum, -taxa_id, -taxa_db, -taxa_type, -taxa_level, -class, -family, -order, -genus) %>% 
+  left_join(com_names_es_key, by=c("common_name"="com_name")) %>%
   unique() %>% 
   mutate(food_name_orig = if_else(is.na(food_name_orig), food_name, food_name_orig),
          food_name = enc2native(food_name), #added encoding to native to play nice between windows/mac/linux
          food_name = tolower(food_name),
-         ##Class
+         ##class
          class = case_when(
            #Decapoda
            str_detect(food_name, paste(c("fish", "char"), collapse = '|')) ~ "actinopterygii",
@@ -817,12 +870,22 @@ data_comm2 = data_comm %>%
            #Agar seaweed
            str_detect(food_name, "agar") ~ "gelideaceae",
            #Nori seaweed
-           str_detect(food_name, "nori") ~ "bangiaceae"
+           str_detect(food_name, "nori") ~ "bangiaceae",
+           #Grunt
+           str_detect(food_name, "corocoro") ~ "haemulidae"
            ),
+         genus = case_when(
+           str_detect(food_name, "corocoro") ~ "haemulom"
+         ),
          #Species
          sciname = case_when(
            #Corocoro aka Grunt
-           str_detect(food_name, "corocoro") ~ "haemulom aurolineatum"))
+           str_detect(food_name, "corocoro") ~ "haemulom aurolineatum", 
+           !is.na(sciname.x) ~ sciname.x,
+           TRUE ~ sciname.y 
+        )
+      ) %>%
+  select(-c(sciname.x, sciname.y))
 
 afcd_common_family = data_comm2 %>%
   filter(!is.na(family)) %>% 
