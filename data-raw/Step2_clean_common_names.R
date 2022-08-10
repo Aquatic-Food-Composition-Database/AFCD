@@ -17,9 +17,6 @@ data_orig <- readRDS(file.path(outdir, "AFCD_data_pass1.Rds"))
 # Read ref key
 ref_key <- readRDS(file.path(outdir, "AFCD_reference_key.Rds"))
 
-# Read taxa table for spanish common names
-taxa_table = readRDS("data-raw/taxa-table/taxa_table.Rds")
-
 ##Create ID for each row
 data_orig = data_orig %>% 
   mutate(ID = 1:nrow(data_orig)) %>% 
