@@ -476,17 +476,17 @@ genus_long = com_names %>%
   filter(name_type == "genus")
 
 ## wide format
-genus_wide = com_names %>%
-  filter(name_type == "genus") %>% 
-  pivot_wider(names_from = name_type,
-              values_from = value,
-              values_fill = NA) %>%
-  unnest(genus) %>%
-  group_by(ID) %>% 
-  mutate(col=seq_along(ID)) %>% 
-  spread(key=col, value=genus) %>%
-  ungroup() %>% 
-  distinct(food_name_orig, .keep_all = TRUE)
+# genus_wide = com_names %>%
+#   filter(name_type == "genus") %>% 
+#   pivot_wider(names_from = name_type,
+#               values_from = value,
+#               values_fill = NA) %>%
+#   unnest(genus) %>%
+#   group_by(ID) %>% 
+#   mutate(col=seq_along(ID)) %>% 
+#   spread(key=col, value=genus) %>%
+#   ungroup() %>% 
+#   distinct(food_name_orig, .keep_all = TRUE)
 
 ######Include info in data
 
@@ -537,7 +537,7 @@ data2 = data2 %>%
          "taxa_name", "taxa_name_source", "kingdom", "phylum", "class",
          "order", "family", "genus", "taxa_id", "taxa_db", "common_name", "common_name_detailed",
          "food_prep", "food_prep_detailed", "food_part", "food_part_detailed", "prod_catg",
-         "other_ingredients", "study_type", "study_id", "iso3", "country", 
+         "other_ingredients", "study_type", "study_id", "country_origin_sample", "country", 
          "edible_prop", "notes", "nutrient_type", "nutrient", "nutrient_orig",
          "nutrient_desc", "nutrient_code_fao", "nutrient_units", "value")         
 
