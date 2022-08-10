@@ -51,10 +51,36 @@ afcd_taxa_unique = afcd_taxa %>%
   unique()
 
 # number of unique taxa
-as.data.frame(table(afcd_taxa_unique$class, afcd_taxa_unique$nutrient)) %>% 
-  setNames(c(Var1="CLASS", Var2="NUTRIENT", Freq="count")) %>%
-  arrange(count) %>%
-  write.csv('CLASS.csv')
+t = as.data.frame(table(afcd_taxa$class, afcd_taxa$nutrient)) %>% 
+  setNames(c(Var1="CLASS", Var2="NUTRIENT", Freq="OBSERVATIONS")) %>%
+  arrange(OBSERVATIONS) 
+
+
+t_1 = as.data.frame(table(afcd_taxa_unique$class, afcd_taxa_unique$nutrient)) %>% 
+  setNames(c(Var1="CLASS", Var2="NUTRIENT", Freq="SPECIES")) %>%
+  arrange(SPECIES) %>%
+  left_join(t, by=c("CLASS", "NUTRIENT"))
+  
+write.csv(t_1, 'CLASS.csv')
+
+
+# by kingdom/phylum 
+t = as.data.frame(table(afcd_taxa$phylum, afcd_taxa$nutrient)) %>% 
+  setNames(c(Var1="PHYLUM", Var2="NUTRIENT", Freq="OBSERVATIONS")) %>%
+  arrange(OBSERVATIONS) 
+
+t_key = afcd_taxa_unique %>% select(c(kingdom, phylum)) %>% 
+  unique() %>% 
+  filter(kingdom!="monera")
+
+t_1 = as.data.frame(table(afcd_taxa_unique$phylum, afcd_taxa_unique$nutrient)) %>% 
+  setNames(c(Var1="PHYLUM", Var2="NUTRIENT", Freq="SPECIES")) %>%
+  arrange(SPECIES) %>%
+  left_join(t, by=c("PHYLUM", "NUTRIENT")) %>%
+  left_join(t_key, by=c("PHYLUM"="phylum")) %>%
+  select(kingdom, everything())
+
+write.csv(t_1, 'PHYLUM.csv')
 
 
 afcd_count = as.data.frame(table(afcd$nutrient))
