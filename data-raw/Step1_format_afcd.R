@@ -104,9 +104,11 @@ dta = data_orig %>%
                                            Nitrogen_nonprotein,
                                            Nitrogen_total),
          nitrogen_total_combined = if_else(is.na(nitrogen_total_combined), 
-                                           Nitrogen_protein, nitrogen_total_combined),
+                                           Nitrogen_protein, 
+                                           nitrogen_total_combined),
          vitamin_a_combined = if_else(is.na(Vitamin_a_retinol_activity_equivalent_rae_calculated_by_summation_of_the_vitamin_a_activities_of_retinol_and_the_active_carotenoids),
-                                      Retinol, Vitamin_a_retinol_activity_equivalent_rae_calculated_by_summation_of_the_vitamin_a_activities_of_retinol_and_the_active_carotenoids),
+                                      Retinol, 
+                                      Vitamin_a_retinol_activity_equivalent_rae_calculated_by_summation_of_the_vitamin_a_activities_of_retinol_and_the_active_carotenoids),
          vitamin_a_combined = if_else(is.na(vitamin_a_combined), 
                                       0.3*Vitamin_a_international_units_iu_sum_of_carotenoids_usda_indicates_over_estimates_bioavailability,
                                       vitamin_a_combined),
@@ -115,7 +117,7 @@ dta = data_orig %>%
          EPA = if_else(is.na(Fatty_acid_22_6), Fatty_acid_22_6_n3, Fatty_acid_22_6),
          EPA = if_else(is.na(EPA), Fatty_acid_22_6_cis_n3, EPA),
          ALA = if_else(is.na(Fatty_acid_18_3), Fatty_acid_18_3_n3, Fatty_acid_18_3),
-         ALA = if_else(is.na(EPA), Fatty_acid_18_3_cis_n3, EPA),
+         ALA = if_else(is.na(ALA), Fatty_acid_18_3_cis_n3, ALA),
          DHA_EPA = if_else(is.na(EPA), DHA, EPA+DHA),
          DHA_EPA = if_else(is.na(DHA_EPA), EPA, DHA_EPA))
 
