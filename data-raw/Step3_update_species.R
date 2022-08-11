@@ -889,19 +889,20 @@ data_comm2 = data_comm %>%
 
 afcd_common_family = data_comm2 %>%
   filter(!is.na(family)) %>% 
-  select(-class, -order) %>% 
+  select(-class, -order, -phylum, -kingdom) %>% 
   left_join(taxa_table %>% select(-genus) %>% unique())
 
 afcd_common_order = data_comm2 %>%
   filter(is.na(family),
          !is.na(order)) %>% 
-  select(-class) %>% 
+  select(-class, -phylum, -kingdom) %>% 
   left_join(taxa_table %>% select(-genus, -family) %>% unique())
 
 afcd_common_class = data_comm2 %>%
   filter(is.na(family),
          is.na(order),
          !is.na(class)) %>% 
+  select(-phylum, -kingdom) %>% 
   left_join(taxa_table %>% select(-genus, -family, -order) %>% unique())
 
 afcd_missing = data_comm2 %>%

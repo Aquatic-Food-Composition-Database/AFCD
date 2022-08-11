@@ -14,7 +14,7 @@
 "Carbohydrate","Glucose","g","Glucose; d-glucose only; inclues only free monosaccharide","GLUS",243
 "Carbohydrate","Glycogen","g","Glycogen","GLYC",117
 "Carbohydrate","Polysaccharides, non-starch watersoluble","g","Polysaccharides non-starch water soluble","PSACNSS",2
-"Carbohydrate","Saccharose","Not provided in unformatted AFCD","Saccharose",NA,98
+"Carbohydrate","Saccharose","g","Saccharose",NA,98
 "Carbohydrate","Starch, total","g","Sum of all polysaccharides, including amylose, amylopectin, glycogen and dextrisn","STARCH",551
 "Carbohydrate","Sucrose","g","Sucrose","SUCS",53
 "Carbohydrate","Sugars, total","g","Sugars, total","SUGAR",385
@@ -23,7 +23,8 @@
 "Energy","Energy, gross","kj","Energy in kilojoules, calculated by direct analysis using bomb calorimetry","ENERA",87
 "Energy","Energy, total","kcal","Energy in kilocalories, total metabolizable; calculated from the energy-producing food components",NA,3344
 "Energy","Energy, total","kj","Energy in kilojoules, total metabolizable; calculated from the energy-producing food components","ENERC",3354
-"Fatty acid","ALA","g","alpha-Linolenic acid, 18:3",NA,3139
+"Energy","Energy_total_combined","kcal","Energy_total_combined",NA,4405
+"Fatty acid","ALA","g","alpha-Linolenic acid, 18:3",NA,2417
 "Fatty acid","DHA","g","Docosahexaenoic acid, 22:6",NA,3083
 "Fatty acid","DHA_EPA","g","DHA + EPA",NA,3267
 "Fatty acid","Diglycerides, total","g","Total diglycerides","DGLY",14
@@ -48,7 +49,7 @@
 "Fatty acid","Fatty acid 16:0","g","Fatty acid 16:0",NA,2870
 "Fatty acid","Fatty acid 16:0, iso","g","Fatty acid 16:0, with methyl group occurs at the second to the last carbon in the chain.",NA,1
 "Fatty acid","Fatty acid 16:1","g","Fatty acid 16:1",NA,2134
-"Fatty acid","Fatty acid 16:1, cis","Not provided in unformatted AFCD","Fatty acid 16:1, cis",NA,21
+"Fatty acid","Fatty acid 16:1, cis","g","Fatty acid 16:1, cis",NA,21
 "Fatty acid","Fatty acid 16:1, n11","g","Fatty acid 16:1 double bond on 11th carbon-carbon bond",NA,2
 "Fatty acid","Fatty acid 16:1, n5","g","Fatty acid 16:1 double bond on 5th carbon-carbon bond",NA,25
 "Fatty acid","Fatty acid 16:1, n7","g","Fatty acid 16:1 double bond on 7th carbon-carbon bond",NA,317
@@ -165,8 +166,8 @@
 "Fatty acid","Fatty acid 6:0","g","Fatty acid 6:0",NA,798
 "Fatty acid","Fatty acid 8:0","g","Fatty acid 8:0",NA,914
 "Fatty acid","Fatty acid 9:0","g","Fatty acid 9:0",NA,60
-"Fatty acid","Fatty acid conversion factor, for internal use","Not provided in unformatted AFCD","Fatty acid conversion factor, for internal use",NA,106
-"Fatty acid","Fatty acids not identified","Not provided in unformatted AFCD","Fatty acids not identified",NA,902
+"Fatty acid","Fatty acid conversion factor, for internal use","none","Fatty acid conversion factor, for internal use",NA,106
+"Fatty acid","Fatty acids not identified","g","Fatty acids not identified",NA,902
 "Fatty acid","Monoglycerides, total","g","Total monoglycerides","MGLY",832
 "Fatty acid","Phospholipids, total","g","Total phospholipids","PHOLIP",172
 "Fatty acid","Total fatty acids","g","Total fatty acids","FACID",942
@@ -221,7 +222,7 @@
 "Protein","Cystine","mg","Cysteine is often the natural form, which is converted to cystine during chromatography; includes only the L-amino acid","CYS",1434
 "Protein","Glutamic acid","mg","Includes only L-glutamic acid","GLU",1831
 "Protein","Glutamine","mg","Includes only L-glutamine","GLN",137
-"Protein","Glutamine + glutamic acid","Not provided in unformatted AFCD","Glutamine + glutamic acid",NA,778
+"Protein","Glutamine + glutamic acid","mg","Glutamine + glutamic acid",NA,778
 "Protein","Glutamine + histidine","mg","Glutamine + histidine","GLU_A_HIS",11
 "Protein","Glycine","mg","Includes only L-glycine","GLY",1939
 "Protein","Histidine","mg","Histidine","HIS",1923
@@ -246,7 +247,7 @@
 "Protein","Tryptophan","mg","Includes only L-tryptophan.","TRYPN",1342
 "Protein","Tyrosine","mg","Includes only L-tyrosine","TYR",1842
 "Protein","Valine","mg","Includes only L-valine","VAL",1928
-"Sterol","Beta-sitosterol","Not provided in unformatted AFCD","Beta-sitosterol",NA,6
+"Sterol","Beta-sitosterol","mg","Beta-sitosterol",NA,6
 "Sterol","Brassicasterol","mg","Brassicasterol","BRASTR",2
 "Sterol","Campesterol, total","mg","Total campesterol","CAMT",57
 "Sterol","Cholesterol; enzymatic/chromatographic method","mg","Cholesterol; determined by enzymatic or chromatographic method","CHOLE",1884
@@ -297,6 +298,7 @@
 "Vitamin","Vitamin C; unknown/variable methods","mg","Vitamin C with unknown methods","VITC-",1430
 "Vitamin","Vitamin E; unknown/variable methods","mg","vitamin E, method of determination unknown or variable; expressed as alpha-tocopherol equivalents.","VITE-",374
 "Vitamin","Vitamin K-1","mcg","Vitamin K-1","VITK1",114
+"Vitamin","Vitamin_a_combined","mcg","Vitamin_a_combined",NA,3298
 "Vitamin","Zeaxanthin","mcg","Zeaxanthin","ZEA",12
 "Water","Dry matter","g","Dry matter","DM",572
 "Water","Water","g","Water; synonym moisture","WATER",4371
