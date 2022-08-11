@@ -17,21 +17,44 @@ data_orig <- readRDS(file.path(outdir, "AFCD_data_pass1.Rds"))
 # Read ref key
 ref_key <- readRDS(file.path(outdir, "AFCD_reference_key.Rds"))
 
-
 ##Create ID for each row
 data_orig = data_orig %>% 
   mutate(ID = 1:nrow(data_orig)) %>% 
   select(ID, everything())
 
-##Clean common names
-com_names = data_orig %>% 
-  select(ID, food_name) %>% 
+
+# translate spanish food names and other data
+data_orig_t = data_orig %>%
+  filter(study_id=="LATINFOODS" & taxa_name_source=="Food name (original)") %>%
+  mutate(food_name=case_when(is.na(food_name) ~ food_name_orig, TRUE ~ food_name)) %>% # make food_name = food_name_orig when no food name
+  mutate(food_name=gsub("^Surubí", "Spotted sorubim", food_name)) %>%
+  mutate(food_name=gsub("^Carpa", "Common carp", food_name)) %>%
+  mutate(food_name=gsub("^Chita", "Peruvian grunt", food_name)) %>%
+  mutate(food_name=gsub("^Paiche", "Arapaima", food_name)) %>%
+  # mutate(food_name=gsub("^Corocoro", "Burro grunt", food_name)) %>% excluded because sciname provided in LATINFOODS
+  mutate(food_name=gsub("^Gatuso", "Narrownose smooth-hound", food_name)) %>%
+  mutate(food_name=gsub("^Pintado", "Sand tiger shark", food_name)) %>% 
+  mutate(food_name=gsub("^Cascudo", "Amazon sailfin catfish", food_name)) %>%
+  mutate(food_name=gsub("^Dourado", "Dorado", food_name)) %>%
+  mutate(food_name=gsub("^Pacu", "Cachama", food_name)) %>%
+  rbind(data_orig[!(data_orig$study_id=="LATINFOODS" & data_orig$taxa_name_source=="Food name (original)"),]) %>% # add back in
+  unique()
+
+## Clean common names in english, filters out the values that don't have food_name
+com_names = data_orig_t %>% 
+  select(ID, food_name) %>% # this is filtering out a lot of fish names 
   unique() %>% 
   drop_na() %>% 
   # Recode column names
   rename(food_name_orig=food_name) %>%
-  mutate(food_name=food_name_orig,
-         food_name = recode(food_name,
+  mutate(food_name=food_name_orig) %>% 
+  mutate(food_name = recode(food_name,
+                            "Trucha ahumada " = "Trucha, ahumada", 
+                            "Hueva de pescado" = "Pescado, hueva",
+                            "frog legs, raw" = "frog, raw, legs", 
+                            "cusk, tusk, raw" = "cusk, raw",
+                            "bassa (basa)" = "basa",
+                            "bassa" = "basa",
                             "wild blackspot seabream" = "wild, blackspot seabream",
                             "Fish eggs (Carp, Cod, Haddock, Herring, Pike, Shad)" = "Fish eggs",
                             "Fish; cod; walleye pollock*; \"Sukimidara\" (skinned; salted and dried fillet)__*Syn. Alaska pollock_ " = "Fish, walleye pollock, dried, fillet",
@@ -87,9 +110,18 @@ com_names = data_orig %>%
   mutate(food_name = gsub("salmon and trout;", "", food_name)) %>%
   mutate(food_name = gsub("w/o", "without", food_name)) %>%
   mutate(food_name = gsub(" w/ ", " with ", food_name)) %>%
+  mutate(food_name = gsub(" c/ ", " with ", food_name)) %>%
   mutate(food_name = gsub("whole/no skin", "whole with no skin", food_name)) %>%
   mutate(food_name = gsub("cod liver", "cod, liver", food_name)) %>%
-  mutate(food_name = gsub(" and ", ",", food_name)) %>%
+  mutate(food_name = gsub(" and ", ", ", food_name)) %>%
+  mutate(food_name = gsub(" de mar", ", ocean", food_name)) %>%
+  mutate(food_name = gsub(" de río", ", river", food_name)) %>%
+  mutate(food_name = gsub("/30 min", "", food_name)) %>%
+  mutate(food_name = gsub("/45 min", "", food_name)) %>%
+  mutate(food_name = gsub("/40 min", "", food_name)) %>%
+  mutate(food_name = gsub("/12 min", "", food_name)) %>%
+  mutate(food_name = gsub("-30Â°C", "", food_name)) %>%
+  mutate(food_name = gsub("-18Â°C", "", food_name)) %>%
   mutate(food_name = enc2native(food_name)) %>% #added to deal with ASCII encodings, now to native encoding working on MacOSX, Linux and Windows
   ##Seperate food name from other information
   separate(food_name, 
@@ -102,19 +134,35 @@ com_names = data_orig %>%
   na_if("") %>%
   na_if(" ") %>% 
   drop_na(value) %>% 
+  # Trim
+  mutate(value=stringr::str_trim(value)) %>% 
+  mutate(value = tolower(value)) %>% 
+  # TODO: translate spanish prep types and more 
+  mutate(value=recode(value,
+                      "cocido"="boiled","al natural"="canned natural","hormiga" = "ant", "carne" = "meat", "agua dulce" = "freshwater", "de agua dulce" = "freshwater", "filete" = "fillet",
+                      "de agua dulce" = "freshwater","entero" = "whole","seco" = "dried","entera" = "whole" ,"de ispi" = "ispi", "carne sin piel" = "meat without skin",
+                      "fresca" = "fresh" ,"de rana"="from frog", "huevera"="eggs", "hueva"="eggs", "de pescado"="fish", "peces"="fishes", "con espinas"="with bones",
+                      "pulpa"="muscle tissue","grande" = "big","chino"="china", "salado" = "salted","pulpa asada"="baked muscle tissue","enlatado"="canned",
+                      "crudo"="raw","en conserva"="canned","sardinha"="sardine","enlatada"="canned","al horno"="baked","filé"="muscle tissue","ovas"="eggs",
+                      "cocida"="boiled", "atum"="tuna","lomo"="muscle tissue","de camarón blanco y titi"="mixed shrimp species",
+                      "de camarón rosado y fidel"="mixed shrimp species","pescaditos fritos"="fried fish","água doce"="freshwater","músculo"="muscle tissue",
+                      "blanca"="white","de batracio"="amphibian","assado"="baked","assada"="baked","abacaxi"="","cachorro"="juvenile","cruda"="raw","cruda"="raw",
+                      "cocido y frito"="boiled and fried","frita"="fried","con huesos"="with bones","sin piel"="without skin", "frito"="fried","seca"="dried",
+                      "asada"="baked","sancochada"="boiled with condiments","deshidratado"="dried","sancochado"="boiled with condiments","en agua"="in water",
+                      "congelado"="frozen","crudas"="raw","ralado"="grated","sólido"="solid","crua"="raw","cru"="raw","en aceite"="in oil","dorada"="sea bream",
+                      "sardina"="sardine", "sardinha"="sardine", "precocido"="pre-boiled","con sal"="with salt","salada"="salted","sadia"="healthy",
+                      "maionese e vegetais"="with mayonnaise and vegetables","conserva"="canned","molho branco"="in white sauce","rehidratado"="rehydrated",
+                      "pimenta"="pepper","molho de tomate temperado"="in tomato sauce","cebola e louro"="onion and bay leaves","coqueiro"="coconut")) %>% 
   mutate(value = gsub('[*"”-]', "", value)) %>% 
   mutate(value = gsub("Syn.", "", value)) %>% 
   mutate(value = gsub("Ã©", "ao", value)) %>% 
   mutate(value = gsub("¾d.", "", value)) %>% 
   mutate(value = gsub("¾l.", "", value)) %>% 
   mutate(value = gsub("¾t.", "", value)) %>% 
-  # Trim
-  mutate(value=stringr::str_trim(value)) %>% 
-  mutate(value = tolower(value)) %>% 
-  #Preperation types
+  #Preperation types 
   mutate(name_type = case_when(
     ## Preparation types
-    str_detect(value, paste(c("boiled", "grilled", "soup", "bake", "microwaved", "kippered", "canned", "grill", "tempura", "moist heat", "smoke", "dried", "gratin", "simmered", "paste", "fried", "cured", "salted", "cooked", "roasted", "battered", "surimi", "pickled", "steam", "steaemed", "poach", "dry heat", "sushi", "sashimi", "breaded", "casserole", "pudding", "balls", "dressed", "cake", "drained", "brine", "fermented", "skewered"),collapse = '|')) ~ "prep",
+    str_detect(value, paste(c("boiled", "grilled", "soup", "bake", "microwaved", "kippered", "canned", "grill", "tempura", "moist heat", "smoke", "dried", "rehydrated", "gratin", "simmered", "paste", "fried", "cured", "salted", "cooked", "roasted", "battered", "surimi", "pickled", "steam", "steaemed", "poach", "dry heat", "sushi", "sashimi", "breaded", "casserole", "pudding", "balls", "dressed", "cake", "drained", "brine", "fermented", "skewered", "grated"),collapse = '|')) ~ "prep",
     value %in% c("raw", "can") ~ "prep", 
     ## Broad groups
     value %in% c("mollusks", "fish", "crustacean", "crustaceans", "lean fish", "reef fish", "reef") ~ "broad_group", 
@@ -130,7 +178,7 @@ com_names = data_orig %>%
     ## Seasons
     str_detect(value, paste(c("summer", "winter", "autumn", "spring"), collapse = '|')) ~ "season",
     ## Other ingredients
-    value %in% c("in tomato sauce", "onion", "with cream", "with sugar", "marinated", "sweet pepper sauce", "marinated in vinegar", "with potatoes", "with egg", "with seasoning", "with seaweed", "with mayonnaise", "with mustard sauce", "seasoned with mirin", "split seasoned with mirin", "green chili", "spices", "sour cream", "tomato", "rolled in breadcrumbs", "milk added", "in oil", "in flour", "in jelly", "rolled in flour", "floured", "bread", "cheese", "soy souce", "soy sauce", "sugar", "seasoned", "garlic", "salt", "salt added to water", "filled", "fish paté", "in spicy marinade", "creamed", "crumbed") ~ "other_ingredients",
+    value %in% c("in tomato sauce", "onion", "with cream", "with sugar", "marinated", "sweet pepper sauce", "marinated in vinegar", "with potatoes", "with egg", "with seasoning", "with seaweed", "with mayonnaise", "with mustard sauce", "seasoned with mirin", "split seasoned with mirin", "green chili", "spices", "sour cream", "tomato", "rolled in breadcrumbs", "milk added", "in oil", "in flour", "in jelly", "rolled in flour", "floured", "bread", "cheese", "soy souce", "soy sauce", "sugar", "seasoned", "garlic", "salt", "salt added to water", "filled", "fish paté", "in spicy marinade", "creamed", "crumbed", "in water") ~ "other_ingredients",
     ## Sex
     value %in% c("male", "female") ~ "sex",
     ## Genus
@@ -138,13 +186,13 @@ com_names = data_orig %>%
     ##Other information (to keep)
     value %in% c("fresh", "frozen", "not previously frozen", "may have been previously frozen", "packaged frozen", "previously frozen", "purchased frozen") ~ "other_info",
     ## Other information (to remove)
-    value %in% c("n.s.", "with integument", "lox", "commercially processed", "not further specified", "pelagic", "prepared products", "coop xtra fiskegrateng", "findus steketorsk", "enghav fiskegrateng med makaroni", "soaked in water", "southern rock", "fingers", "commercial", "mashed", "natural", "traditionally", "light", "laboratory", "restaurant style", "full grown", "fully grown", "combined species", "solids", "fins", "liquid", "back", "lakestocked", "talley's", "home recipe", "imitation", "flavoured", "unflavoured", "regular", "fat not further defined", "findus", "first price", "bones",  "tempera",
+    value %in% c("n.s.", "healthy", "big", "with integument", "lox", "commercially processed", "not further specified", "pelagic", "prepared products", "coop xtra fiskegrateng", "findus steketorsk", "enghav fiskegrateng med makaroni", "soaked in water", "southern rock", "fingers", "commercial", "mashed", "natural", "traditionally", "light", "laboratory", "restaurant style", "full grown", "fully grown", "combined species", "solids", "fins", "liquid", "back", "lakestocked", "talley's", "home recipe", "imitation", "flavoured", "unflavoured", "regular", "fat not further defined", "findus", "first price", "bones",  "tempera",
                  "total can contents", "usda commodity", "–lumi", "medium size", "size", "small size", "edible portion", "ready to eat", "from takeaway outlet", "blended frying fat", "new york state", "adult fish", "maki", "nigiri", "brinesoaked", "marine water", "edible part", "large", "large size", "mature",
                  "ajitsukehirakiboshi", "–nama", "mezashi", "shiokara", "namaboshi", "mirinboshi", "kabayaki", "tazukuri", "shioiwashi", "denbu", "ameni", "ikura", "shirasuboshi", "shirayaki", "sujiko", "mefun", "shiozake", "kusaya", "aramaki", "–kaikoso", "hirakiboshi", "niboshi", "maruboshi", "amazuzuke", "kanroni", "tsukudani", "sababushi", "–walu", "–kai", "lerøy saithe", "first price fiskegrateng med makaroni",
                  "middle portion", "virgin olive oil", "veg.oil", "sour", "sea water", "sea", "unheated", "ventral", "first price fiskegrateng med makaron", "findus familiens fiskegrateng", "fields river", "helix", "lobnobs", "young <1yr", "minced", "industrially made", "marine waters", "mayjune", "little spicies", "all type", "plain", "along dorsal line", "eta", "northern", "assorted flavours", "tusk cusk", "basa bassa",
                  "sealord", "treated", "young", "small fish", "fatty", "2y", "2yr", "45y", "4y", "50", "60", "75", "a fish", "with bones", "freshwater", "unspecified", "edible parts", "channel", "composite", "without salt", "solids & liquid", "slices", "70", "ocean", "fish patties", "lean", "eastern", "without salt and fat","etc.", "coop", "refrigerated", "enghav fiskegrateng med makaroni", 
-                 "as part of a recipe", "seafoods", "with or without added fat", "portion", "julyseptember", "belly flaps removed", "without visible fat", "palmkernel oil", "stabburlaks", "fat not further defined", "caudal end", "takeaway outlet", "may have been previously frozen", "without salt or fat", "no added fat", "mixed species", "fat", "compressed") ~ "remove", 
-    TRUE ~ "com_name")) %>% 
+                 "as part of a recipe", "seafoods", "ocean", "river", "with or without added fat", "portion", "julyseptember", "belly flaps removed", "without visible fat", "palmkernel oil", "stabburlaks", "fat not further defined", "caudal end", "takeaway outlet", "may have been previously frozen", "without salt or fat", "no added fat", "mixed species", "fat", "compressed", "") ~ "remove", 
+    TRUE ~ "com_name")) %>% # anything that is not matched = common name 
   filter(!name_type == "remove") %>% 
   select(-variable, -food_name)
 
@@ -440,8 +488,9 @@ genus_long = com_names %>%
 ######Include info in data
 
 #Include common name
-data2 = data_orig %>%
-  left_join(common_wide, by=c("food_name" = "food_name_orig"))
+data2 = data_orig_t %>%
+  left_join(common_wide, by=c("food_name" = "food_name_orig")) 
+
 
 #Include preparation types
 data2 = data2 %>% 
@@ -491,3 +540,4 @@ data2 = data2 %>%
 
 # Export data
 saveRDS(data2, file=file.path(outdir, "AFCD_data_pass2.Rds"))  
+
