@@ -23,10 +23,14 @@
 "Energy","Energy, gross","kj","Energy in kilojoules, calculated by direct analysis using bomb calorimetry","ENERA",87
 "Energy","Energy, total","kcal","Energy in kilocalories, total metabolizable; calculated from the energy-producing food components",NA,3344
 "Energy","Energy, total","kj","Energy in kilojoules, total metabolizable; calculated from the energy-producing food components","ENERC",3354
+"Fatty acid","ALA","g","alpha-Linolenic acid, 18:3",NA,3139
+"Fatty acid","DHA","g","Docosahexaenoic acid, 22:6",NA,3083
+"Fatty acid","DHA_EPA","g","DHA + EPA",NA,3267
 "Fatty acid","Diglycerides, total","g","Total diglycerides","DGLY",14
+"Fatty acid","EPA","g","Eicosapentaenoic acid, 20:5",NA,3139
 "Fatty acid","Fat, total","g","Fat, total. Synonym total lipids. Sum of triglycerides, phospholipids, sterols and related compounds. The analytical method is a mixed solvent extraction.","FAT",6820
 "Fatty acid","Fat, total; continuous extraction","g","Fat, total; derived by analysis using continuous extraction.","FATCE",754
-"Fatty acid","Fat; mixed/unknown methods","Not provided in unformatted AFCD","Fat method unknown or mixed",NA,360
+"Fatty acid","Fat; mixed/unknown methods","g","Fat method unknown or mixed",NA,360
 "Fatty acid","Fatty acid 10:0","g","Fatty acid 10:0",NA,870
 "Fatty acid","Fatty acid 10:1","g","Fatty acid 10:1",NA,50
 "Fatty acid","Fatty acid 11:0","g","Fatty acid 11:0",NA,248
@@ -119,7 +123,7 @@
 "Fatty acid","Fatty acid 20:4, cis n6","g","Fatty acid 20:4 double bond on 6th carbon-carbon bond in cis configuration",NA,4
 "Fatty acid","Fatty acid 20:4, n3","g","Fatty acid 20:4 double bond on 3rd carbon-carbon bond",NA,776
 "Fatty acid","Fatty acid 20:4, n6","g","Fatty acid 20:4 double bond on 6th carbon-carbon bond",NA,1478
-"Fatty acid","Fatty acid 20:4, n6 + fatty acid 22:1","Not provided in unformatted AFCD","Combinations of two fatty acids coming from peer review",NA,21
+"Fatty acid","Fatty acid 20:4, n6 + fatty acid 22:1","g","Combinations of two fatty acids coming from peer review",NA,21
 "Fatty acid","Fatty acid 20:5","g","Fatty acid 20:5",NA,968
 "Fatty acid","Fatty acid 20:5, cis n3","g","Fatty acid 20:5 double bond on 3rd carbon-carbon bond in cis configuration",NA,9
 "Fatty acid","Fatty acid 20:5, n3","g","Fatty acid 20:5 double bond on 3rd carbon-carbon bond",NA,2419
@@ -212,7 +216,7 @@
 "Protein","Alanine","mg","Includes only L-alanine.","ALA",1943
 "Protein","Alanine + arginine","mg","Alanine + arginine","ALA_A_ARG",829
 "Protein","Arginine","mg","Includes only L-arginine","ARG",1908
-"Protein","Asparagine + aspartic acid","Not provided in unformatted AFCD","Asparagine + aspartic acid",NA,588
+"Protein","Asparagine + aspartic acid","mg","Asparagine + aspartic acid",NA,588
 "Protein","Aspartic acid","mg","Aspartic acid; includes only L-aspartic acid","ASP",1578
 "Protein","Cystine","mg","Cysteine is often the natural form, which is converted to cystine during chromatography; includes only the L-amino acid","CYS",1434
 "Protein","Glutamic acid","mg","Includes only L-glutamic acid","GLU",1831
@@ -221,7 +225,7 @@
 "Protein","Glutamine + histidine","mg","Glutamine + histidine","GLU_A_HIS",11
 "Protein","Glycine","mg","Includes only L-glycine","GLY",1939
 "Protein","Histidine","mg","Histidine","HIS",1923
-"Protein","Hydroxylysine","Not provided in unformatted AFCD","Hydroxylysine",NA,6
+"Protein","Hydroxylysine","g","Hydroxylysine",NA,6
 "Protein","Hydroxyproline","mg","Hydroxyproline","HYP",57
 "Protein","Leucine","mg","Includes only L-leucine.","LEU",1910
 "Protein","Lysine","mcg","Lycopene","LYCPN",1936
@@ -276,8 +280,8 @@
 "Vitamin","Pyridoxine","mg","Vitamin B-6 alcohol form.","PYRXN",70
 "Vitamin","Pyridoxine hydrochloride","mg","Pyridoxine hydrochloride","PYRXNHCL",23
 "Vitamin","Retinol","mcg","preformed vitamin A, all-trans retinol only","RETOL",2664
-"Vitamin","Retinol + transretinol + cisretinol","Not provided in unformatted AFCD","Retinol + transretinol + cisretinol",NA,17
-"Vitamin","Riboflavin","g","Riboflavin","RIBF",3667
+"Vitamin","Retinol + transretinol + cisretinol","mcg","Retinol + transretinol + cisretinol",NA,17
+"Vitamin","Riboflavin","mg","Riboflavin","RIBF",3667
 "Vitamin","Thiamin","mg","Thiamin, synonym vitamin b1, aneurin","THIA",3325
 "Vitamin","Violaxanthin","mcg","Violaxanthin","VIOLX",32
 "Vitamin","Vitamin A; method of determination unknown","mcg","Vitamin A with unknown methods","VITA-",73
