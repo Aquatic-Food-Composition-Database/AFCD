@@ -19,11 +19,11 @@
 "Carbohydrate","Sucrose","g","Sucrose","SUCS",53
 "Carbohydrate","Sugars, total","g","Sugars, total","SUGAR",385
 "Carbohydrate","Wax, total","mg","Wax total, aka wax ethers","WAX",826
+"Energy","Energy_total_combined","kcal","Energy_total_combined",NA,4405
 "Energy","Energy, gross","kcal","Energy in kilocalories, calculated by direct analysis using bomb calorimetry",NA,123
 "Energy","Energy, gross","kj","Energy in kilojoules, calculated by direct analysis using bomb calorimetry","ENERA",87
 "Energy","Energy, total","kcal","Energy in kilocalories, total metabolizable; calculated from the energy-producing food components",NA,3344
 "Energy","Energy, total","kj","Energy in kilojoules, total metabolizable; calculated from the energy-producing food components","ENERC",3354
-"Energy","Energy_total_combined","kcal","Energy_total_combined",NA,4405
 "Fatty acid","ALA","g","alpha-Linolenic acid, 18:3",NA,2417
 "Fatty acid","DHA","g","Docosahexaenoic acid, 22:6",NA,3083
 "Fatty acid","DHA_EPA","g","DHA + EPA",NA,3267
@@ -231,6 +231,7 @@
 "Protein","Leucine","mg","Includes only L-leucine.","LEU",1910
 "Protein","Lysine","mcg","Lycopene","LYCPN",1936
 "Protein","Methionine","mg","Includes only L-methionine.","MET",1749
+"Protein","Nitrogen_total_combined","g","Nitrogen_total_combined","NT",913
 "Protein","Nitrogen, nonprotein","g","Non-protein nitrogen","NNP",151
 "Protein","Nitrogen, protein","g","Nitrogen protein","NPRO",53
 "Protein","Nitrogen, total","g","Nitrogen total","NT",877
