@@ -44,6 +44,10 @@ ref_fct <- ref_fct_orig %>%
   mutate(study_type="Food Composition Table (FCT)") %>%
   # Arrange
   select(study_type, study_id, citation, doi, database, units, everything()) %>%
+  # remove old versions of FCTs as new versions are published
+  filter(
+    study_id != "USA_USDA_2019"
+  ) %>%
   # Remove useless columns
   select(-c(notes, added_by, already_included, format))
 
@@ -119,7 +123,8 @@ dta = data_orig %>%
          ALA = if_else(is.na(Fatty_acid_18_3), Fatty_acid_18_3_n3, Fatty_acid_18_3),
          ALA = if_else(is.na(ALA), Fatty_acid_18_3_cis_n3, ALA),
          DHA_EPA = if_else(is.na(EPA), DHA, EPA+DHA),
-         DHA_EPA = if_else(is.na(DHA_EPA), EPA, DHA_EPA))
+         DHA_EPA = if_else(is.na(DHA_EPA), EPA, DHA_EPA)
+         )
 
 # Format data
 data1 <- dta %>%
@@ -140,8 +145,11 @@ data1 <- dta %>%
   # Gather nutrients (maintain capitalization)
   gather(key="nutrient_orig", value="value", 21:ncol(.)) %>%
   mutate(nutrient_orig=stringr::str_to_sentence(nutrient_orig)) %>%
-  # Reduce to rows with data
-  filter(!is.na(value))
+  # Reduce to rows with no data and remove old versions of FCTs
+  filter(
+    !is.na(value),
+    study_id != "USA_USDA_2019"
+    )
 
 # Inspect
 freeR::complete(data1)
