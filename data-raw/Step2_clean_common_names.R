@@ -178,7 +178,7 @@ com_names = data_orig_t %>%
     ## Seasons
     str_detect(value, paste(c("summer", "winter", "autumn", "spring"), collapse = '|')) ~ "season",
     ## Other ingredients
-    value %in% c("in tomato sauce", "onion", "with cream", "with sugar", "marinated", "sweet pepper sauce", "marinated in vinegar", "with potatoes", "with egg", "with seasoning", "with seaweed", "with mayonnaise", "with mustard sauce", "seasoned with mirin", "split seasoned with mirin", "green chili", "spices", "sour cream", "tomato", "rolled in breadcrumbs", "milk added", "in oil", "in flour", "in jelly", "rolled in flour", "floured", "bread", "cheese", "soy souce", "soy sauce", "sugar", "seasoned", "garlic", "salt", "salt added to water", "filled", "fish paté", "in spicy marinade", "creamed", "crumbed", "in water") ~ "other_ingredients",
+    value %in% c("in tomato sauce", "onion", "with cream", "with sugar", "marinated", "sweet pepper sauce", "marinated in vinegar", "with potatoes", "with egg", "with seasoning", "with seaweed", "with mayonnaise", "with mustard sauce", "seasoned with mirin", "split seasoned with mirin", "green chili", "spices", "sour cream", "tomato", "rolled in breadcrumbs", "milk added", "in oil", "in flour", "in jelly", "rolled in flour", "floured", "bread", "cheese", "soy souce", "soy sauce", "sugar", "seasoned", "garlic", "salt", "salt added to water", "filled", "fish paté", "in spicy marinade", "creamed", "crumbed", "in water", "with salt") ~ "other_ingredients",
     ## Sex
     value %in% c("male", "female") ~ "sex",
     ## Genus
@@ -190,7 +190,7 @@ com_names = data_orig_t %>%
                  "total can contents", "usda commodity", "–lumi", "medium size", "size", "small size", "edible portion", "ready to eat", "from takeaway outlet", "blended frying fat", "new york state", "adult fish", "maki", "nigiri", "brinesoaked", "marine water", "edible part", "large", "large size", "mature",
                  "ajitsukehirakiboshi", "–nama", "mezashi", "shiokara", "namaboshi", "mirinboshi", "kabayaki", "tazukuri", "shioiwashi", "denbu", "ameni", "ikura", "shirasuboshi", "shirayaki", "sujiko", "mefun", "shiozake", "kusaya", "aramaki", "–kaikoso", "hirakiboshi", "niboshi", "maruboshi", "amazuzuke", "kanroni", "tsukudani", "sababushi", "–walu", "–kai", "lerøy saithe", "first price fiskegrateng med makaroni",
                  "middle portion", "virgin olive oil", "veg.oil", "sour", "sea water", "sea", "unheated", "ventral", "first price fiskegrateng med makaron", "findus familiens fiskegrateng", "fields river", "helix", "lobnobs", "young <1yr", "minced", "industrially made", "marine waters", "mayjune", "little spicies", "all type", "plain", "along dorsal line", "eta", "northern", "assorted flavours", "tusk cusk", "basa bassa",
-                 "sealord", "treated", "young", "small fish", "fatty", "2y", "2yr", "45y", "4y", "50", "60", "75", "a fish", "with bones", "freshwater", "unspecified", "edible parts", "channel", "composite", "without salt", "solids & liquid", "slices", "70", "ocean", "fish patties", "lean", "eastern", "without salt and fat","etc.", "coop", "refrigerated", "enghav fiskegrateng med makaroni", 
+                 "sealord", "treated", "young", "small fish", "fatty", "2y", "2yr", "45y", "4y", "50", "60", "75", "a fish", "with bones", "freshwater", "unspecified", "edible parts", "channel", "composite", "without salt", "solids & liquid", "slices", "70", "ocean", "fish patties", "lean", "eastern", "without salt and fat","etc.", "coop", "refrigerated", "enghav fiskegrateng med makaroni", "includes foods for usda's food distribution program", 
                  "as part of a recipe", "seafoods", "ocean", "river", "with or without added fat", "portion", "julyseptember", "belly flaps removed", "without visible fat", "palmkernel oil", "stabburlaks", "fat not further defined", "caudal end", "takeaway outlet", "may have been previously frozen", "without salt or fat", "no added fat", "mixed species", "fat", "compressed", "") ~ "remove", 
     TRUE ~ "com_name")) %>% # anything that is not matched = common name 
   filter(!name_type == "remove") %>% 
@@ -303,8 +303,8 @@ parts_wide = com_names %>%
 
 parts_clean = parts_wide %>% 
   mutate(part_simple = case_when(
-    str_detect(part_detailed, paste(c("fillet", "flesh", "meat", "muscle", "muslce", "tentacles", "without bones"),collapse = '|')) ~ "muscle tissue",
-    str_detect(part_detailed, paste(c("whole", "entire"),collapse = '|')) ~ "whole",
+    str_detect(part_detailed, paste(c("fillet", "flesh", "meat", "muscle", "muslce", "tentacles", "without bones", "without skin"),collapse = '|')) ~ "muscle tissue",
+    str_detect(part_detailed, paste(c("whole", "entire", "solids with bone"),collapse = '|')) ~ "whole",
     str_detect(part_detailed, paste(c("gutted", "cleaned fish", "head included", "dressed with head"),collapse = '|')) ~ "whole gutted",
     str_detect(part_detailed, paste(c("roe", "gonads", "eggs", "caviar"),collapse = '|')) ~ "roe",
     str_detect(part_detailed, paste(c("intestines", "viscera", "esophagus", "liver", "milt"),collapse = '|')) ~ "viscera",
@@ -514,7 +514,8 @@ data2 = data2 %>%
   rename(food_part_org = food_part) %>% 
   mutate(food_part = if_else(is.na(food_part_org), part_simple, food_part_org)) %>%
   rename(food_part_detailed = part_detailed) %>% 
-  select(-food_part_org, -part_simple)
+  select(-food_part_org, -part_simple) %>% 
+  mutate(food_part = if_else(is.na(food_part), "muscle tissue", food_part))
 
 #Include wild vs farmed
 data2 = data2 %>% 

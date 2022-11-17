@@ -295,6 +295,19 @@ data2 <- data1 %>%
 data2 %>%
   filter(grepl(pattern="includes|Includes", x=taxa_name)) %>% pull(taxa_name) %>% unique() %>% sort()
 
+
+###Fix some wrong values
+data2 = data2 %>% 
+  mutate(value = case_when(study_id == "4" & nutrient == "Vitamin D; unknown/variable methods" ~ value/1000,
+                           study_id == "459" & nutrient == "Vitamin D; unknown/variable methods" ~ value/100,
+                           study_id == "732" & nutrient == "Vitamin D; unknown/variable methods" ~ 0.025*value/0.01675,
+                           TRUE ~ value))
+
+###Exclude studies with unrealistic values
+data2 = data2 %>% 
+  filter(!study_id == "465")
+
+
 # Export data
 ################################################################################
 
