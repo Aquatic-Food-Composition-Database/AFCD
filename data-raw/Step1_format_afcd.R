@@ -8,6 +8,7 @@ rm(list = ls())
 # Packages
 library(tidyverse)
 
+
 # Directories
 indir <- "data-raw/raw"
 outdir <- "data-raw/processed"
@@ -19,7 +20,7 @@ plotdir <- "data-raw/figures"
 # Nature: https://www.nature.com/articles/s41586-021-03917-1?proof=t%2Btarget%3D#data-availability
 
 # Read data
-data_orig <- read.csv(file.path(indir, "20221013_AFCD.csv"), na.strings = c("", "NA"))
+data_orig <- read.csv(file.path(indir, "20230103_AFCD.csv"), na.strings = c("", "NA"))
 
 # Read reference key
 ref_fct_orig <- readxl::read_excel(file.path(indir, "afcd_references.xlsx"), sheet="fct_references")
@@ -87,7 +88,7 @@ ref_key <- bind_rows(ref_peer, ref_fct) %>%
   select(study_type, study_id, citation, everything()) 
 
 # Inspect
-freeR::complete(ref_key)
+# freeR::complete(ref_key)
 
 # Export
 saveRDS(ref_key, file.path(outdir, "AFCD_reference_key.Rds"))
@@ -152,7 +153,7 @@ data1 <- dta %>%
     )
 
 # Inspect
-freeR::complete(data1)
+# freeR::complete(data1)
 
 
 # Step 2. Build nutrient key
@@ -320,7 +321,7 @@ saveRDS(data2, file=file.path(outdir, "AFCD_data_pass1.Rds"))
 
 # Inspect
 # str(data2)
-freeR::complete(data2)
+# freeR::complete(data2)
 
 # Inspect taxa
 table(data2$kingdom)
@@ -388,4 +389,4 @@ write.csv(nutr_key,
           row.names=FALSE
           )
 # Inspect
-freeR::complete(nutr_key)
+# freeR::complete(nutr_key)
