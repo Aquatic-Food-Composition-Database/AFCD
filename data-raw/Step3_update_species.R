@@ -343,7 +343,7 @@ spp_key2 <- spp_key1 %>%
   mutate(sciname=stringr::str_squish(sciname))
 
 # Inspect
-freeR::complete(spp_key2)
+# freeR::complete(spp_key2)
 
 # Ones without out names
 # Cyparica samplomoneta, Sciania hatei, Chichorus virginicus = don't know who these are
@@ -425,7 +425,7 @@ data_sci2 <- data_sci1 %>%
   select(-sciname_source)
 
 # Inspect
-freeR::complete(data_sci2)
+# freeR::complete(data_sci2)
 
 # Confirm that the datasets are the right size
 #nrow(data_comm) + nrow(data_sci2) == nrow(data_orig)
@@ -948,10 +948,10 @@ saveRDS(data_sci_only, file=file.path(outdir, "AFCD_data_sci.Rds"))
 ##Export data without scientific names
 saveRDS(afcd_missing, file=file.path(outdir, "AFCD_data_comm.Rds"))
 
-# ##Export data in the wide format (data_taxa)
-# data_taxa_wide = data_sci5 %>% 
-#   distinct(sciname, sciname_orig, genus, family, order, class, common_name, food_name, food_name_orig, fct_code_orig, common_name_detailed, food_prep, food_prep_detailed, food_part, food_part_detailed, prod_catg, other_ingredients, study_type, study_id, iso3, country, edible_prop, notes, nutrient_type, nutrient, nutrient_orig, nutrient_desc, nutrient_code_fao, nutrient_units, .keep_all = T) %>% 
-#   spread(nutrient, value)
-# 
-# # Export
-# saveRDS(data_taxa_wide, file=file.path(outdir, "AFCD_data_taxa_wide.Rds"))
+##Export data in the wide format (data_taxa)
+data_taxa_wide = data_sci5 %>%
+  distinct(sciname, sciname_orig, genus, family, order, class, common_name, food_name, food_name_orig, fct_code_orig, common_name_detailed, food_prep, food_prep_detailed, food_part, food_part_detailed, prod_catg, other_ingredients, study_type, study_id, country, edible_prop, notes, nutrient_type, nutrient, nutrient_orig, nutrient_desc, nutrient_code_fao, nutrient_units, .keep_all = T) %>%
+  spread(nutrient, value)
+
+# Export
+saveRDS(data_taxa_wide, file=file.path(outdir, "AFCD_data_taxa_wide.Rds"))
