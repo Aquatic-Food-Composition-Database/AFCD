@@ -11,6 +11,9 @@ library(tidyverse)
 indir <- "data-raw/raw"
 outdir <- "data-raw/processed"
 
+# Source custom functions
+source(file.path("R","custom_functions.R"))
+
 # Read data
 data_orig <- readRDS(file.path(outdir, "AFCD_data_pass1.Rds"))
 
@@ -222,13 +225,13 @@ common_wide = com_names %>%
   rename(common_name_1 = "1",
          common_name_2 = "2",
          common_name_3 = "3") %>% 
-  mutate(common_name_3 = if_else(freeR::nwords(common_name_1)==1 & freeR::nwords(common_name_2) == 1, paste(common_name_2, common_name_1), common_name_3),
+  mutate(common_name_3 = if_else(nwords_freeR(common_name_1)==1 & nwords_freeR(common_name_2) == 1, paste(common_name_2, common_name_1), common_name_3),
          common_name_3 = if_else(common_name_2=="atlantic", paste(common_name_2, common_name_1), 
                                  if_else(common_name_1=="salmon", paste(common_name_2, common_name_1), 
                                          if_else(common_name_1 == "tuna", paste(common_name_2, common_name_1), common_name_3)))) %>% 
   mutate(common_name_3 = gsub("tuna tuna", "tuna", common_name_3),
          common_name = if_else(!is.na(common_name_3), common_name_3, 
-                               if_else(freeR::nwords(common_name_2)>1, common_name_2, common_name_1)),
+                               if_else(nwords_freeR(common_name_2)>1, common_name_2, common_name_1)),
          common_name_detailed = paste(common_name_1, common_name_2, common_name_3, sep = ", "),
          common_name_detailed = gsub(", NA, NA", "", common_name_detailed),
          common_name_detailed = gsub(", NA", "", common_name_detailed)) %>% 

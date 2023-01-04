@@ -12,6 +12,9 @@ library(tidyverse)
 indir <- "data-raw/raw"
 outdir <- "data-raw/processed"
 
+# Source custom functions
+source(file.path("R","custom_functions.R"))
+
 # Read data
 data_orig <- readRDS(file.path(outdir, "AFCD_data_pass2.Rds"))
 
@@ -107,7 +110,7 @@ spp_key1 <- data_sci1 %>%
       "Trachuruspicturatus"="Trachurus picturatus",
       "Ulvalactuca"="Ulva lactuca")) %>%
   # Add SPP to end of 1 word groups
-  mutate(nwords=freeR::nwords(sciname)) %>%
+  mutate(nwords=nwords_freeR(sciname)) %>%
   mutate(sciname=ifelse(nwords==1, paste(sciname, "spp."), sciname)) %>%
   select(-nwords) %>%
   # Remove blank
@@ -268,8 +271,8 @@ spp_key1 <- data_sci1 %>%
   # Mark species or group specific
   mutate(type=ifelse(grepl("spp\\.|sp\\.|,|/| x ", sciname), "group", "species")) %>% # x=hybrids, commas/slashes is multiple
   # Count number of words
-  mutate(nwords_orig=freeR::nwords(sciname_orig),
-         nwords=freeR::nwords(sciname)) %>%
+  mutate(nwords_orig=nwords_freeR(sciname_orig),
+         nwords=nwords_freeR(sciname)) %>%
   # Trim
   mutate(sciname=stringr::str_trim(sciname)) %>%
   # Identify taxa level
@@ -309,7 +312,7 @@ spp_suggestions <- purrr::map_df(1:length(spp_names_chunks), function(x){
 # Format suggestions
 spp_suggestions1 <- spp_suggestions %>%
   # Number of words in suggestion
-  mutate(nwords_in_suggestion=freeR::nwords(matched_name2)) %>%
+  mutate(nwords_in_suggestion=nwords_freeR(matched_name2)) %>%
   # Suggestion type
   mutate(suggest_type=ifelse(matched_name2==user_supplied_name, "correct", "updated")) %>%
   # Simplify
@@ -347,7 +350,7 @@ freeR::complete(spp_key2)
 spp_key2 %>% filter(taxa_level=="species" & is.na(sciname_matched_nwords)) %>% pull(sciname_orig) %>% sort()
 
 # Inspect remaining species with more than two words
-spp_key2 %>% filter(taxa_type=="species" & freeR::nwords(sciname)>2) %>% pull(sciname) %>% sort()
+spp_key2 %>% filter(taxa_type=="species" & nwords_freeR(sciname)>2) %>% pull(sciname) %>% sort()
 
 # Inspect remaining species with more than two words
 all_fish <- function(){
@@ -386,7 +389,7 @@ taxa_table = all_fish() %>% #freeR package needs an update, I fixed it and inclu
   select(sciname, is_right) %>% 
   unique()
 
-long_names = spp_key2 %>% filter(taxa_type=="species" & freeR::nwords(sciname)>2) %>% select(sciname, sciname_orig) %>% 
+long_names = spp_key2 %>% filter(taxa_type=="species" & nwords_freeR(sciname)>2) %>% select(sciname, sciname_orig) %>% 
   separate(sciname, c("spp1", "spp2", "spp3"), " ", remove=F) %>% 
   mutate(name1 = paste(spp1, spp2, sep=" "),
          name2 = paste(spp1, spp3, sp = " ")) %>% 
