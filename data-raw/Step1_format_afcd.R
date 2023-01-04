@@ -19,6 +19,7 @@ plotdir <- "data-raw/figures"
 # DataVerse: https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/KI0NYM
 # Nature: https://www.nature.com/articles/s41586-021-03917-1?proof=t%2Btarget%3D#data-availability
 
+
 # Read data
 data_orig <- read.csv(file.path(indir, "20230103_AFCD.csv"), na.strings = c("", "NA"))
 
