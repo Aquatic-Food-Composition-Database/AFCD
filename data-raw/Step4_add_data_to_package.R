@@ -14,7 +14,7 @@ outdir <- "data-raw/processed"
 
 # Read data
 afcd <- readRDS(file=file.path(outdir, "AFCD_data_taxa.Rds"))
-#afcd_wide <- readRDS(file=file.path(outdir, "AFCD_data_taxa_wide.Rds"))
+afcd_wide <- readRDS(file=file.path(outdir, "AFCD_data_taxa_wide.Rds"))
 afcd_sci <- readRDS(file=file.path(outdir, "AFCD_data_sci.Rds"))
 afcd_common <- readRDS(file=file.path(outdir, "AFCD_data_comm.Rds"))
 afcd_refs <- readRDS(file=file.path(outdir, "AFCD_reference_key.Rds"))
@@ -34,7 +34,7 @@ afcd_prep = afcd %>%
 
 # Export data
 usethis::use_data(afcd, overwrite = T)
-#usethis::use_data(afcd_wide, overwrite = T)
+usethis::use_data(afcd_wide, overwrite = T)
 usethis::use_data(afcd_sci, overwrite = T)
 usethis::use_data(afcd_common, overwrite = T)
 usethis::use_data(afcd_refs, overwrite = T)
