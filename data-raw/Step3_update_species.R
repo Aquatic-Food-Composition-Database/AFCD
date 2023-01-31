@@ -949,9 +949,9 @@ saveRDS(data_sci_only, file=file.path(outdir, "AFCD_data_sci.Rds"))
 saveRDS(afcd_missing, file=file.path(outdir, "AFCD_data_comm.Rds"))
 
 ##Export data in the wide format (data_taxa)
-data_taxa_wide = data_sci5 %>%
-  distinct(sciname, sciname_orig, genus, family, order, class, common_name, food_name, food_name_orig, fct_code_orig, common_name_detailed, food_prep, food_prep_detailed, food_part, food_part_detailed, prod_catg, other_ingredients, study_type, study_id, country, edible_prop, notes, nutrient_type, nutrient, nutrient_orig, nutrient_desc, nutrient_code_fao, nutrient_units, .keep_all = T) %>%
-  spread(nutrient, value)
+# data_taxa_wide = data_sci5 %>%
+#   distinct(sciname, sciname_orig, genus, family, order, class, common_name, food_name, food_name_orig, fct_code_orig, common_name_detailed, food_prep, food_prep_detailed, food_part, food_part_detailed, prod_catg, other_ingredients, study_type, study_id, country, edible_prop, notes, nutrient_type, nutrient, nutrient_orig, nutrient_desc, nutrient_code_fao, nutrient_units, .keep_all = T) %>%
+#   spread(nutrient, value)
 
 # Export
-saveRDS(data_taxa_wide, file=file.path(outdir, "AFCD_data_taxa_wide.Rds"))
+#saveRDS(data_taxa_wide, file=file.path(outdir, "AFCD_data_taxa_wide.Rds"))
