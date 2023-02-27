@@ -1,5 +1,5 @@
 "nutrient_type","nutrient","nutrient_units","nutrient_desc","nutrient_code_fao","n"
-"Ash","Ash","g","Ash, synonym minerals","Ash",8627
+"Ash","Ash","g","Ash, synonym minerals","Ash",8612
 "Carbohydrate","Carbohydrate, available","g","Carbohydrates, available; calculated by difference.","CHOAVLDF",2610
 "Carbohydrate","Carbohydrate, total","g","Carbohydrates, total; calculated by difference.","CHOCDF",1738
 "Carbohydrate","Carbohydrate, unknown","g","Carbohydrate, unknown",NA,631
@@ -19,11 +19,11 @@
 "Carbohydrate","Sucrose","g","Sucrose","SUCS",73
 "Carbohydrate","Sugars, total","g","Sugars, total","SUGAR",517
 "Carbohydrate","Wax, total","mg","Wax total, aka wax ethers","WAX",578
-"Energy","Energy_total_combined","kcal","Energy_total_combined",NA,4452
 "Energy","Energy, gross","kcal","Energy in kilocalories, calculated by direct analysis using bomb calorimetry",NA,101
 "Energy","Energy, gross","kj","Energy in kilojoules, calculated by direct analysis using bomb calorimetry","ENERA",128
 "Energy","Energy, total","kcal","Energy in kilocalories, total metabolizable; calculated from the energy-producing food components",NA,3659
 "Energy","Energy, total","kj","Energy in kilojoules, total metabolizable; calculated from the energy-producing food components","ENERC",3359
+"Energy","Energy_total_combined","kcal","Energy_total_combined",NA,4452
 "Fatty acid","ALA","g","alpha-Linolenic acid, 18:3",NA,2464
 "Fatty acid","DHA","g","Docosahexaenoic acid, 22:6",NA,3157
 "Fatty acid","DHA_EPA","g","DHA + EPA",NA,3334
@@ -230,17 +230,17 @@
 "Protein","Leucine","mg","Includes only L-leucine.","LEU",1915
 "Protein","Lysine","mcg","Lycopene","LYCPN",1941
 "Protein","Methionine","mg","Includes only L-methionine.","MET",1754
-"Protein","Nitrogen_total_combined","g","Nitrogen_total_combined","NT",923
 "Protein","Nitrogen, nonprotein","g","Non-protein nitrogen","NNP",151
 "Protein","Nitrogen, protein","g","Nitrogen protein","NPRO",53
 "Protein","Nitrogen, total","g","Nitrogen total","NT",887
+"Protein","Nitrogen_total_combined","g","Nitrogen_total_combined","NT",923
 "Protein","Ornithine","mg","Ornithine","ORN",584
 "Protein","Phenylalanine","mg","Includes only L-phenylalanine","PHE",1860
 "Protein","Proline","mg","Includes only L-proline","PRO",1909
-"Protein","Protein_total_combined","g","Protein_total_combined",NA,2998
 "Protein","Protein, total; calculated from protein nitrogen","g","Protein, total; calculated from protein nitrogen","PROTCNP",25
-"Protein","Protein, total; calculated from total nitrogen","g","Total protein calculated from nitrogen","PROTCNT",7245
+"Protein","Protein, total; calculated from total nitrogen","g","Total protein calculated from nitrogen","PROTCNT",7230
 "Protein","Protein, total; unknown/variable methods","g","Protein calculated from unknown/variable method","PROT-",2998
+"Protein","Protein_total_combined","g","Protein_total_combined",NA,2998
 "Protein","Serine","mg","Serine includes only L-serine","SER",2008
 "Protein","Taurine","mg","Taurine","TAU",144
 "Protein","Threonine","mg","Threonine includes only L-threonine","THR",1933
@@ -290,8 +290,8 @@
 "Vitamin","Vitamin A; sum of carotenoids","iu","Vitamin A, international units; sum of carotenoids usda indicates over estimates bioavailability",NA,642
 "Vitamin","Vitamin A; sum of retinol/carotenoids, expressed as retinol activity equivalent (RAE)","mcg","Vitamin A; calculated by summation of the vitamin A activities of retinol and the active carotenoids, expressed as retinol activity equivalent (RAE)","VITA_RAE",1586
 "Vitamin","Vitamin A; sum of retinol/carotenoids, expressed as retinol equivalent (RE)","mcg","Vitamin A; calculated by summation of the vitamin A activities of retinol and the active carotenoids, expressed as retinol equivalent (RE)","VITA",959
-"Vitamin","Vitamin B1; as thiamin hydrochloride","mg","Vitamin B1; analysed and expressed as thiamin hydrochloride","THIAHCL",377
 "Vitamin","Vitamin B12","mcg","Includes all the active forms of vitamin B-12 in food","VITB12",2718
+"Vitamin","Vitamin B1; as thiamin hydrochloride","mg","Vitamin B1; analysed and expressed as thiamin hydrochloride","THIAHCL",377
 "Vitamin","Vitamin B6, total; thru analysis","mg","Vitamin B6 total determiend by analysis","VITB6A",1437
 "Vitamin","Vitamin B6, total; thru summation","mg","Vitamin B6 total calculated by summation","VITB6C",166
 "Vitamin","Vitamin B6; unknown/variable methods","mg","Vitamin B6, method of determination unknown or variable","VITB6-",225

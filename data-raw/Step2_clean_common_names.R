@@ -134,12 +134,16 @@ com_names = data_orig_t %>%
   ##Change to long format
   reshape2::melt(id.vars = c("ID", "food_name_orig", "food_name")) %>%
   ##Remove blancks and NAs
-  na_if("") %>%
-  na_if(" ") %>% 
-  drop_na(value) %>% 
   # Trim
-  mutate(value=stringr::str_trim(value)) %>% 
-  mutate(value = tolower(value)) %>% 
+  mutate(
+    value=stringr::str_trim(value),
+    value = tolower(value),
+    value = ifelse(value=="",NA,value),
+    value = ifelse(value==" ",NA,value)
+    ) %>% 
+  # na_if("") %>%
+  # na_if(" ") %>%
+  drop_na(value) %>%
   # TODO: translate spanish prep types and more 
   mutate(value=recode(value,
                       "cocido"="boiled","al natural"="canned natural","hormiga" = "ant", "carne" = "meat", "agua dulce" = "freshwater", "de agua dulce" = "freshwater", "filete" = "fillet",
@@ -155,7 +159,13 @@ com_names = data_orig_t %>%
                       "congelado"="frozen","crudas"="raw","ralado"="grated","sólido"="solid","crua"="raw","cru"="raw","en aceite"="in oil","dorada"="sea bream",
                       "sardina"="sardine", "sardinha"="sardine", "precocido"="pre-boiled","con sal"="with salt","salada"="salted","sadia"="healthy",
                       "maionese e vegetais"="with mayonnaise and vegetables","conserva"="canned","molho branco"="in white sauce","rehidratado"="rehydrated",
-                      "pimenta"="pepper","molho de tomate temperado"="in tomato sauce","cebola e louro"="onion and bay leaves","coqueiro"="coconut")) %>% 
+                      "pimenta"="pepper","molho de tomate temperado"="in tomato sauce","cebola e louro"="onion and bay leaves","coqueiro"="coconut",
+                      "cruda"="raw","crudo"="raw","precocida"="raw","precocido"="raw","cru"="raw","crua"="raw","fresca"="raw",
+                      "harina"="flour","entero"="whole","entera"="whole","salado"="salted","seco-salado"="salt dried",
+                      "assado"="grilled","a la parrilla"="grilled","microondas"="microwaved",
+                      "hervida"="boiled","sancochada"="boiled"
+                      )
+         ) %>% 
   mutate(value = gsub('[*"”-]', "", value)) %>% 
   mutate(value = gsub("Syn.", "", value)) %>% 
   mutate(value = gsub("Ã©", "ao", value)) %>% 
