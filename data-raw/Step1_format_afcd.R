@@ -21,7 +21,7 @@ plotdir <- "data-raw/figures"
 
 
 # Read data
-data_orig <- read.csv(file.path(indir, "20230329_AFCD.csv"), na.strings = c("", "NA"))
+data_orig <- read.csv(file.path(indir, "20230612_AFCD.csv"), na.strings = c("", "NA"))
 
 # Read reference key
 ref_fct_orig <- readxl::read_excel(file.path(indir, "afcd_references.xlsx"), sheet="fct_references")
@@ -105,7 +105,7 @@ dta = data_orig %>%
                                          Energy_total_metabolizable_calculated_from_the_energy_producing_food_components_original_as_from_source_kcal),
          protein_total_combined = if_else(is.na(Protein_total_calculated_from_total_nitrogen), 
                                           Protein_total_method_of_determination_unknown_or_variable,
-                                          Protein_total_calculated_from_protein_nitrogen),
+                                          Protein_total_calculated_from_protein_nitrogen_est),
          nitrogen_total_combined = if_else(is.na(Nitrogen_total),
                                            Nitrogen_nonprotein,
                                            Nitrogen_total),
@@ -125,8 +125,16 @@ dta = data_orig %>%
          ALA = if_else(is.na(Fatty_acid_18_3), Fatty_acid_18_3_n3, Fatty_acid_18_3),
          ALA = if_else(is.na(ALA), Fatty_acid_18_3_cis_n3, ALA),
          DHA_EPA = if_else(is.na(EPA), DHA, EPA+DHA),
-         DHA_EPA = if_else(is.na(DHA_EPA), EPA, DHA_EPA)
-         )
+         DHA_EPA = if_else(is.na(DHA_EPA), EPA, DHA_EPA),
+         Country_origin_sample=ifelse(is.na(Country_origin_sample),Country_iso3,Country_origin_sample)
+         ) %>%
+select(
+  Taxa_name,Kingdom,Class,Order,Family,Genus,Taxa_id,Parts_of_food,Preparation_of_food,
+  Production_category,Edible_portion_coefficient,Study_id_number,Country_origin_sample,Country_origin_study,Peer_review,Phylum,
+  Taxa_db,Country_iso3,Original_fct_food_code,Food_name_in_english,Food_name_in_original_language,
+  everything()
+)
+  
 
 # Format data
 data1 <- dta %>%
@@ -138,14 +146,14 @@ data1 <- dta %>%
          prod_catg=production_category,
          edible_prop=edible_portion_coefficient,
          study_id=study_id_number,
-         country_origin_sample=country_iso3,
          fct_code_orig=original_fct_food_code,
          food_name=food_name_in_english,
-         food_name_orig=food_name_in_original_language) %>%
+         food_name_orig=food_name_in_original_language
+         ) %>%
   # Arrange
-  select(sciname:food_name_orig, notes, everything()) %>%
+  select(sciname:food_name_orig,country_origin_sample,country_origin_study, notes, everything()) %>%
   # Gather nutrients (maintain capitalization)
-  gather(key="nutrient_orig", value="value", 21:ncol(.)) %>%
+  gather(key="nutrient_orig", value="value", 23:ncol(.)) %>%
   mutate(nutrient_orig=stringr::str_to_sentence(nutrient_orig)) %>%
   # Reduce to rows with no data and remove old versions of FCTs
   filter(

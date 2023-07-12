@@ -52,6 +52,8 @@ com_names = data_orig_t %>%
   rename(food_name_orig=food_name) %>%
   mutate(food_name=food_name_orig) %>% 
   mutate(food_name = recode(food_name,
+                            # "Lobster; mangrove; raw;\xbeT. anomala"="Lobster, mangrove, raw, T. anomala",
+                            # "Mackerel; Spanish; \x96Walu\x94;S.cavalla; raw"="Mackerel; Spanish; Walu.;S.cavalla; raw",
                             "Trucha ahumada " = "Trucha, ahumada", 
                             "Hueva de pescado" = "Pescado, hueva",
                             "frog legs, raw" = "frog, raw, legs", 
@@ -109,6 +111,11 @@ com_names = data_orig_t %>%
                             "Atlantic horse mackerel, atlantic, wild, lean, fillet w/o skin, raw" = "Atlantic horse mackerel, wild, lean, fillet w/o skin, raw",
                             "Mackerel, Spanish, “Walu”, raw" = "Mackerel, Spanish, raw")
          ) %>%
+  mutate(
+    food_name=str_replace_all(food_name,"/xbe"," "),
+    food_name=str_replace_all(food_name,"\x96"," "),
+    food_name=str_replace_all(food_name,"\x94"," ")
+    ) %>%
   ##Remove "and"
   mutate(food_name = gsub("salmon and trout;", "", food_name)) %>%
   mutate(food_name = gsub("w/o", "without", food_name)) %>%
