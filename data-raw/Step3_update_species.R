@@ -818,7 +818,7 @@ data_comm2 = data_comm %>%
   unique() %>% 
   mutate(food_name_orig = if_else(is.na(food_name_orig), food_name, food_name_orig),
          food_name = enc2native(food_name), #added encoding to native to play nice between windows/mac/linux
-         food_name = tolower(food_name),
+         food_name = str_to_lower(food_name),
          ##class
          class = case_when(
            #Decapoda
