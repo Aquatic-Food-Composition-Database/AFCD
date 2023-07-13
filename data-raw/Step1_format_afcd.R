@@ -21,7 +21,7 @@ plotdir <- "data-raw/figures"
 
 
 # Read data
-data_orig <- read.csv(file.path(indir, "20230612_AFCD.csv"), na.strings = c("", "NA"))
+data_orig <- read.csv(file.path(indir, "20230612_AFCD 2.csv"), na.strings = c("", "NA"))
 
 # Read reference key
 ref_fct_orig <- readxl::read_excel(file.path(indir, "afcd_references.xlsx"), sheet="fct_references")
@@ -105,7 +105,7 @@ dta = data_orig %>%
                                          Energy_total_metabolizable_calculated_from_the_energy_producing_food_components_original_as_from_source_kcal),
          protein_total_combined = if_else(is.na(Protein_total_calculated_from_total_nitrogen), 
                                           Protein_total_method_of_determination_unknown_or_variable,
-                                          Protein_total_calculated_from_protein_nitrogen_est),
+                                          Protein_total_calculated_from_protein_nitrogen),
          nitrogen_total_combined = if_else(is.na(Nitrogen_total),
                                            Nitrogen_nonprotein,
                                            Nitrogen_total),
@@ -309,8 +309,7 @@ data2 %>%
 ###Fix some wrong values
 data2 = data2 %>% 
   mutate(value = case_when(study_id == "4" & nutrient == "Vitamin D; unknown/variable methods" ~ value/1000,
-                           study_id == "459" & nutrient == "Vitamin D; unknown/variable methods" ~ value/100,
-                           study_id == "732" & nutrient == "Vitamin D; unknown/variable methods" ~ 0.025*value/0.01675,
+                           study_id == "459" & nutrient == "Vitamin D; unknown/variable methods" ~ value/100
                            TRUE ~ value))
 
 ###Exclude studies with unrealistic values

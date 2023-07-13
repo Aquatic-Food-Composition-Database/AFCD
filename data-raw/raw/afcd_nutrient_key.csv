@@ -1,270 +1,291 @@
 "nutrient_type","nutrient","nutrient_units","nutrient_desc","nutrient_code_fao","n"
-"Ash","Ash","g","Ash, synonym minerals","Ash",3819
-"Carbohydrate","Carbohydrate, available","g","Carbohydrates, available; calculated by difference.","CHOAVLDF",2457
-"Carbohydrate","Carbohydrate, total","g","Carbohydrates, total; calculated by difference.","CHOCDF",1250
-"Carbohydrate","Carbohydrate, unknown","g","Carbohydrate, unknown",NA,84
-"Carbohydrate","Fibre, crude","g","Crude fibre","FIBC",374
-"Carbohydrate","Fibre, total; gravimetrically determined","g","Fibre, total; determined gravimetrically by the aoac total dietary fibre method prosky and similar methods","FIBTG",1767
-"Carbohydrate","Fibre, water-insoluble","g","Fibre is determined via neutral detergent method","FIBSOL",556
-"Carbohydrate","Fibre, water-soluble","g","Fibre, water-soluble","FIBINS",556
-"Carbohydrate","Fibre; neutral detergent method","g","Fibre is determined via neutral detergent method","FIBND",1
-"Carbohydrate","Fibre; unknown/variable methods","g","Fibre with unknown method",NA,619
-"Carbohydrate","Glucose","g","Glucose; d-glucose only; inclues only free monosaccharide","GLUS",241
-"Carbohydrate","Glycogen","g","Glycogen","GLYC",24
+"Ash","Ash","g","Ash, synonym minerals","Ash",9082
+"Carbohydrate","Carbohydrate, available","g","Carbohydrates, available; calculated by difference.","CHOAVLDF",2654
+"Carbohydrate","Carbohydrate, total","g","Carbohydrates, total; calculated by difference.","CHOCDF",1778
+"Carbohydrate","Carbohydrate, unknown","g","Carbohydrate, unknown",NA,706
+"Carbohydrate","Cellulose","g","Cellulose","CELLU",2
+"Carbohydrate","Fibre, crude","g","Crude fibre","FIBC",516
+"Carbohydrate","Fibre, total; gravimetrically determined","g","Fibre, total; determined gravimetrically by the aoac total dietary fibre method prosky and similar methods","FIBTG",137
+"Carbohydrate","Fibre, water-insoluble","g","Fibre is determined via neutral detergent method","FIBSOL",610
+"Carbohydrate","Fibre, water-soluble","g","Fibre, water-soluble","FIBINS",610
+"Carbohydrate","Fibre; acid detergent method","g","Fibre values are determined via acid detergent method","FIBAD",17
+"Carbohydrate","Fibre; neutral detergent method","g","Fibre is determined via neutral detergent method","FIBND",11
+"Carbohydrate","Fibre; unknown/variable methods","g","Fibre with unknown method",NA,620
+"Carbohydrate","Glucose","g","Glucose; d-glucose only; inclues only free monosaccharide","GLUS",269
+"Carbohydrate","Glycogen","g","Glycogen","GLYC",117
+"Carbohydrate","Polysaccharides, non-starch watersoluble","g","Polysaccharides non-starch water soluble","PSACNSS",2
 "Carbohydrate","Saccharose","g","Saccharose",NA,98
-"Carbohydrate","Starch, total","g","Sum of all polysaccharides, including amylose, amylopectin, glycogen and dextrisn","STARCH",526
-"Carbohydrate","Sucrose","g","Sucrose","SUCS",24
-"Carbohydrate","Sugars, total","g","Sugars, total","SUGAR",512
+"Carbohydrate","Starch, total","g","Sum of all polysaccharides, including amylose, amylopectin, glycogen and dextrisn","STARCH",571
+"Carbohydrate","Sucrose","g","Sucrose","SUCS",46
+"Carbohydrate","Sugars, total","g","Sugars, total","SUGAR",517
 "Carbohydrate","Wax, total","mg","Wax total, aka wax ethers","WAX",2
-"Energy","Energy, gross","kcal","Energy in kilocalories, calculated by direct analysis using bomb calorimetry",NA,30
-"Energy","Energy, gross","kj","Energy in kilojoules, calculated by direct analysis using bomb calorimetry","ENERA",44
-"Energy","Energy, total","kcal","Energy in kilocalories, total metabolizable; calculated from the energy-producing food components",NA,3234
-"Energy","Energy, total","kj","Energy in kilojoules, total metabolizable; calculated from the energy-producing food components","ENERC",2788
-"Energy","Energy_total_combined","kcal","Energy_total_combined",NA,3632
-"Fatty acid","ALA","g","alpha-Linolenic acid, 18:3",NA,1568
-"Fatty acid","DHA","g","Docosahexaenoic acid, 22:6",NA,1689
-"Fatty acid","DHA_EPA","g","DHA + EPA",NA,1716
-"Fatty acid","Diglycerides, total","g","Total diglycerides","DGLY",12
-"Fatty acid","EPA","g","Eicosapentaenoic acid, 20:5",NA,1699
-"Fatty acid","Fat, total","g","Fat, total. Synonym total lipids. Sum of triglycerides, phospholipids, sterols and related compounds. The analytical method is a mixed solvent extraction.","FAT",3674
+"Energy","Energy, gross","kcal","Energy in kilocalories, calculated by direct analysis using bomb calorimetry",NA,135
+"Energy","Energy, gross","kj","Energy in kilojoules, calculated by direct analysis using bomb calorimetry","ENERA",147
+"Energy","Energy, total","kcal","Energy in kilocalories, total metabolizable; calculated from the energy-producing food components",NA,3721
+"Energy","Energy, total","kj","Energy in kilojoules, total metabolizable; calculated from the energy-producing food components","ENERC",3363
+"Energy","Energy_total_combined","kcal","Energy_total_combined",NA,4517
+"Fatty acid","ALA","g","alpha-Linolenic acid, 18:3",NA,1932
+"Fatty acid","DHA","g","Docosahexaenoic acid, 22:6",NA,2516
+"Fatty acid","DHA_EPA","g","DHA + EPA",NA,2592
+"Fatty acid","Diglycerides, total","g","Total diglycerides","DGLY",14
+"Fatty acid","EPA","g","Eicosapentaenoic acid, 20:5",NA,2536
+"Fatty acid","Fat, total","g","Fat, total. Synonym total lipids. Sum of triglycerides, phospholipids, sterols and related compounds. The analytical method is a mixed solvent extraction.","FAT",7103
 "Fatty acid","Fat, total; continuous extraction","g","Fat, total; derived by analysis using continuous extraction.","FATCE",754
-"Fatty acid","Fat; mixed/unknown methods","g","Fat method unknown or mixed",NA,262
-"Fatty acid","Fatty acid 10:0","g","Fatty acid 10:0",NA,871
+"Fatty acid","Fat; mixed/unknown methods","g","Fat method unknown or mixed",NA,361
+"Fatty acid","Fatty acid 10:0","g","Fatty acid 10:0",NA,1033
 "Fatty acid","Fatty acid 10:1","g","Fatty acid 10:1",NA,66
-"Fatty acid","Fatty acid 11:0","g","Fatty acid 11:0",NA,252
-"Fatty acid","Fatty acid 12:0","g","Fatty acid 12:0",NA,1073
-"Fatty acid","Fatty acid 13:0","g","Fatty acid 13:0",NA,543
-"Fatty acid","Fatty acid 14:0","g","Fatty acid 14:0",NA,1508
-"Fatty acid","Fatty acid 14:1","g","Fatty acid 14:1",NA,599
-"Fatty acid","Fatty acid 15:0","g","Fatty acid 15:0",NA,978
-"Fatty acid","Fatty acid 15:1","g","Fatty acid 15:1",NA,596
-"Fatty acid","Fatty acid 16:0","g","Fatty acid 16:0",NA,1704
-"Fatty acid","Fatty acid 16:1","g","Fatty acid 16:1",NA,1491
-"Fatty acid","Fatty acid 16:1, cis","g","Fatty acid 16:1, cis",NA,17
-"Fatty acid","Fatty acid 16:1, n5","g","Fatty acid 16:1 double bond on 5th carbon-carbon bond",NA,4
-"Fatty acid","Fatty acid 16:1, n7","g","Fatty acid 16:1 double bond on 7th carbon-carbon bond",NA,105
-"Fatty acid","Fatty acid 16:1, n9","g","Fatty acid 16:1 double bond on 9th carbon-carbon bond",NA,16
+"Fatty acid","Fatty acid 11:0","g","Fatty acid 11:0",NA,267
+"Fatty acid","Fatty acid 12:0","g","Fatty acid 12:0",NA,1295
+"Fatty acid","Fatty acid 13:0","g","Fatty acid 13:0",NA,570
+"Fatty acid","Fatty acid 14:0","g","Fatty acid 14:0",NA,2097
+"Fatty acid","Fatty acid 14:1","g","Fatty acid 14:1",NA,683
+"Fatty acid","Fatty acid 14:1, n5","g","Fatty acid 14:1 double bond on 5th carbon-carbon bond",NA,1
+"Fatty acid","Fatty acid 14:1, n7","g","Fatty acid 14:1 double bond on 7th carbon-carbon bond",NA,4
+"Fatty acid","Fatty acid 14:1, n9","g","Fatty acid 14:1 double bond on 9th carbon-carbon bond",NA,2
+"Fatty acid","Fatty acid 15:0","g","Fatty acid 15:0",NA,1122
+"Fatty acid","Fatty acid 15:1","g","Fatty acid 15:1",NA,620
+"Fatty acid","Fatty acid 16:0","g","Fatty acid 16:0",NA,2356
+"Fatty acid","Fatty acid 16:1","g","Fatty acid 16:1",NA,1866
+"Fatty acid","Fatty acid 16:1, cis","g","Fatty acid 16:1, cis",NA,21
+"Fatty acid","Fatty acid 16:1, n11","g","Fatty acid 16:1 double bond on 11th carbon-carbon bond",NA,24
+"Fatty acid","Fatty acid 16:1, n5","g","Fatty acid 16:1 double bond on 5th carbon-carbon bond",NA,8
+"Fatty acid","Fatty acid 16:1, n7","g","Fatty acid 16:1 double bond on 7th carbon-carbon bond",NA,268
+"Fatty acid","Fatty acid 16:1, n9","g","Fatty acid 16:1 double bond on 9th carbon-carbon bond",NA,38
 "Fatty acid","Fatty acid 16:1, trans n7","g","Fatty acid 16:1 double bond on 7th carbon-carbon bond in trans configuration",NA,79
-"Fatty acid","Fatty acid 16:2","g","Fatty acid 16:2",NA,487
+"Fatty acid","Fatty acid 16:2","g","Fatty acid 16:2",NA,493
 "Fatty acid","Fatty acid 16:2, n4","g","Fatty acid 16:2 double bond on 4th carbon-carbon bond",NA,43
-"Fatty acid","Fatty acid 16:3","g","Fatty acid 16:3",NA,483
-"Fatty acid","Fatty acid 16:3, n3","g","Fatty acid 16:3 double bond on 3rd carbon-carbon bond",NA,4
-"Fatty acid","Fatty acid 16:4","g","Fatty acid 16:4",NA,464
+"Fatty acid","Fatty acid 16:3","g","Fatty acid 16:3",NA,488
+"Fatty acid","Fatty acid 16:3, n3","g","Fatty acid 16:3 double bond on 3rd carbon-carbon bond",NA,6
+"Fatty acid","Fatty acid 16:4","g","Fatty acid 16:4",NA,469
 "Fatty acid","Fatty acid 16:4, cis","g","Fatty acid 16:4 in cis configuration",NA,4
 "Fatty acid","Fatty acid 16:4, n3","g","Fatty acid 16:4 double bond on 3rd carbon-carbon bond",NA,4
-"Fatty acid","Fatty acid 17:0","g","Fatty acid 17:0",NA,930
+"Fatty acid","Fatty acid 17:0","g","Fatty acid 17:0",NA,1059
 "Fatty acid","Fatty acid 17:0, anteiso","g","Fatty acid 17:0, with methyl group occurs at the third to the last carbon in the chain.",NA,373
-"Fatty acid","Fatty acid 17:1","g","Fatty acid 17:1",NA,788
-"Fatty acid","Fatty acid 17:1, cis","g","Fatty acid 17:1 in cis configuration",NA,4
-"Fatty acid","Fatty acid 17:1, n9","g","Fatty acid 17:1 double bond on 8th carbon-carbon bond",NA,8
+"Fatty acid","Fatty acid 17:1","g","Fatty acid 17:1",NA,814
+"Fatty acid","Fatty acid 17:1, cis","g","Fatty acid 17:1 in cis configuration",NA,7
+"Fatty acid","Fatty acid 17:1, n9","g","Fatty acid 17:1 double bond on 8th carbon-carbon bond",NA,14
 "Fatty acid","Fatty acid 18 1 trans","g","Fatty acid 18:1 in trans configuration",NA,71
-"Fatty acid","Fatty acid 18 1 trans n9","g","Fatty acid 18:1 double bond on 9th carbon-carbon bond in trans configuration",NA,117
-"Fatty acid","Fatty acid 18:0","g","Fatty acid 18:0",NA,1689
-"Fatty acid","Fatty acid 18:1","g","Fatty acid 18:1 in trans configuration",NA,1380
+"Fatty acid","Fatty acid 18 1 trans n9","g","Fatty acid 18:1 double bond on 9th carbon-carbon bond in trans configuration",NA,128
+"Fatty acid","Fatty acid 18:0","g","Fatty acid 18:0",NA,2274
+"Fatty acid","Fatty acid 18:1","g","Fatty acid 18:1 in trans configuration",NA,1766
 "Fatty acid","Fatty acid 18:1, cis","g","Fatty acid 18:1 in cis configuration",NA,21
 "Fatty acid","Fatty acid 18:1, cis n7","g","Fatty acid 18:1 double bond on 7th carbon-carbon bond in cis configuration",NA,385
-"Fatty acid","Fatty acid 18:1, cis n9","g","Fatty acid 18:1 double bond on 9th carbon-carbon bond in cis configuration",NA,506
-"Fatty acid","Fatty acid 18:1, n11","g","Fatty acid 18:1 double bond on 11th carbon-carbon bond",NA,4
-"Fatty acid","Fatty acid 18:1, n7","g","Fatty acid 18:1 double bond on 7th carbon-carbon bond",NA,75
-"Fatty acid","Fatty acid 18:1, n9","g","Fatty acid 18:1 double bond on 9th carbon-carbon bond",NA,146
-"Fatty acid","Fatty acid 18:2","g","Fatty acid 18:2",NA,1095
+"Fatty acid","Fatty acid 18:1, cis n9","g","Fatty acid 18:1 double bond on 9th carbon-carbon bond in cis configuration",NA,524
+"Fatty acid","Fatty acid 18:1, n11","g","Fatty acid 18:1 double bond on 11th carbon-carbon bond",NA,14
+"Fatty acid","Fatty acid 18:1, n11 + fatty acid 20:1,n9","g","Combinations of two fatty acids coming from peer review",NA,37
+"Fatty acid","Fatty acid 18:1, n7","g","Fatty acid 18:1 double bond on 7th carbon-carbon bond",NA,199
+"Fatty acid","Fatty acid 18:1, n9","g","Fatty acid 18:1 double bond on 9th carbon-carbon bond",NA,353
+"Fatty acid","Fatty acid 18:2","g","Fatty acid 18:2",NA,1140
 "Fatty acid","Fatty acid 18:2, cis","g","Fatty acid 18:2 in cis configuration",NA,9
-"Fatty acid","Fatty acid 18:2, cis n6","g","Fatty acid 16:2 double bond on 6th carbon-carbon bond in cis configuration",NA,210
+"Fatty acid","Fatty acid 18:2, cis n6","g","Fatty acid 16:2 double bond on 6th carbon-carbon bond in cis configuration",NA,224
 "Fatty acid","Fatty acid 18:2, conj","g","Fatty acid 18:2 conjugated",NA,8
-"Fatty acid","Fatty acid 18:2, n6","g","Fatty acid 18:2 double bond on 6th carbon-carbon bond",NA,1109
+"Fatty acid","Fatty acid 18:2, n6","g","Fatty acid 18:2 double bond on 6th carbon-carbon bond",NA,1486
 "Fatty acid","Fatty acid 18:2, trans","g","Fatty acid 18:2 in trans configuration",NA,13
-"Fatty acid","Fatty acid 18:3","g","Fatty acid 18:3",NA,943
+"Fatty acid","Fatty acid 18:2, trans n6","g","Fatty acid 16:2 double bond on 6th carbon-carbon bond in trans configuration",NA,15
+"Fatty acid","Fatty acid 18:3","g","Fatty acid 18:3",NA,998
 "Fatty acid","Fatty acid 18:3, cis n3","g","Fatty acid 18:3 double bond on 3rd carbon-carbon bond in cis configuration",NA,13
 "Fatty acid","Fatty acid 18:3, cis n6","g","Fatty acid 18:3 double bond on 6th carbon-carbon bond in cis configuration",NA,75
-"Fatty acid","Fatty acid 18:3, n3","g","Fatty acid 18:3 double bond on 3rd carbon-carbon bond",NA,1076
+"Fatty acid","Fatty acid 18:3, n3","g","Fatty acid 18:3 double bond on 3rd carbon-carbon bond",NA,1385
 "Fatty acid","Fatty acid 18:3, n4","g","Fatty acid 18:3 double bond on 4th carbon-carbon bond",NA,39
-"Fatty acid","Fatty acid 18:3, n6","g","Fatty acid 18:3 double bond on 6th carbon-carbon bond",NA,522
-"Fatty acid","Fatty acid 18:4","g","Fatty acid 18:4",NA,534
+"Fatty acid","Fatty acid 18:3, n6","g","Fatty acid 18:3 double bond on 6th carbon-carbon bond",NA,634
+"Fatty acid","Fatty acid 18:4","g","Fatty acid 18:4",NA,535
 "Fatty acid","Fatty acid 18:4, cis n3","g","Fatty acid 18:4 double bond on 3rd carbon-carbon bond in cis configuration",NA,4
 "Fatty acid","Fatty acid 18:4, n1","g","Fatty acid 18:4 double bond on 1st carbon-carbon bond",NA,39
-"Fatty acid","Fatty acid 18:4, n3","g","Fatty acid 18:4 double bond on 3rd carbon-carbon bond",NA,532
-"Fatty acid","Fatty acid 19:0","g","Fatty acid 19:0",NA,38
+"Fatty acid","Fatty acid 18:4, n3","g","Fatty acid 18:4 double bond on 3rd carbon-carbon bond",NA,648
+"Fatty acid","Fatty acid 19:0","g","Fatty acid 19:0",NA,39
 "Fatty acid","Fatty acid 19:1, n11","g","Fatty acid 19:1 double bond on 11th carbon-carbon bond",NA,103
-"Fatty acid","Fatty acid 20:0","g","Fatty acid 20:0",NA,908
-"Fatty acid","Fatty acid 20:1","g","Fatty acid 20:1",NA,1237
+"Fatty acid","Fatty acid 20:0","g","Fatty acid 20:0",NA,1098
+"Fatty acid","Fatty acid 20:1","g","Fatty acid 20:1",NA,1586
 "Fatty acid","Fatty acid 20:1, cis","g","Fatty acid 20:1 in cis configuration",NA,4
 "Fatty acid","Fatty acid 20:1, cis n9","g","Fatty acid 20:1 double bond on 9th carbon-carbon bond in cis configuration",NA,117
-"Fatty acid","Fatty acid 20:1, n11","g","Fatty acid 20:1 double bond on 11th carbon-carbon bond",NA,4
-"Fatty acid","Fatty acid 20:1, n7","g","Fatty acid 20:1 double bond on 7th carbon-carbon bond",NA,4
-"Fatty acid","Fatty acid 20:1, n9","g","Fatty acid 20:1 double bond on 9th carbon-carbon bond",NA,75
-"Fatty acid","Fatty acid 20:2","g","Fatty acid 20:2",NA,278
+"Fatty acid","Fatty acid 20:1, n11","g","Fatty acid 20:1 double bond on 11th carbon-carbon bond",NA,17
+"Fatty acid","Fatty acid 20:1, n7","g","Fatty acid 20:1 double bond on 7th carbon-carbon bond",NA,35
+"Fatty acid","Fatty acid 20:1, n9","g","Fatty acid 20:1 double bond on 9th carbon-carbon bond",NA,218
+"Fatty acid","Fatty acid 20:1, n9 + fatty acid 20:1, n11","g","Combinations of two fatty acids coming from peer review",NA,7
+"Fatty acid","Fatty acid 20:2","g","Fatty acid 20:2",NA,285
 "Fatty acid","Fatty acid 20:2, cis n6","g","Fatty acid 20:2 double bond on 6th carbon-carbon bond in cis configuration",NA,12
-"Fatty acid","Fatty acid 20:2, n6","g","Fatty acid 20:2 double bond on 6th carbon-carbon bond",NA,680
-"Fatty acid","Fatty acid 20:2, n9","g","Fatty acid 20:2 double bond on 9th carbon-carbon bond",NA,4
+"Fatty acid","Fatty acid 20:2, n6","g","Fatty acid 20:2 double bond on 6th carbon-carbon bond",NA,830
+"Fatty acid","Fatty acid 20:2, n9","g","Fatty acid 20:2 double bond on 9th carbon-carbon bond",NA,6
 "Fatty acid","Fatty acid 20:3","g","Fatty acid 20:3",NA,247
 "Fatty acid","Fatty acid 20:3, cis n6","g","Fatty acid 20:3 double bond on 6th carbon-carbon bond in cis configuration",NA,4
-"Fatty acid","Fatty acid 20:3, n3","g","Fatty acid 20:3 double bond on 3rd carbon-carbon bond",NA,364
-"Fatty acid","Fatty acid 20:3, n6","g","Fatty acid 20:3 double bond on 6th carbon-carbon bond",NA,753
+"Fatty acid","Fatty acid 20:3, n3","g","Fatty acid 20:3 double bond on 3rd carbon-carbon bond",NA,453
+"Fatty acid","Fatty acid 20:3, n6","g","Fatty acid 20:3 double bond on 6th carbon-carbon bond",NA,836
 "Fatty acid","Fatty acid 20:3, n9","g","Fatty acid 20:3 double bond on 9th carbon-carbon bond",NA,19
-"Fatty acid","Fatty acid 20:4","g","Fatty acid 20:4",NA,744
+"Fatty acid","Fatty acid 20:4","g","Fatty acid 20:4",NA,746
 "Fatty acid","Fatty acid 20:4, cis n6","g","Fatty acid 20:4 double bond on 6th carbon-carbon bond in cis configuration",NA,4
-"Fatty acid","Fatty acid 20:4, n3","g","Fatty acid 20:4 double bond on 3rd carbon-carbon bond",NA,706
-"Fatty acid","Fatty acid 20:4, n6","g","Fatty acid 20:4 double bond on 6th carbon-carbon bond",NA,1052
-"Fatty acid","Fatty acid 20:5","g","Fatty acid 20:5",NA,469
+"Fatty acid","Fatty acid 20:4, n3","g","Fatty acid 20:4 double bond on 3rd carbon-carbon bond",NA,816
+"Fatty acid","Fatty acid 20:4, n6","g","Fatty acid 20:4 double bond on 6th carbon-carbon bond",NA,1385
+"Fatty acid","Fatty acid 20:4, n6 + fatty acid 22:1","g","Combinations of two fatty acids coming from peer review",NA,13
+"Fatty acid","Fatty acid 20:5","g","Fatty acid 20:5",NA,510
 "Fatty acid","Fatty acid 20:5, cis n3","g","Fatty acid 20:5 double bond on 3rd carbon-carbon bond in cis configuration",NA,9
-"Fatty acid","Fatty acid 20:5, n3","g","Fatty acid 20:5 double bond on 3rd carbon-carbon bond",NA,1524
-"Fatty acid","Fatty acid 21:0","g","Fatty acid 21:0",NA,31
-"Fatty acid","Fatty acid 21:5","g","Fatty acid 21:5",NA,64
-"Fatty acid","Fatty acid 21:5, n3","g","Fatty acid 21:5 double bond on 3rd carbon-carbon bond",NA,402
-"Fatty acid","Fatty acid 22:0","g","Fatty acid 22:0",NA,816
-"Fatty acid","Fatty acid 22:1","g","Fatty acid 22:1",NA,947
+"Fatty acid","Fatty acid 20:5, n3","g","Fatty acid 20:5 double bond on 3rd carbon-carbon bond",NA,2310
+"Fatty acid","Fatty acid 21:0","g","Fatty acid 21:0",NA,55
+"Fatty acid","Fatty acid 21:5","g","Fatty acid 21:5",NA,69
+"Fatty acid","Fatty acid 21:5, n3","g","Fatty acid 21:5 double bond on 3rd carbon-carbon bond",NA,413
+"Fatty acid","Fatty acid 22:0","g","Fatty acid 22:0",NA,919
+"Fatty acid","Fatty acid 22:1","g","Fatty acid 22:1",NA,1233
 "Fatty acid","Fatty acid 22:1, cis","g","Fatty acid 22:1 in cis configuration",NA,8
-"Fatty acid","Fatty acid 22:1, n11","g","Fatty acid 22:1 double bond on 11th carbon-carbon bond",NA,20
-"Fatty acid","Fatty acid 22:1, n9","g","Fatty acid 22:1 double bond on 9th carbon-carbon bond",NA,29
+"Fatty acid","Fatty acid 22:1, n11","g","Fatty acid 22:1 double bond on 11th carbon-carbon bond",NA,90
+"Fatty acid","Fatty acid 22:1, n9","g","Fatty acid 22:1 double bond on 9th carbon-carbon bond",NA,68
 "Fatty acid","Fatty acid 22:1, n9 + fatty acid 22:1, n11","g","Combinations of two fatty acids coming from peer review",NA,4
 "Fatty acid","Fatty acid 22:1, trans","g","Fatty acid 22:1 in trans configuration",NA,69
-"Fatty acid","Fatty acid 22:2","g","Fatty acid 22:2",NA,481
-"Fatty acid","Fatty acid 22:2, n6","g","Fatty acid 22:2 double bond on 6th carbon-carbon bond",NA,169
+"Fatty acid","Fatty acid 22:2","g","Fatty acid 22:2",NA,502
+"Fatty acid","Fatty acid 22:2, n6","g","Fatty acid 22:2 double bond on 6th carbon-carbon bond",NA,181
 "Fatty acid","Fatty acid 22:3","g","Fatty acid 22:3",NA,36
-"Fatty acid","Fatty acid 22:3, n3","g","Fatty acid 22:3 double bond on 3rd carbon-carbon bond",NA,1
+"Fatty acid","Fatty acid 22:3, n3","g","Fatty acid 22:3 double bond on 3rd carbon-carbon bond",NA,4
 "Fatty acid","Fatty acid 22:3, n6","g","Fatty acid 22:3 double bond on 6th carbon-carbon bond",NA,58
 "Fatty acid","Fatty acid 22:4","g","Fatty acid 22:4",NA,292
 "Fatty acid","Fatty acid 22:4, cis n6","g","Fatty acid 22:4 double bond on 6th carbon-carbon bond in cis configuration",NA,4
-"Fatty acid","Fatty acid 22:4, n6","g","Fatty acid 22:4 double bond on 6th carbon-carbon bond",NA,491
-"Fatty acid","Fatty acid 22:5","g","Fatty acid 22:5",NA,443
+"Fatty acid","Fatty acid 22:4, n6","g","Fatty acid 22:4 double bond on 6th carbon-carbon bond",NA,527
+"Fatty acid","Fatty acid 22:5","g","Fatty acid 22:5",NA,445
 "Fatty acid","Fatty acid 22:5, cis n3","g","Fatty acid 22:5 double bond on 3rd carbon-carbon bond in cis configuration",NA,4
-"Fatty acid","Fatty acid 22:5, n3","g","Fatty acid 22:5 double bond on 3rd carbon-carbon bond",NA,1275
-"Fatty acid","Fatty acid 22:5, n6","g","Fatty acid 22:5 double bond on 6th carbon-carbon bond",NA,453
-"Fatty acid","Fatty acid 22:6","g","Fatty acid 22:6",NA,491
-"Fatty acid","Fatty acid 22:6, cis n3","g","Fatty acid 22:6 double bond on 3rd carbon-carbon bond in cis configuration",NA,15
-"Fatty acid","Fatty acid 22:6, n3","g","Fatty acid 22:6 double bond on 3rd carbon-carbon bond",NA,1548
-"Fatty acid","Fatty acid 23:0","g","Fatty acid 23:0",NA,77
-"Fatty acid","Fatty acid 24:0","g","Fatty acid 24:0",NA,847
-"Fatty acid","Fatty acid 24:1","g","Fatty acid 24:1",NA,643
+"Fatty acid","Fatty acid 22:5, n3","g","Fatty acid 22:5 double bond on 3rd carbon-carbon bond",NA,1430
+"Fatty acid","Fatty acid 22:5, n6","g","Fatty acid 22:5 double bond on 6th carbon-carbon bond",NA,513
+"Fatty acid","Fatty acid 22:6","g","Fatty acid 22:6",NA,499
+"Fatty acid","Fatty acid 22:6, cis n3","g","Fatty acid 22:6 double bond on 3rd carbon-carbon bond in cis configuration",NA,17
+"Fatty acid","Fatty acid 22:6, n3","g","Fatty acid 22:6 double bond on 3rd carbon-carbon bond",NA,2375
+"Fatty acid","Fatty acid 23:0","g","Fatty acid 23:0",NA,92
+"Fatty acid","Fatty acid 24:0","g","Fatty acid 24:0",NA,966
+"Fatty acid","Fatty acid 24:1","g","Fatty acid 24:1",NA,700
 "Fatty acid","Fatty acid 24:1, cis","g","Fatty acid 24:1 in cis configuration",NA,11
-"Fatty acid","Fatty acid 24:1, n9","g","Fatty acid 24:1 double bond on 9th carbon-carbon bond",NA,89
+"Fatty acid","Fatty acid 24:1, n9","g","Fatty acid 24:1 double bond on 9th carbon-carbon bond",NA,161
 "Fatty acid","Fatty acid 24:6","g","Fatty acid 24:6",NA,8
-"Fatty acid","Fatty acid 26:0","g","Fatty acid 26:0",NA,6
+"Fatty acid","Fatty acid 26:0","g","Fatty acid 26:0",NA,7
 "Fatty acid","Fatty acid 30:0","g","Fatty acid 30:0",NA,6
-"Fatty acid","Fatty acid 4:0","g","Fatty acid 4:0",NA,943
-"Fatty acid","Fatty acid 6:0","g","Fatty acid 6:0",NA,943
-"Fatty acid","Fatty acid 8:0","g","Fatty acid 8:0",NA,903
+"Fatty acid","Fatty acid 4:0","g","Fatty acid 4:0",NA,963
+"Fatty acid","Fatty acid 6:0","g","Fatty acid 6:0",NA,976
+"Fatty acid","Fatty acid 8:0","g","Fatty acid 8:0",NA,1068
 "Fatty acid","Fatty acid 9:0","g","Fatty acid 9:0",NA,63
 "Fatty acid","Fatty acid conversion factor, for internal use","none","Fatty acid conversion factor, for internal use",NA,106
 "Fatty acid","Fatty acids not identified","g","Fatty acids not identified",NA,851
 "Fatty acid","Monoglycerides, total","g","Total monoglycerides","MGLY",13
-"Fatty acid","Phospholipids, total","g","Total phospholipids","PHOLIP",29
+"Fatty acid","Phospholipids, total","g","Total phospholipids","PHOLIP",180
 "Fatty acid","Total fatty acids","g","Total fatty acids","FACID",521
 "Fatty acid","Total fatty acids, free","g","Total free fatty acids",NA,28
 "Fatty acid","Total fatty acids, monounsaturated","g","Total monounsaturated fatty acids","FAMS",2430
-"Fatty acid","Total fatty acids, n3","g","Total fatty acids double bond on 3rd carbon-carbon bond in cis configuration",NA,577
+"Fatty acid","Total fatty acids, n3","g","Total fatty acids double bond on 3rd carbon-carbon bond in cis configuration",NA,642
 "Fatty acid","Total fatty acids, n3 polyunsaturated","g","Total polyunsaturated fatty acids double bond on 3rd carbon-carbon bond","FAPUN3",522
-"Fatty acid","Total fatty acids, n6","g","Total fatty acids double bond on 6th carbon-carbon bond in cis configuration",NA,420
+"Fatty acid","Total fatty acids, n6","g","Total fatty acids double bond on 6th carbon-carbon bond in cis configuration",NA,465
 "Fatty acid","Total fatty acids, n6 polyunsaturated","g","Total polyunsaturated fatty acids double bond on 6th carbon-carbon bond","FAPUN6",403
 "Fatty acid","Total fatty acids, polyunsaturated","g","Total polyunsaturated fatty acids","FAPU",2395
 "Fatty acid","Total fatty acids, saturated","g","Total saturated fatty acids","FASAT",2448
 "Fatty acid","Total fatty acids, trans","g","Total trans fatty acids","FATRN",288
-"Fatty acid","Triglycerides, total","g","Triglycerides, total","TGLY",31
-"Mineral","Bromide","mcg","Bromide","BRD",3
-"Mineral","Calcium","mg","Calcium","CA",3469
+"Fatty acid","Triglycerides, total","g","Triglycerides, total","TGLY",60
+"Mineral","Antimony","mcg","Antimony","SB",31
+"Mineral","Bromide","mcg","Bromide","BRD",10
+"Mineral","Calcium","mg","Calcium","CA",5874
 "Mineral","Cesium","mcg","Cesium","CS",6
-"Mineral","Chloride","mg","Chloride synonym chlorine","CLD",7
-"Mineral","Chromium","mcg","Chromium","CR",442
-"Mineral","Cobalt","mcg","Cobalt","CO",24
-"Mineral","Copper","mg","Copper","CU",2163
+"Mineral","Chloride","mg","Chloride synonym chlorine","CLD",23
+"Mineral","Chromium","mcg","Chromium","CR",1469
+"Mineral","Cobalt","mcg","Cobalt","CO",734
+"Mineral","Copper","mg","Copper","CU",4632
 "Mineral","Fluoride","mcg","Fluoride, synonym fluorine","FD",52
-"Mineral","Iodine","mcg","Iodine","I",1006
-"Mineral","Iron, total","mg","Total iron is sum of heme and non-heme iron","FE",3444
-"Mineral","Magnesium","mg","Magnesium","MG",2344
-"Mineral","Manganese","mcg","Manganese","MN",1028
-"Mineral","Molybdenum","mcg","Molybdenum","MO",536
-"Mineral","Nickel","mcg","Nickel","NI",35
-"Mineral","Phosphorus","mg","Phosphorus","P",3181
-"Mineral","Potassium","mg","Potassium","K",2774
-"Mineral","Rubidium","mg","Rubidium","RB",8
+"Mineral","Iodine","mcg","Iodine","I",1298
+"Mineral","Iron, total","mg","Total iron is sum of heme and non-heme iron","FE",6463
+"Mineral","Magnesium","mg","Magnesium","MG",4125
+"Mineral","Manganese","mcg","Manganese","MN",2964
+"Mineral","Molybdenum","mcg","Molybdenum","MO",706
+"Mineral","Nickel","mcg","Nickel","NI",929
+"Mineral","Phosphorus","mg","Phosphorus","P",4811
+"Mineral","Potassium","mg","Potassium","K",4641
+"Mineral","Rubidium","mg","Rubidium","RB",24
 "Mineral","Salt","mg","Salt","NACL",547
-"Mineral","Selenium","mcg","Selenium","SE",1777
-"Mineral","Silver","mcg","Silver","AG",1
-"Mineral","Sodium","mg","Sodium",NA,2792
+"Mineral","Selenium","mcg","Selenium","SE",2748
+"Mineral","Silver","mcg","Silver","AG",141
+"Mineral","Sodium","mg","Sodium",NA,4620
 "Mineral","Sulphur","mg","Sulphur","S",40
-"Mineral","Tin","mcg","Tin","SN",1
+"Mineral","Tin","mcg","Tin","SN",147
 "Mineral","Titanium","mg","Titanium",NA,1
-"Mineral","Vanadium","mcg","Vanadium","V",1
-"Mineral","Zinc","mg","Zinc","ZN",2544
-"Other","Phytic acid","mg","Phytic acid","PHYTAC",6
-"Other","Tannins, total","mg","Tannins","TAN",374
-"Protein","Alanine","mg","Includes only L-alanine.","ALA",1009
+"Mineral","Vanadium","mcg","Vanadium","V",133
+"Mineral","Zinc","mg","Zinc","ZN",5215
+"Other","Oxalic acid","mg","Oxalic acid","OXALAC",2
+"Other","Phytic acid","mg","Phytic acid","PHYTAC",8
+"Other","Tannins, total","mg","Tannins","TAN",376
+"Protein","Alanine","mg","Includes only L-alanine.","ALA",1155
 "Protein","Alanine + arginine","mg","Alanine + arginine","ALA_A_ARG",6
-"Protein","Arginine","mg","Includes only L-arginine","ARG",1008
-"Protein","Aspartic acid","mg","Aspartic acid; includes only L-aspartic acid","ASP",1015
-"Protein","Cystine","mg","Cysteine is often the natural form, which is converted to cystine during chromatography; includes only the L-amino acid","CYS",963
-"Protein","Glutamic acid","mg","Includes only L-glutamic acid","GLU",1007
-"Protein","Glutamine","mg","Includes only L-glutamine","GLN",11
+"Protein","Arginine","mg","Includes only L-arginine","ARG",1146
+"Protein","Asparagine + aspartic acid","mg","Asparagine + aspartic acid",NA,2
+"Protein","Aspartic acid","mg","Aspartic acid; includes only L-aspartic acid","ASP",1160
+"Protein","Cystine","mg","Cysteine is often the natural form, which is converted to cystine during chromatography; includes only the L-amino acid","CYS",1007
+"Protein","Glutamic acid","mg","Includes only L-glutamic acid","GLU",1131
+"Protein","Glutamine","mg","Includes only L-glutamine","GLN",38
 "Protein","Glutamine + histidine","mg","Glutamine + histidine","GLU_A_HIS",6
-"Protein","Glycine","mg","Includes only L-glycine","GLY",1015
-"Protein","Histidine","mg","Histidine","HIS",1009
-"Protein","Hydroxyproline","mg","Hydroxyproline","HYP",39
-"Protein","Leucine","mg","Includes only L-leucine.","LEU",1015
-"Protein","Lysine","mcg","Lycopene","LYCPN",1015
-"Protein","Methionine","mg","Includes only L-methionine.","MET",1014
-"Protein","Nitrogen, nonprotein","g","Non-protein nitrogen","NNP",67
-"Protein","Nitrogen, protein","g","Nitrogen protein","NPRO",53
-"Protein","Nitrogen, total","g","Nitrogen total","NT",742
-"Protein","Nitrogen_total_combined","g","Nitrogen_total_combined","NT",755
-"Protein","Phenylalanine","mg","Includes only L-phenylalanine","PHE",992
-"Protein","Proline","mg","Includes only L-proline","PRO",1008
-"Protein","Protein, total; calculated from total nitrogen","g","Total protein calculated from nitrogen","PROTCNT",4092
-"Protein","Protein, total; unknown/variable methods","g","Protein calculated from unknown/variable method","PROT-",166
-"Protein","Protein_total_combined","g","Protein_total_combined",NA,165
-"Protein","Serine","mg","Serine includes only L-serine","SER",1015
-"Protein","Taurine","mg","Taurine","TAU",30
-"Protein","Threonine","mg","Threonine includes only L-threonine","THR",992
+"Protein","Glycine","mg","Includes only L-glycine","GLY",1167
+"Protein","Histidine","mg","Histidine","HIS",1199
+"Protein","Hydroxyproline","mg","Hydroxyproline","HYP",43
+"Protein","Leucine","mg","Includes only L-leucine.","LEU",1186
+"Protein","Lysine","mcg","Lycopene","LYCPN",1220
+"Protein","Methionine","mg","Includes only L-methionine.","MET",1203
+"Protein","Nitrogen, nonprotein","g","Non-protein nitrogen","NNP",172
+"Protein","Nitrogen, protein","g","Nitrogen protein","NPRO",106
+"Protein","Nitrogen, total","g","Nitrogen total","NT",945
+"Protein","Nitrogen_total_combined","g","Nitrogen_total_combined","NT",1002
+"Protein","Ornithine","mg","Ornithine","ORN",6
+"Protein","Phenylalanine","mg","Includes only L-phenylalanine","PHE",1184
+"Protein","Proline","mg","Includes only L-proline","PRO",1134
+"Protein","Protein, total; calculated from protein nitrogen","g","Protein, total; calculated from protein nitrogen","PROTCNP",25
+"Protein","Protein, total; calculated from total nitrogen","g","Total protein calculated from nitrogen","PROTCNT",7744
+"Protein","Protein, total; unknown/variable methods","g","Protein calculated from unknown/variable method","PROT-",3138
+"Protein","Protein_total_combined","g","Protein_total_combined",NA,3138
+"Protein","Serine","mg","Serine includes only L-serine","SER",1164
+"Protein","Taurine","mg","Taurine","TAU",83
+"Protein","Threonine","mg","Threonine includes only L-threonine","THR",1196
 "Protein","Total amino acids, sulfur-containing","mg","Total amino acids, sulfur-containing","AAS",2
-"Protein","Tryptophan","mg","Includes only L-tryptophan.","TRYPN",1174
-"Protein","Tyrosine","mg","Includes only L-tyrosine","TYR",1015
-"Protein","Valine","mg","Includes only L-valine","VAL",1015
+"Protein","Tryptophan","mg","Includes only L-tryptophan.","TRYPN",1225
+"Protein","Tyrosine","mg","Includes only L-tyrosine","TYR",1172
+"Protein","Valine","mg","Includes only L-valine","VAL",1243
+"Sterol","Beta-sitosterol","mg","Beta-sitosterol",NA,5
 "Sterol","Brassicasterol","mg","Brassicasterol","BRASTR",2
-"Sterol","Campesterol, total","mg","Total campesterol","CAMT",5
-"Sterol","Cholesterol; enzymatic/chromatographic method","mg","Cholesterol; determined by enzymatic or chromatographic method","CHOLE",1026
-"Sterol","Cholesterol; unknown/variable methods","mg","Cholesterol; method of determination unknown or variable","CHOL-",769
+"Sterol","Campesterol, total","mg","Total campesterol","CAMT",57
+"Sterol","Cholesterol; enzymatic/chromatographic method","mg","Cholesterol; determined by enzymatic or chromatographic method","CHOLE",1617
+"Sterol","Cholesterol; unknown/variable methods","mg","Cholesterol; method of determination unknown or variable","CHOL-",1447
 "Sterol","Sitosterol","mg","Beta-sitosterol only","SITSTR",3
-"Sterol","Squalene","mg","Squalene","SQUAL",10
-"Sterol","Sterols, total","mg","Total sterols, non-specific colorimetric method or sum of cholesterol and phytosterols","STERT",60
-"Sterol","Stigmasterol, unspecified","mg","Stigmasterol","STGSTR",1
-"Toxic trace elements","Aluminum","mcg","Aluminium","AL",38
-"Toxic trace elements","Arsenic","mcg","Arsenic","AS",17
-"Toxic trace elements","Barium","mcg","Barium","BA",15
-"Toxic trace elements","Cadmium","mcg","Cadmium","CD",34
-"Toxic trace elements","Lead","mcg","Lead","PB",29
-"Toxic trace elements","Lithium","mcg","Lithium","LI",36
-"Toxic trace elements","Mercury","mcg","Mercury","HG",80
-"Toxic trace elements","Strontium","mcg","Strontium","SR",22
-"Vitamin","Astaxanthin","mcg","Astaxanthin","ATX",4
-"Vitamin","Carotenoids, total","mcg","Carotenoids, total","CARTOID",147
-"Vitamin","Cholecalciferol d3","mcg","Cholecalciferol; syonym Vitamin D-3","CHOCAL",1554
+"Sterol","Squalene","mg","Squalene","SQUAL",43
+"Sterol","Sterols, total","mg","Total sterols, non-specific colorimetric method or sum of cholesterol and phytosterols","STERT",183
+"Sterol","Stigmasterol, unspecified","mg","Stigmasterol","STGSTR",52
+"Toxic trace elements","Aluminum","mcg","Aluminium","AL",267
+"Toxic trace elements","Arsenic","mcg","Arsenic","AS",668
+"Toxic trace elements","Barium","mcg","Barium","BA",151
+"Toxic trace elements","Cadmium","mcg","Cadmium","CD",1328
+"Toxic trace elements","Lead","mcg","Lead","PB",1376
+"Toxic trace elements","Lithium","mcg","Lithium","LI",49
+"Toxic trace elements","Mercury","mcg","Mercury","HG",746
+"Toxic trace elements","Strontium","mcg","Strontium","SR",155
+"Vitamin","Astaxanthin","mcg","Astaxanthin","ATX",5
+"Vitamin","Carotenoids, total","mcg","Carotenoids, total","CARTOID",250
+"Vitamin","Cholecalciferol d3","mcg","Cholecalciferol; syonym Vitamin D-3","CHOCAL",2080
 "Vitamin","Dehydroretinol","mcg","Dehydroretinol","RETOLDH",80
 "Vitamin","Ergocalciferol d2","mcg","Ergocalciferol Vitamin D-2","ERGCAL",127
-"Vitamin","Folate, total","mcg","Folacin, folic acid","FOL",1648
-"Vitamin","Folate; unknown/variable methods","mcg","Folate; method unknown or variable","FOL-",281
+"Vitamin","Folate, total","mcg","Folacin, folic acid","FOL",1833
+"Vitamin","Folate; unknown/variable methods","mcg","Folate; method unknown or variable","FOL-",388
 "Vitamin","L-ascorbic acid","mg","L-ascorbic acid","ASCL",75
+"Vitamin","Lutein","mcg","Lutein","LUTN",54
+"Vitamin","Neoxanthin","mcg","Neoxanthin","NEOX",32
 "Vitamin","Niacin, equivalents","mg","Niacin equivalents, total (preformed niacin plus niacin)","NIAEQ",612
-"Vitamin","Niacin, preformed","mg","nicotinic acid; nicotinamide","NIA",1685
-"Vitamin","Niacin; unknown method/form","mg","Niacin; mehtod or form unknown","NIA-",917
-"Vitamin","Pyridoxine","mg","Vitamin B-6 alcohol form.","PYRXN",31
+"Vitamin","Niacin, preformed","mg","nicotinic acid; nicotinamide","NIA",2227
+"Vitamin","Niacin; unknown method/form","mg","Niacin; mehtod or form unknown","NIA-",1205
+"Vitamin","Pyridoxine","mg","Vitamin B-6 alcohol form.","PYRXN",70
 "Vitamin","Pyridoxine hydrochloride","mg","Pyridoxine hydrochloride","PYRXNHCL",23
-"Vitamin","Retinol","mcg","preformed vitamin A, all-trans retinol only","RETOL",2653
+"Vitamin","Retinol","mcg","preformed vitamin A, all-trans retinol only","RETOL",2711
 "Vitamin","Retinol + transretinol + cisretinol","mcg","Retinol + transretinol + cisretinol",NA,17
-"Vitamin","Riboflavin","mg","Riboflavin","RIBF",2923
-"Vitamin","Thiamin","mg","Thiamin, synonym vitamin b1, aneurin","THIA",2412
-"Vitamin","Vitamin A; method of determination unknown","mcg","Vitamin A with unknown methods","VITA-",12
-"Vitamin","Vitamin A; sum of carotenoids","iu","Vitamin A, international units; sum of carotenoids usda indicates over estimates bioavailability",NA,266
-"Vitamin","Vitamin A; sum of retinol/carotenoids, expressed as retinol activity equivalent (RAE)","mcg","Vitamin A; calculated by summation of the vitamin A activities of retinol and the active carotenoids, expressed as retinol activity equivalent (RAE)","VITA_RAE",1412
+"Vitamin","Riboflavin","mg","Riboflavin","RIBF",3873
+"Vitamin","Thiamin","mg","Thiamin, synonym vitamin b1, aneurin","THIA",3300
+"Vitamin","Violaxanthin","mcg","Violaxanthin","VIOLX",32
+"Vitamin","Vitamin A; method of determination unknown","mcg","Vitamin A with unknown methods","VITA-",34
+"Vitamin","Vitamin A; sum of carotenoids","iu","Vitamin A, international units; sum of carotenoids usda indicates over estimates bioavailability",NA,637
+"Vitamin","Vitamin A; sum of retinol/carotenoids, expressed as retinol activity equivalent (RAE)","mcg","Vitamin A; calculated by summation of the vitamin A activities of retinol and the active carotenoids, expressed as retinol activity equivalent (RAE)","VITA_RAE",1515
 "Vitamin","Vitamin A; sum of retinol/carotenoids, expressed as retinol equivalent (RE)","mcg","Vitamin A; calculated by summation of the vitamin A activities of retinol and the active carotenoids, expressed as retinol equivalent (RE)","VITA",959
-"Vitamin","Vitamin B12","mcg","Includes all the active forms of vitamin B-12 in food","VITB12",1972
-"Vitamin","Vitamin B1; as thiamin hydrochloride","mg","Vitamin B1; analysed and expressed as thiamin hydrochloride","THIAHCL",376
-"Vitamin","Vitamin B6, total; thru analysis","mg","Vitamin B6 total determiend by analysis","VITB6A",1432
+"Vitamin","Vitamin B12","mcg","Includes all the active forms of vitamin B-12 in food","VITB12",2490
+"Vitamin","Vitamin B1; as thiamin hydrochloride","mg","Vitamin B1; analysed and expressed as thiamin hydrochloride","THIAHCL",377
+"Vitamin","Vitamin B6, total; thru analysis","mg","Vitamin B6 total determiend by analysis","VITB6A",1437
 "Vitamin","Vitamin B6, total; thru summation","mg","Vitamin B6 total calculated by summation","VITB6C",166
 "Vitamin","Vitamin B6; unknown/variable methods","mg","Vitamin B6, method of determination unknown or variable","VITB6-",224
 "Vitamin","Vitamin C","mg","Vitamin C. L-ascorbic acid plus L-dehydroascorbic acid.","VITC",2603
-"Vitamin","Vitamin C; unknown/variable methods","mg","Vitamin C with unknown methods","VITC-",572
-"Vitamin","Vitamin D; unknown/variable methods","mcg","Vitamin D with unknown methods","VITD-",318
-"Vitamin","Vitamin E; unknown/variable methods","mg","vitamin E, method of determination unknown or variable; expressed as alpha-tocopherol equivalents.","VITE-",138
-"Vitamin","Vitamin_a_combined","mcg","Vitamin_a_combined",NA,2738
+"Vitamin","Vitamin C; unknown/variable methods","mg","Vitamin C with unknown methods","VITC-",1089
+"Vitamin","Vitamin D; unknown/variable methods","mcg","Vitamin D with unknown methods","VITD-",393
+"Vitamin","Vitamin E; unknown/variable methods","mg","vitamin E, method of determination unknown or variable; expressed as alpha-tocopherol equivalents.","VITE-",273
+"Vitamin","Vitamin K-1","mcg","Vitamin K-1","VITK1",4
+"Vitamin","Vitamin_a_combined","mcg","Vitamin_a_combined",NA,3270
 "Vitamin","Zeaxanthin","mcg","Zeaxanthin","ZEA",4
-"Water","Dry matter","g","Dry matter","DM",125
-"Water","Water","g","Water; synonym moisture","WATER",4325
+"Water","Dry matter","g","Dry matter","DM",706
+"Water","Water","g","Water; synonym moisture","WATER",4501
