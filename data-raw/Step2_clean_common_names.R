@@ -282,7 +282,6 @@ prep_wide = com_names %>%
 
 prep_clean = prep_wide %>% 
   mutate(preparation_simple = case_when(
-    str_detect(preparation_detailed, paste(c("raw", "sushi", "sashimi"),collapse = '|')) ~ "raw",
     str_detect(preparation_detailed, "canned") ~ "canned",
     preparation_detailed %in% "can" ~ "canned",
     str_detect(preparation_detailed, "boiled") ~ "boiled",
@@ -291,10 +290,12 @@ prep_clean = prep_wide %>%
     str_detect(preparation_detailed, "fermented") ~ "fermented",
     str_detect(preparation_detailed, "fried") ~ "fried",
     str_detect(preparation_detailed, "salted") ~ "boiled",
-    str_detect(preparation_detailed, "grill") ~ "grilled",
+    str_detect(preparation_detailed, "grill|grilled") ~ "grilled",
     str_detect(preparation_detailed, paste(c("steam", "steaemed"),collapse = '|')) ~ "steamed",
     str_detect(preparation_detailed, "microwaved") ~ "microwaved",
     str_detect(preparation_detailed, "bake") ~ "baked",
+    str_detect(preparation_detailed, "raw|sushi|sashimi") ~ "raw",
+    
     TRUE ~ "cooked")) %>% 
   select(food_name_orig, preparation_simple, preparation_detailed)
 

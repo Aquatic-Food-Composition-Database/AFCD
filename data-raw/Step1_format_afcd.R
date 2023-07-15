@@ -21,7 +21,7 @@ plotdir <- "data-raw/figures"
 
 
 # Read data
-data_orig <- read.csv(file.path(indir, "20230612_AFCD 2.csv"), na.strings = c("", "NA"))
+data_orig <- read.csv(file.path(indir, "20230614_AFCD.csv"), na.strings = c("", "NA"))
 
 # Read reference key
 ref_fct_orig <- readxl::read_excel(file.path(indir, "afcd_references.xlsx"), sheet="fct_references")
@@ -305,12 +305,6 @@ data2 <- data1 %>%
 data2 %>%
   filter(grepl(pattern="includes|Includes", x=taxa_name)) %>% pull(taxa_name) %>% unique() %>% sort()
 
-
-###Fix some wrong values
-data2 = data2 %>% 
-  mutate(value = case_when(study_id == "4" & nutrient == "Vitamin D; unknown/variable methods" ~ value/1000,
-                           study_id == "459" & nutrient == "Vitamin D; unknown/variable methods" ~ value/100
-                           TRUE ~ value))
 
 ###Exclude studies with unrealistic values
 data2 = data2 %>% 
