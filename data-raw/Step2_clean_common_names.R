@@ -16,7 +16,9 @@ source(file.path("R","custom_functions.R"))
 
 # Read data
 data_orig <- readRDS(file.path(outdir, "AFCD_data_pass1.Rds"))
-
+data_orig %>%
+  filter(study_id=="India_2017") %>%
+  select(food_part,food_prep) %>% distinct()
 # Read ref key
 ref_key <- readRDS(file.path(outdir, "AFCD_reference_key.Rds"))
 
@@ -155,7 +157,7 @@ com_names = data_orig_t %>%
   mutate(value=recode(value,
                       "cocido"="boiled","al natural"="canned natural","hormiga" = "ant", "carne" = "meat", "agua dulce" = "freshwater", "de agua dulce" = "freshwater", "filete" = "fillet",
                       "de agua dulce" = "freshwater","entero" = "whole","seco" = "dried","entera" = "whole" ,"de ispi" = "ispi", "carne sin piel" = "meat without skin",
-                      "fresca" = "fresh" ,"de rana"="from frog", "huevera"="eggs", "hueva"="eggs", "de pescado"="fish", "peces"="fishes", "con espinas"="with bones",
+                      "fresca" = "fresh" ,"de rana"="from frog","Harina"="flour", "huevera"="eggs", "hueva"="eggs", "de pescado"="fish", "peces"="fishes", "con espinas"="with bones",
                       "pulpa"="muscle tissue","grande" = "big","chino"="china", "salado" = "salted","pulpa asada"="baked muscle tissue","enlatado"="canned",
                       "crudo"="raw","en conserva"="canned","sardinha"="sardine","enlatada"="canned","al horno"="baked","filé"="muscle tissue","ovas"="eggs",
                       "cocida"="boiled", "atum"="tuna","lomo"="muscle tissue","de camarón blanco y titi"="mixed shrimp species",
@@ -167,7 +169,7 @@ com_names = data_orig_t %>%
                       "sardina"="sardine", "sardinha"="sardine", "precocido"="pre-boiled","con sal"="with salt","salada"="salted","sadia"="healthy",
                       "maionese e vegetais"="with mayonnaise and vegetables","conserva"="canned","molho branco"="in white sauce","rehidratado"="rehydrated",
                       "pimenta"="pepper","molho de tomate temperado"="in tomato sauce","cebola e louro"="onion and bay leaves","coqueiro"="coconut",
-                      "cruda"="raw","crudo"="raw","precocida"="raw","precocido"="raw","cru"="raw","crua"="raw","fresca"="raw",
+                      "cruda"="raw","crudo"="raw","congelado"="frozen","precocida"="raw","precocido"="raw","cru"="raw","crua"="raw","fresca"="raw",
                       "harina"="flour","entero"="whole","entera"="whole","salado"="salted","seco-salado"="salt dried",
                       "assado"="grilled","a la parrilla"="grilled","microondas"="microwaved",
                       "hervida"="boiled","sancochada"="boiled"
@@ -513,6 +515,7 @@ data2 = data_orig_t %>%
   left_join(common_wide, by=c("food_name" = "food_name_orig")) 
 
 
+
 #Include preparation types
 data2 = data2 %>% 
   left_join(prep_clean, by=c("food_name" = "food_name_orig")) %>% 
@@ -522,7 +525,15 @@ data2 = data2 %>%
   rename(food_prep_org = food_prep) %>% 
   mutate(food_prep = if_else(is.na(food_prep_org), preparation_simple, food_prep_org)) %>%
   rename(food_prep_detailed = preparation_detailed) %>% 
-  select(-food_prep_org, -preparation_simple)
+  mutate(
+    food_prep = if_else(str_detect(food_prep_detailed,"brined, raw") &!is.na(food_prep_detailed), "brined", food_prep), #identify a few remaining errors
+    food_prep = if_else(str_detect(food_prep_detailed,"salted") &!is.na(food_prep_detailed), "salted", food_prep), #identify a few remaining errors
+    food_prep = if_else(str_detect(food_prep_detailed,"cured, raw") &!is.na(food_prep_detailed), "unknown preparation", food_prep), #identify a few remaining errors
+    food_prep = if_else(str_detect(food_prep_detailed,"cooked|roasted|bake, grill") &!is.na(food_prep_detailed), "cooked", food_prep), #identify a few remaining errors
+    food_prep = if_else(str_detect(food_prep_detailed,"grilled") &!is.na(food_prep_detailed), "grilled", food_prep) #identify a few remaining errors
+  ) %>%
+  select(-food_prep_org, -preparation_simple) 
+
 
 #Include fish parts
 data2 = data2 %>% 
@@ -559,6 +570,8 @@ data2 = data2 %>%
          "other_ingredients", "study_type", "study_id", "country_origin_sample", "country", 
          "edible_prop", "notes", "nutrient_type", "nutrient", "nutrient_orig",
          "nutrient_desc", "nutrient_code_fao", "nutrient_units", "value")         
+
+
 
 # Export data
 saveRDS(data2, file=file.path(outdir, "AFCD_data_pass2.Rds"))  

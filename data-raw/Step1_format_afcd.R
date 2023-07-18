@@ -21,7 +21,7 @@ plotdir <- "data-raw/figures"
 
 
 # Read data
-data_orig <- read.csv(file.path(indir, "20230614_AFCD.csv"), na.strings = c("", "NA"))
+data_orig <- read.csv(file.path(indir, "20230616_AFCD.csv"), na.strings = c("", "NA"))
 
 # Read reference key
 ref_fct_orig <- readxl::read_excel(file.path(indir, "afcd_references.xlsx"), sheet="fct_references")
@@ -76,7 +76,6 @@ ref_peer <- ref_peer_orig %>%
 
 # Inspect
 colnames(ref_peer)
-table(ref_peer$region)
 
 # Merge reference key & extract year 
 ref_key <- bind_rows(ref_peer, ref_fct) %>%
@@ -392,3 +391,4 @@ write.csv(nutr_key,
           )
 # Inspect
 # freeR::complete(nutr_key)
+
