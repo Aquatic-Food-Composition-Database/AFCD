@@ -7,7 +7,7 @@ rm(list = ls())
 
 # Packages
 library(tidyverse)
-
+library(rfishbase)
 # Directories
 indir <- "data-raw/raw"
 outdir <- "data-raw/processed"
