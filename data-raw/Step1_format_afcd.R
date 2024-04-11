@@ -21,7 +21,8 @@ plotdir <- "data-raw/figures"
 
 
 # Read data
-data_orig <- read.csv(file.path(indir, "20240215_AFCD.csv"), na.strings = c("", "NA"))
+data_orig <- read.csv(file.path(indir, "20240411_AFCD.csv"), na.strings = c("", "NA"))
+
 
 # Read reference key
 ref_fct_orig <- readxl::read_excel(file.path(indir, "afcd_references.xlsx"), sheet="fct_references")
